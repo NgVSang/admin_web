@@ -1,0 +1,11 @@
+.requests_management_wrapper{
+    display: flex;
+    flex-direction: column;
+}
+.requests_management_title{
+    display: flex;
+    margin-bottom: 20px;
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 25px !important;
+    font-weight: 600 !important;
+}

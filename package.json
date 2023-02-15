@@ -19,6 +19,10 @@
     "next": "^13.1.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-highlight-words": "^0.20.0",
     "typescript": "4.9.5"
+  },
+  "devDependencies": {
+    "@types/react-highlight-words": "^0.16.4"
   }
 }

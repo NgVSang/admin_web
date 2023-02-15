@@ -5,18 +5,23 @@ import {
   UploadOutlined,
   UserOutlined,
   DollarCircleOutlined,
-  DashboardOutlined
+  DashboardOutlined,
+  UsergroupDeleteOutlined
 } from '@ant-design/icons';
 import { Avatar, Dropdown, Layout, LayoutProps, Menu, MenuProps, theme } from 'antd';
 import './Layout.css'
 import Link from 'next/link';
-// import '@/app/globals.css'
+import { LayoutPageProps } from './Layout.types';
+import '@/app/globals.css'
+import { useRouter } from 'next/navigation';
 
 const { Header, Sider, Content } = Layout;
-const PageLayout: FC<LayoutProps> = ({
-    children
+const PageLayout: FC<LayoutPageProps> = ({
+    children,
+    select= '1'
 }) =>{
   const [collapsed, setCollapsed] = useState(false);
+  const router = useRouter();
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -25,7 +30,7 @@ const PageLayout: FC<LayoutProps> = ({
     {
       key: '1',
       label: (
-        <Link  href="/">
+        <Link  href="/account">
           Account
         </Link>
       ),
@@ -33,7 +38,7 @@ const PageLayout: FC<LayoutProps> = ({
     {
       key: '2',
       label: (
-        <Link href="/">
+        <Link href="/account/change-password">
           Change password
         </Link>
       ),
@@ -41,7 +46,7 @@ const PageLayout: FC<LayoutProps> = ({
     {
       key: '3',
       label: (
-        <Link href="/">
+        <Link href="/logout">
           Logout
         </Link>
       ),
@@ -57,32 +62,55 @@ const PageLayout: FC<LayoutProps> = ({
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={[select]}
           items={[
             {
               key: '1',
               icon: <DashboardOutlined />,
               label: 'Dashboard',
+              onClick: () =>{
+                router.push('/')
+              }
             },
             {
               key: '2',
-              icon: <UserOutlined />,
+              icon: <UsergroupDeleteOutlined />,
               label: 'User Management',
+              onClick: () =>{
+                router.push('/user-management')
+              }
             },
             {
               key: '3',
               icon: <DollarCircleOutlined />,
               label: 'Salary Management',
+              onClick: () =>{
+                router.push('/salary-management')
+              }
             },
             {
               key: '4',
               icon: <UploadOutlined />,
-              label: 'Report',
+              label: 'Reports',
+              onClick: () =>{
+                router.push('/reports')
+              }
             },
             {
               key: '5',
               icon: <UploadOutlined />,
-              label: 'Request',
+              label: 'Requests',
+              onClick: () =>{
+                router.push('/requests')
+              }
+            },
+            {
+              key: '6',
+              icon: <UserOutlined />,
+              label: 'Account',
+              onClick: () =>{
+                router.push('/account')
+              }
             },
           ]}
         />
@@ -95,8 +123,13 @@ const PageLayout: FC<LayoutProps> = ({
           })}
           <Dropdown menu={{ items }} placement="bottomRight" arrow className='avatar'>
             <div style={{display:'flex', alignItems:'center'}}>
-              <p style={{marginRight:'10px'}}>Đặng Quốc Thắng</p>
-              <Avatar size={30} icon={<UserOutlined />} />
+              <p style={{
+                marginRight:'10px',
+                fontFamily:"sans-serif",
+                fontSize:'15px',
+                fontWeight:500
+              }}>Đặng Quốc Thắng</p>
+              <Avatar size={40} icon={<UserOutlined />} />
             </div>
           </Dropdown>
         </Header>
