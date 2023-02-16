@@ -12,7 +12,6 @@ import { Avatar, Dropdown, Layout, LayoutProps, Menu, MenuProps, theme } from 'a
 import './Layout.css'
 import Link from 'next/link';
 import { LayoutPageProps } from './Layout.types';
-import '@/app/globals.css'
 import { useRouter } from 'next/navigation';
 
 const { Header, Sider, Content } = Layout;
@@ -69,7 +68,7 @@ const PageLayout: FC<LayoutPageProps> = ({
               icon: <DashboardOutlined />,
               label: 'Dashboard',
               onClick: () =>{
-                router.push('/')
+                router.push('/dashboard')
               }
             },
             {

@@ -7,11 +7,9 @@ interface Props {
 
 function Page({}:Props) {
     return (
-        <Layout>
-            <div>
-                <p>Em dep lam</p>
-            </div>
-        </Layout>
+        <div>
+            <p>Em dep lam</p>
+        </div>
     )
 }
 export default Page;
