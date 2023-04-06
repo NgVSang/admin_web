@@ -1,5 +1,5 @@
 .root {
-  @apply fixed bg-black bg-opacity-40 flex items-center inset-0 z-50 justify-center;
+  /* @apply fixed bg-black bg-opacity-40 flex items-center inset-0 z-50 justify-center; */
   backdrop-filter: blur(0.8px);
   -webkit-backdrop-filter: blur(0.8px);
 }
@@ -37,10 +37,10 @@
   text-align: center;
 }
 
-.modal:focus {
+/* .modal:focus {
   @apply outline-none;
 }
 
 .close:hover {
   @apply hover:text-accent-5 transition ease-in-out duration-150 focus:outline-noneright-0 top-0 m-6;
-}
+} */

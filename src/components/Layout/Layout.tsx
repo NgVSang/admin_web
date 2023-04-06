@@ -17,7 +17,6 @@ import { useRouter } from 'next/router'
 const { Header, Sider, Content } = Layout;
 const PageLayout: FC<LayoutPageProps> = ({
     children,
-    select= '1'
 }) =>{
   const [collapsed, setCollapsed] = useState(false);
   const router = useRouter();
@@ -54,6 +53,8 @@ const PageLayout: FC<LayoutPageProps> = ({
 
   const currentSelect = useMemo(()=>{
     let select = '0';
+    console.log(router.pathname);
+    
     switch (router.pathname){
       case '/dashboard':
         select = '1'
@@ -88,7 +89,7 @@ const PageLayout: FC<LayoutPageProps> = ({
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={[currentSelect]}
+          selectedKeys={[currentSelect]}
           items={[
             {
               key: '1',
