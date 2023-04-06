@@ -5,7 +5,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  console.log("adfasdf");
   return (
     <html lang="en">
       {/*

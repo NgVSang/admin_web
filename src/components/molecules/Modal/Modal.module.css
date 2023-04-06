@@ -1,0 +1,46 @@
+.root {
+  @apply fixed bg-black bg-opacity-40 flex items-center inset-0 z-50 justify-center;
+  backdrop-filter: blur(0.8px);
+  -webkit-backdrop-filter: blur(0.8px);
+}
+
+.wrapper{
+  max-width: 600px;
+  width: 600px;
+  height: auto;
+  min-height: 200px;
+  /* border: 2px solid black; */
+  border-radius: 7px;
+}
+
+.modal {
+  /* background-color: aliceblue; */
+  padding: 20px;
+  padding-top: 15px;
+  flex-direction: column;
+}
+
+.modal_header{
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.close_button {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
+  text-align: center;
+}
+
+.modal:focus {
+  @apply outline-none;
+}
+
+.close:hover {
+  @apply hover:text-accent-5 transition ease-in-out duration-150 focus:outline-noneright-0 top-0 m-6;
+}

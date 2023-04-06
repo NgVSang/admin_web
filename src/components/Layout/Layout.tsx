@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -12,7 +12,7 @@ import { Avatar, Dropdown, Layout, LayoutProps, Menu, MenuProps, theme } from 'a
 import './Layout.css'
 import Link from 'next/link';
 import { LayoutPageProps } from './Layout.types';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router'
 
 const { Header, Sider, Content } = Layout;
 const PageLayout: FC<LayoutPageProps> = ({
@@ -52,6 +52,33 @@ const PageLayout: FC<LayoutPageProps> = ({
     },
   ];
 
+  const currentSelect = useMemo(()=>{
+    let select = '0';
+    switch (router.pathname){
+      case '/dashboard':
+        select = '1'
+        break
+      case '/user-management':
+        select = '2'
+        break
+      case '/salary-management':
+        select = '3'
+        break
+      case '/reports':
+        select = '4'
+      break
+      case '/requests':
+        select = '5'
+        break
+      case '/account':
+        select = '6'
+      break
+      default: 
+        break
+    }
+    return select
+  },[router.pathname])
+
   return (
     <Layout className='wrapper'>
       <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -61,7 +88,7 @@ const PageLayout: FC<LayoutPageProps> = ({
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={[select]}
+          defaultSelectedKeys={[currentSelect]}
           items={[
             {
               key: '1',

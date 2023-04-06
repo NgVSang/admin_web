@@ -170,19 +170,18 @@ function Page({}:Props) {
       ];
 
     return (
-        <Layout select="2">
-            <div className={style.user_management_wrapper}>
-                {/* <p className={style.user_management_title}>User Management</p> */}
-                <p style={{
-                    display:'flex',
-                    marginBottom:'20px',
-                    fontFamily:"sans-serif",
-                    fontSize:'25px',
-                    fontWeight:600
-                }}>User Management</p>
-                <Table columns={columns} dataSource={data} className={style.user_management_table}/>
-            </div>
-        </Layout>
+      <div className={style.user_management_wrapper}>
+          {/* <p className={style.user_management_title}>User Management</p> */}
+          <p style={{
+              display:'flex',
+              marginBottom:'20px',
+              fontFamily:"sans-serif",
+              fontSize:'25px',
+              fontWeight:600
+          }}>User Management</p>
+          <Table columns={columns} dataSource={data} className={style.user_management_table}/>
+      </div>
     )
 }
 export default Page;
+Page.Layout = Layout
