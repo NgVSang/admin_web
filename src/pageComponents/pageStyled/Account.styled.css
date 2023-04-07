@@ -52,3 +52,11 @@
     font-weight: 400;
 }
 
+.account_action {
+    display: flex;
+    flex-direction: row;
+    padding: 20px 0px;
+    /* justify-content: center; */
+    gap: 20px;
+}
+

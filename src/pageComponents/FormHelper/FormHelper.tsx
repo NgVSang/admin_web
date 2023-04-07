@@ -393,18 +393,18 @@ const FormHelper: React.FC<FormHelperProps> = ({
                 variant="slim"
                 primary={component.primary}
                 type="button"
-                className="bg-transparent"
                 onClick={() => {
                   onBtnClick?.[component.name](formData as any)
                 }}
                 name={component.name}
                 disabled={component.disabled}
                 style={{
+                  background:'transparent',
                   border:
                     component.outline !== false
-                      ? '1px solid var(--accent-10)'
+                      ? '1px solid #111827'
                       : '',
-                  color: 'var(--accent-10)',
+                  color: '#111827',
                   paddingLeft: direction === 'horizontal' ? 0 : '',
                   paddingRight: direction === 'horizontal' ? 0 : '',
                   flex: ratio,
@@ -584,7 +584,7 @@ const FormHelper: React.FC<FormHelperProps> = ({
                   },
                   flex: ratio,
                 }}
-                className={component.isFullWidth ? 'w-full' : 'flex'}
+                className={component.isFullWidth ? FormHelperStyled.w_full : FormHelperStyled.flex}
                 value={_value}
                 disabled={component.disabled}
                 {...register(component.name, {

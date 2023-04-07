@@ -1,1 +1,1 @@
-export { default as formatPrice } from './Price'
+export * from './Price'

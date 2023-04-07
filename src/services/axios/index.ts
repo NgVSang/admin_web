@@ -20,7 +20,7 @@ const handleErrorResponse = (error: any) => {
     }
 };
 
-export const setHeaderConfigAxios = (token: string) => {
+export const setHeaderConfigAxios = (token?: string) => {
   if(token) {
     instance.defaults.headers.common["Authorization"] = token
       ? "Bearer " + token

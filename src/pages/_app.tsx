@@ -5,13 +5,11 @@ import type { AppProps } from 'next/app';
 import { createContext, FC, ReactElement, ReactNode, useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import '@/assets/css/globals.css'
-import '@/assets/css/dashboard.module.css'
 import '@/pageComponents/pageStyled/index.styled.css'
 import {PersistGate} from 'redux-persist/integration/react';
 import store, {persistor} from '@/store/store';
 import {AuthProvider} from '@/pageComponents/AuthProvider';
 import {AuthGuard} from '@/pageComponents/auth/AuthGuard';
-import { ToastContainer } from 'react-toastify'
 import Modal from '@/components/molecules/Modal';
 import {Toaster} from 'react-hot-toast';
 

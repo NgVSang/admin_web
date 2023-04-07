@@ -1,5 +1,11 @@
 function formatPrice (price: number) {
-    return ""
+    const numString = price.toString();
+  
+    // Định dạng chuỗi số thành VND
+    const formattedNumber = numString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    
+    return formattedNumber;
 }
-
-export default formatPrice
+export {
+    formatPrice
+}

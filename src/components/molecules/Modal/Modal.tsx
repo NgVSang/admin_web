@@ -20,12 +20,18 @@ import {
 import s from './Modal.module.css'
 // import { Modal as Dialog } from 'antd'
 import { Dialog } from '@mui/material'
+import LogoutView from '@/pageComponents/auth/LogoutView'
+import ChangePasswordView from '@/pageComponents/auth/ChangePasswordView'
 // import EditAdministratorInfoView from '@pageComponents/auth/EditAdministratorInfoView'
 
 function renderModalContent(view: ApplicationModal | string) {
   switch (view) {
     case ApplicationModal.LOGIN_VIEW:
       return <LoginView />
+    case ApplicationModal.LOGOUT_VIEW:
+      return <LogoutView />
+    case ApplicationModal.CHANGE_PASSWORD_VIEW:
+      return <ChangePasswordView />
     default:
       return null
   }
@@ -70,7 +76,9 @@ const Modal: FC<ModalProps> = () => {
   }, [handleKey])
 
   return (
-    <Dialog open={isOpen} style={{
+    <Dialog open={isOpen}
+      disableScrollLock={true}
+     style={{
       // width:'80%'
     }}>
       <div className={s.wrapper}>

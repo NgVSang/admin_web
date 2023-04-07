@@ -74,3 +74,11 @@
     text-decoration: none; /* Tương đương với no-underline */
     color: #333; /* Tương đương với text-dark100 */
 }
+
+.w_full {
+    width: 100%;
+}
+
+.flex {
+    display: flex;
+}

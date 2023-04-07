@@ -14,6 +14,8 @@ import Link from 'next/link';
 import { LayoutPageProps } from './Layout.types';
 import { useRouter } from 'next/router'
 import {useSelector} from 'react-redux';
+import {useToggleModal} from '@/hooks/application.hooks';
+import {ApplicationModal} from '@/reducer/app.reducer';
 
 const { Header, Sider, Content } = Layout;
 const PageLayout: FC<LayoutPageProps> = ({
@@ -21,6 +23,8 @@ const PageLayout: FC<LayoutPageProps> = ({
 }) =>{
   const [collapsed, setCollapsed] = useState(false);
   const { userInfo } = useSelector((state: any) => state.auth)
+  const openChangePassword = useToggleModal(ApplicationModal.CHANGE_PASSWORD_VIEW)
+  const openLogout = useToggleModal(ApplicationModal.LOGOUT_VIEW)
   const router = useRouter();
   const {
     token: { colorBgContainer },
@@ -38,17 +42,17 @@ const PageLayout: FC<LayoutPageProps> = ({
     {
       key: '2',
       label: (
-        <Link href="/account/change-password">
+        <div onClick={openChangePassword}>
           Change password
-        </Link>
+        </div>
       ),
     },
     {
       key: '3',
       label: (
-        <Link href="/logout">
+        <div onClick={openLogout}>
           Logout
-        </Link>
+        </div>
       ),
     },
   ];
@@ -157,7 +161,7 @@ const PageLayout: FC<LayoutPageProps> = ({
                 fontFamily:"sans-serif",
                 fontSize:'15px',
                 fontWeight:500
-              }}>{userInfo.name}</p>
+              }}>{userInfo?.name}</p>
               <Avatar size={40} icon={<UserOutlined />} />
             </div>
           </Dropdown>
