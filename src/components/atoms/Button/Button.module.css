@@ -1,72 +1,134 @@
 .root {
-  @apply bg-accent-10 text-accent-0 cursor-pointer inline-flex
-  px-10 py-5 leading-6 transition ease-in-out duration-150
-  shadow-sm text-center justify-center uppercase
-  border border-transparent items-center text-sm font-semibold
-  tracking-wide;
   max-height: 64px;
   border-radius: 5px;
+  background-color: #f0f4ff; /* Tương đương với bg-accent-10 */
+  color: #f9fafc; /* Tương đương với text-accent-0 */
+  cursor: pointer; /* Tương đương với cursor-pointer */
+  display: inline-flex; /* Tương đương với inline-flex */
+  padding-left: 2.5rem; /* Tương đương với px-10 */
+  padding-right: 2.5rem; /* Tương đương với px-10 */
+  padding-top: 1.25rem; /* Tương đương với py-5 */
+  padding-bottom: 1.25rem; /* Tương đương với py-5 */
+  line-height: 1.5rem; /* Tương đương với leading-6 */
+  transition-timing-function: ease-in-out; /* Tương đương với ease-in-out */
+  transition-duration: 0.15s; /* Tương đương với duration-150 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Tương đương với shadow-sm */
+  text-align: center; /* Tương đương với text-center */
+  justify-content: center; /* Tương đương với justify-center */
+  text-transform: uppercase; /* Tương đương với uppercase */
+  border: 1px solid transparent; /* Tương đương với border border-transparent */
+  align-items: center; /* Tương đương với items-center */
+  font-size: 0.875rem; /* Tương đương với text-sm */
+  font-weight: 600; /* Tương đương với font-semibold */
+  letter-spacing: 0.025em; /* Tương đương với tracking-wide */
+  color: #2d3748;
 }
 
 .root:hover {
-  @apply border-accent-9 bg-accent-6;
+  border-color: #c1d5e0; /* Tương đương với border-accent-9 */
+  background-color: #2b6cb0; /* Tương đương với bg-accent-6 */
+  color: white;
 }
 
 .root:focus {
-  @apply shadow-outline-normal outline-none;
+  box-shadow: 0 0 0 3px rgba(156, 163, 175, 0.5); /* Tương đương với shadow-outline-normal */
+  outline: none; /* Tương đương với outline-none */
 }
 
 .root[data-active] {
-  @apply bg-accent-6;
+  background-color: #2b6cb0;
 }
 
 .loading {
-  @apply bg-accent-1 text-accent-3 border-accent-2 cursor-not-allowed;
+  background-color: #f3f4f6; /* Tương đương với bg-accent-1 */
+  color: #718096; /* Tương đương với text-accent-3 */
+  border-color: #e2e8f0; /* Tương đương với border-accent-2 */
+  cursor: not-allowed; /* Tương đương với cursor-not-allowed */
 }
 
 .slim {
-  @apply py-2 transform-none normal-case;
+  padding-top: 0.5rem; /* Tương đương với py-2 */
+  padding-bottom: 0.5rem; /* Tương đương với py-2 */
+  text-transform: none; /* Tương đương với normal-case */
+  transform: none; /* Tương đương với transform-none */
 }
 
 .ghost {
-  @apply border border-accent-2 bg-accent-0 text-accent-9 text-sm;
+  border-width: 1px; /* Tương đương với border */
+  border-color: #e2e8f0; /* Tương đương với border-accent-2 */
+  background-color: #f7fafc; /* Tương đương với bg-accent-0 */
+  color: #2d3748; /* Tương đương với text-accent-9 */
+  font-size: 0.875rem; /* Tương đương với text-sm */
 }
 
 .ghost:hover {
-  @apply border-accent-9 bg-accent-9 text-accent-0;
+  border-color: #667eea; /* Tương đương với border-accent-9 */
+  background-color: #4c51bf; /* Tương đương với bg-accent-9 */
+  color: #f7fafc; /* Tương đương với text-accent-0 */
 }
 
 .naked {
-  @apply bg-transparent font-semibold border-none shadow-none outline-none py-0 px-0;
+  background-color: transparent; /* Tương đương với bg-transparent */
+  font-weight: 600; /* Tương đương với font-semibold */
+  border: none; /* Tương đương với border-none */
+  box-shadow: none; /* Tương đương với shadow-none */
+  outline: none; /* Tương đương với outline-none */
+  padding-top: 0; /* Tương đương với py-0 */
+  padding-bottom: 0; /* Tương đương với py-0 */
+  padding-left: 0; /* Tương đương với px-0 */
+  padding-right: 0; /* Tương đương với px-0 */
 }
 
 .naked:hover,
 .naked:focus {
-  @apply bg-transparent border-none;
+  background-color: transparent; /* Tương đương với bg-transparent */
+  border: none; /* Tương đương với border-none */
 }
 
 .secondary {
-  @apply !bg-blue100 !text-white;
+  /* @apply !bg-blue100 !text-white; */
+  background-color: #E5E9F0 !important; /* Tương đương với bg-blue100 */
+  color: #FFFFFF !important; /* Tương đương với text-white */
 }
 
 .disabled,
 .disabled:hover {
-  @apply text-accent-4 border-accent-2 bg-accent-1 cursor-not-allowed;
   filter: grayscale(1);
   -webkit-transform: translateZ(0);
   -webkit-perspective: 1000;
   -webkit-backface-visibility: hidden;
+  color: #A3BFFA; /* Tương đương với text-accent-4 */
+  border-color: #7180B9; /* Tương đương với border-accent-2 */
+  background-color: #EBF4FF; /* Tương đương với bg-accent-1 */
+  cursor: not-allowed; /* Tương đương với cursor-not-allowed */
 }
 
 .progress {
 }
 .signup-btn {
-  @apply bg-accent-9 text-accent-0 cursor-pointer inline-flex
-  px-10 py-5 leading-6 transition ease-in-out duration-150
-  shadow-sm text-center justify-center uppercase
-  border border-transparent items-center text-sm font-semibold
-  tracking-wide;
   max-height: 64px;
+  background-color: #667EEA; /* Tương đương với bg-accent-9 */
+  color: #F3F4F6; /* Tương đương với text-accent-0 */
+  cursor: pointer; /* Tương đương với cursor-pointer */
+  display: inline-flex; /* Tương đương với inline-flex */
+  padding-left: 2.5rem; /* Tương đương với px-10 */
+  padding-right: 2.5rem; /* Tương đương với px-10 */
+  padding-top: 1.25rem; /* Tương đương với py-5 */
+  padding-bottom: 1.25rem; /* Tương đương với py-5 */
+  line-height: 1.5; /* Tương đương với leading-6 */
+  transition-property: all; /* Tương đương với transition */
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* Tương đương với ease-in-out */
+  transition-duration: 150ms; /* Tương đương với duration-150 */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+              0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Tương đương với shadow-sm */
+  text-align: center; /* Tương đương với text-center */
+  justify-content: center; /* Tương đương với justify-center */
+  border: 1px solid transparent; /* Tương đương với border-transparent */
+  align-items: center; /* Tương đương với items-center */
+  font-size: 0.875rem; /* Tương đương với text-sm */
+  font-weight: 600; /* Tương đương với font-semibold */
+  letter-spacing: 0.05em; /* Tương đương với tracking-wide */
+  text-transform: uppercase; /* Tương đương với uppercase */
 }
 
 .btn-login {

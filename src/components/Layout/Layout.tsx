@@ -13,12 +13,14 @@ import './Layout.css'
 import Link from 'next/link';
 import { LayoutPageProps } from './Layout.types';
 import { useRouter } from 'next/router'
+import {useSelector} from 'react-redux';
 
 const { Header, Sider, Content } = Layout;
 const PageLayout: FC<LayoutPageProps> = ({
     children,
 }) =>{
   const [collapsed, setCollapsed] = useState(false);
+  const { userInfo } = useSelector((state: any) => state.auth)
   const router = useRouter();
   const {
     token: { colorBgContainer },
@@ -155,7 +157,7 @@ const PageLayout: FC<LayoutPageProps> = ({
                 fontFamily:"sans-serif",
                 fontSize:'15px',
                 fontWeight:500
-              }}>Đặng Quốc Thắng</p>
+              }}>{userInfo.name}</p>
               <Avatar size={40} icon={<UserOutlined />} />
             </div>
           </Dropdown>

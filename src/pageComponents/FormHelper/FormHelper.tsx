@@ -10,7 +10,8 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { FormComponent } from '@/types/form'
-import { FormHelperStyled } from './FormHelper.styled'
+// import { FormHelperStyled } from './FormHelper.styled'
+import FormHelperStyled from './FormHelper.module.css'
 import { Button } from '@/components/atoms/Button'
 import {
   Autocomplete,
@@ -18,9 +19,9 @@ import {
   FormControlLabel,
   TextField,
 } from '@mui/material'
-import ValidateErrorIcon from '@public/assets/validate.svg'
+// import ValidateErrorIcon from '@public/assets/validate.svg'
 import _ from 'lodash'
-import 'react-phone-input-2/lib/bootstrap.css'
+// import 'react-phone-input-2/lib/bootstrap.css'
 import { groupItem } from '@/utils/splitArr'
 
 const FormHelper: React.FC<FormHelperProps> = ({
@@ -348,7 +349,8 @@ const FormHelper: React.FC<FormHelperProps> = ({
                 helperText={errors?.[component.name]?.message?.toString()}
                 InputProps={{
                   endAdornment: !!errors?.[component.name] ? (
-                    <ValidateErrorIcon />
+                    // <ValidateErrorIcon />
+                    <div>!</div>
                   ) : (
                     <></>
                   ),
@@ -428,7 +430,8 @@ const FormHelper: React.FC<FormHelperProps> = ({
                 }}
                 InputProps={{
                   endAdornment: !!errors?.[component.name] ? (
-                    <ValidateErrorIcon />
+                    // <ValidateErrorIcon />
+                    <div>!</div>
                   ) : (
                     <></>
                   ),
@@ -570,7 +573,10 @@ const FormHelper: React.FC<FormHelperProps> = ({
                 error={isError}
                 helperText={isError ? errMsg : component?.description}
                 InputProps={{
-                  endAdornment: isError ? <ValidateErrorIcon /> : <></>,
+                  endAdornment: isError ? 
+                  // <ValidateErrorIcon /> 
+                  <div>!</div>
+                  : <></>,
                 }}
                 sx={{
                   '& .MuiInputBase-input.Mui-disabled': {
@@ -599,7 +605,11 @@ const FormHelper: React.FC<FormHelperProps> = ({
   const renderGroupForm = useCallback(() => {
     if (formDirection === 'horizontal') {
       return (
-        <div className="flex gap-3 mx-[-16px]">
+        <div className="flex gap-3 mx-[-16px]" style={{
+          display:'flex',
+          gap: '8px',
+          margin : "-16px 0px"
+        }}>
           {renderFormComponent(formStructure.components, 'horizontal')}
         </div>
       )
@@ -626,11 +636,7 @@ const FormHelper: React.FC<FormHelperProps> = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmitHandler)}
-      // className={twMerge(
-      //   `${FormHelperStyled.customForm} ${customStyle ?? ''} ${
-      //     formDirection === 'horizontal' ? 'py-2' : ''
-      //   }`
-      // )}
+      className={FormHelperStyled.customForm}
     >
       {!!formStructure.title && (
         <div className={FormHelperStyled.header}>{formStructure.title}</div>

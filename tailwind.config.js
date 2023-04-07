@@ -2,7 +2,11 @@
 module.exports = {
   content: [],
   theme: {
-    extend: {},
+    extend: {
+      backgroundColor: {
+        'accent-10': '#...', // Định nghĩa màu sắc cho lớp bg-accent-10
+      },
+    },
   },
   plugins: [],
 }

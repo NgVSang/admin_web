@@ -1,0 +1,76 @@
+.customForm{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 32rem;
+    margin: auto;
+    padding: 1rem;
+}
+
+.customFormHorizontal{
+    display: flex;
+    flex-direction: row;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2.5rem; /* Tương đương với 10px */
+    font-size: 2.5rem; /* Tương đương với 40px */
+    font-weight: 600; /* Tương đương với font semi-bold */
+}
+
+.errorTextWrapper{
+    margin-bottom: 1rem; /* Tương đương với 4px */
+    width: 40%; /* Tương đương với 40% */
+}
+
+.errorText{
+    padding: 10px 20px;
+    border-color: #ff0000; /* Tương đương với border-danger */
+    border-width: 1px; /* Tương đương với border-[1px] */
+    border-radius: 6px; /* Tương đương với rounded-[6px] */
+    color: #ff0000; /* Tương đương với text-danger */
+    display: flex; /* Tương đương với flex */
+}
+
+.description{
+    display: flex; /* Tương đương với flex */
+    flex-direction: column; /* Tương đương với flex-col */
+    gap: 2.5rem; /* Tương đương với space-y-10 (lưu ý: giá trị này phải được chuyển đổi từ lớp Tailwind CSS sang đơn vị đo lường thực tế, trong ví dụ này là rem) */
+    align-items: center; /* Tương đương với text-center */
+    margin-bottom: 1.5rem; /* Tương đương với mb-6 */
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+}
+
+.fullWidthComponent{
+    display: grid; /* Tương đương với grid */
+    grid-template-columns: repeat(1, minmax(0, 1fr)); /* Tương đương với grid-cols-1 */
+    gap: 0.75rem; /* Tương đương với gap-3 (lưu ý: giá trị này phải được chuyển đổi từ lớp Tailwind CSS sang đơn vị đo lường thực tế, trong ví dụ này là rem) */
+    margin-bottom: 0.75rem; /* Tương đương với mb-3 */
+}
+
+.halfWidthComponent{
+    display: grid; /* Tương đương với grid */
+    grid-template-columns: repeat(1, minmax(0, 1fr)); /* Tương đương với grid-cols-1 */
+    gap: 0.75rem; /* Tương đương với gap-3 (lưu ý: giá trị này phải được chuyển đổi từ lớp Tailwind CSS sang đơn vị đo lường thực tế, trong ví dụ này là rem) */
+    margin-bottom: 0.75rem; /* Tương đương với mb-3 */
+}
+
+.titleForm{
+    margin-top: auto; /* Tương đương với mt-auto */
+    height: auto; /* Tương đương với h-auto */
+    font-size: 1rem; /* Tương đương với text-base (lưu ý: giá trị này phải được chuyển đổi từ lớp Tailwind CSS sang đơn vị đo lường thực tế, trong ví dụ này là rem) */
+    align-self: auto; /* Tương đương với self-auto */
+    text-align: left; /* Tương đương với text-left */
+    font-weight: bold; /* Tương đương với font-bold */
+    margin-right: 0; /* Tương đương với mr-0 */
+    text-decoration: none; /* Tương đương với no-underline */
+    color: #333; /* Tương đương với text-dark100 */
+}

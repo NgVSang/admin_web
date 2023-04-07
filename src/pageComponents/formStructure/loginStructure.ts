@@ -7,11 +7,11 @@ export const loginStructure: FormStructure = {
   components: [
     {
       type: 'text',
-      name: 'username',
-      label: 'Enter your username',
-      placeholder: 'Enter your username',
+      name: 'email',
+      label: 'Enter your email',
+      placeholder: 'Enter your email',
       isFullWidth: true,
-      validation: yup.string().trim().required('Username is required'),
+      validation: yup.string().email().trim().required('Email is required'),
     },
     {
       type: 'password',
@@ -29,19 +29,19 @@ export const loginStructure: FormStructure = {
         //   'Passwords must be longer than 7 chars and include numbers.'
         // ),
     },
-    {
-      type: 'checkbox',
-      name: 'rememberMe',
-      label: 'Remember me',
-      isFullWidth: false,
-    },
-    {
-      type: 'link',
-      name: 'forgotPassword',
-      label: 'Forgot password?',
-      isFullWidth: false,
-      outline: false,
-    },
+    // {
+    //   type: 'checkbox',
+    //   name: 'rememberMe',
+    //   label: 'Remember me',
+    //   isFullWidth: false,
+    // },
+    // {
+    //   type: 'link',
+    //   name: 'forgotPassword',
+    //   label: 'Forgot password?',
+    //   isFullWidth: false,
+    //   outline: false,
+    // },
     {
       type: 'submit',
       name: 'logIn',
@@ -49,12 +49,12 @@ export const loginStructure: FormStructure = {
       placeholder: '',
       isFullWidth: true,
     },
-    {
-      type: 'link',
-      name: 'joinNow',
-      label: 'Join now',
-      text: 'New to Arbre?',
-      isFullWidth: true,
-    },
+    // {
+    //   type: 'link',
+    //   name: 'joinNow',
+    //   label: 'Join now',
+    //   text: 'New to Arbre?',
+    //   isFullWidth: true,
+    // },
   ],
 }

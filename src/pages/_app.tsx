@@ -12,6 +12,7 @@ import {AuthProvider} from '@/pageComponents/AuthProvider';
 import {AuthGuard} from '@/pageComponents/auth/AuthGuard';
 import { ToastContainer } from 'react-toastify'
 import Modal from '@/components/molecules/Modal';
+import {Toaster} from 'react-hot-toast';
 
 moment.locale('vi');
 
@@ -44,12 +45,12 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
                 <div className='container '>
-                    {/* <Toaster position='top-center'
+                    <Toaster position='top-center'
                         reverseOrder={false}
                         containerStyle={{
                         }}
                         toastOptions={{
-                            duration: 5000,
+                            duration: 3000,
                             style: {
                                 fontSize: 16,
                             },
@@ -57,7 +58,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                                 duration: 7000,
                             }
                         }}
-                    /> */}
+                    />
                     <Layout pageProps={pageProps}>
                         <AuthProvider>
                             {requireAuth ? (
@@ -70,7 +71,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                         </AuthProvider>
                         <Modal />
                     </Layout>
-                    <ToastContainer />
+                    {/* <ToastContainer /> */}
                 </div>
             </PersistGate>
             <style jsx global>
