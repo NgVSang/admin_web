@@ -1,4 +1,4 @@
-.main {
+.main_login {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -7,7 +7,7 @@
     min-height: 100vh;
 }
 
-.main_form {
+.main_login_form {
     max-width: 800px;
     width: 80%;
     background-color: white;

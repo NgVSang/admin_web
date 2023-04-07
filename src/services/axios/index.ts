@@ -1,7 +1,9 @@
 import axios, {AxiosResponse} from 'axios';
 
+const baseURL = process.env.NEXT_PUBLIC_API_URL +'api' || ""
+
 const instance = axios.create({
-  baseURL: 'https://e391-123-19-197-212.ap.ngrok.io/api',
+  baseURL: baseURL,
   // Các cấu hình khác của Axios
 });
 

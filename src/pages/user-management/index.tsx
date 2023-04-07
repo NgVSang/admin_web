@@ -185,3 +185,4 @@ function Page({}:Props) {
 }
 export default Page;
 Page.Layout = Layout
+Page.requireAuth = true

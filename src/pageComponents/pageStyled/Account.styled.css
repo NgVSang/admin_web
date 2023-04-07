@@ -1,0 +1,54 @@
+.account_main {
+
+}
+
+.account_title{
+    font-family: sans-serif;
+    color: #444444;
+    padding: 20px 0px;
+    font-size: 25px;
+}
+
+.account_body {
+    display: flex;
+    width: 100%;
+}
+
+.account_form {
+    width: 60%;
+}
+
+.account_picture {
+    width: 40%;
+}
+
+.account_content{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    padding: 20px 15px;
+}
+
+.account_content_left {
+    display: flex;
+    width: 30%;
+    flex-direction: row;
+    padding: 0px 10px;
+    justify-content: flex-end;
+}
+
+.account_content_right {
+    display: flex;
+    width: 60%;
+    flex-direction: row;
+    padding: 0px 10px;
+    justify-content: flex-start;
+}
+
+.account_content_text {
+    font-family: sans-serif;
+    color: #1d1b1b;
+    font-size: 20px;
+    font-weight: 400;
+}
+

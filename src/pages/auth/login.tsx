@@ -43,8 +43,8 @@ function Page({}:Props) {
       }
 
     return (
-        <div className="main">
-            <div className="main_form">
+        <div className="main_login">
+            <div className="main_login_form">
                 <FormHelper 
                     formStructure={loginStructure}
                     onSubmit={handleLogin}

@@ -6,6 +6,7 @@ import { createContext, FC, ReactElement, ReactNode, useEffect, useState } from 
 import { Provider } from 'react-redux';
 import '@/assets/css/globals.css'
 import '@/assets/css/dashboard.module.css'
+import '@/pageComponents/pageStyled/index.styled.css'
 import {PersistGate} from 'redux-persist/integration/react';
 import store, {persistor} from '@/store/store';
 import {AuthProvider} from '@/pageComponents/AuthProvider';
