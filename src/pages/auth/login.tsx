@@ -32,6 +32,7 @@ function Page({}:Props) {
                 dispatch(setCredentials(response.data.info))
                 dispatch(setToken(response.data.access_token))
                 setHeaderConfigAxios(response.data.access_token)
+                localStorage.setItem('token',response.data.access_token)
                 router.push('/dashboard')
             }else {
                 toast.error("Bạn không có quyền truy cập!")

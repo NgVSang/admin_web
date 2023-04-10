@@ -8,3 +8,9 @@ export interface ChangePassWordData {
     newPassword: string
     confirmPassword: string
 }
+
+export interface UpdateProfileData {
+    name: string
+    email: string
+    phoneNumber: string
+}

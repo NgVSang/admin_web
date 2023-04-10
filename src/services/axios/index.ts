@@ -8,7 +8,7 @@ const instance = axios.create({
 });
 
 const handleSuccessResponse = (response: AxiosResponse<any, any>) =>{
-    return response.data;
+  return response.data;
 }
 
 const handleErrorResponse = (error: any) => {
@@ -21,6 +21,7 @@ const handleErrorResponse = (error: any) => {
 };
 
 export const setHeaderConfigAxios = (token?: string) => {
+  
   if(token) {
     instance.defaults.headers.common["Authorization"] = token
       ? "Bearer " + token

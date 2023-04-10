@@ -1,9 +1,10 @@
-import {ChangePassWordData, LoginData} from "@/types/auth";
+import {ChangePassWordData, LoginData, UpdateProfileData} from "@/types/auth";
 import instance from "../axios";
 
 const ENDPOINTS = {
     LOGIN: '/auth/login',
-    CHANGEPASSWORD: '/user/change-password'
+    CHANGEPASSWORD: '/user/change-password',
+    UPDATEPROFILE: '/user/update-profile'
 }
 
 const login = (data: LoginData) => {
@@ -16,7 +17,12 @@ const changePassword = (data: ChangePassWordData) => {
     return  instance.post(ENDPOINTS.CHANGEPASSWORD, data)
 }
 
+const updateProfile = (data: UpdateProfileData) => {
+    return instance.post(ENDPOINTS.UPDATEPROFILE, data)
+}
+
 export {
     login,
-    changePassword
+    changePassword,
+    updateProfile
 }

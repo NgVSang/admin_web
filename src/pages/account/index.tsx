@@ -14,7 +14,7 @@ interface Props {
 
 const Page = ({}:Props) =>{
     const { userInfo } = useSelector((state: any) => state.auth)
-    const openUpdateProfile = useToggleModal(ApplicationModal.CHANGE_PASSWORD_USER_VIEW)
+    const openUpdateProfile = useToggleModal(ApplicationModal.UPDATE_PROFILE_VIEW)
     const openChangePassword = useToggleModal(ApplicationModal.CHANGE_PASSWORD_VIEW)
     const openLogout = useToggleModal(ApplicationModal.LOGOUT_VIEW)
 

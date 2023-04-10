@@ -3,7 +3,7 @@ import 'moment/locale/vi';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { createContext, FC, ReactElement, ReactNode, useEffect, useState } from 'react';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import '@/assets/css/globals.css'
 import '@/pageComponents/pageStyled/index.styled.css'
 import {PersistGate} from 'redux-persist/integration/react';
@@ -12,6 +12,7 @@ import {AuthProvider} from '@/pageComponents/AuthProvider';
 import {AuthGuard} from '@/pageComponents/auth/AuthGuard';
 import Modal from '@/components/molecules/Modal';
 import {Toaster} from 'react-hot-toast';
+import {setHeaderConfigAxios} from '@/services/axios';
 
 moment.locale('vi');
 
@@ -37,8 +38,12 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     const requireAuth = (Component as any).requireAuth || false
 
     useEffect(() => {
+        const token = localStorage.getItem('token')
+        if (token){
+            setHeaderConfigAxios(token)
+        }
         document.body.classList?.remove('loading')
-      }, [])
+    }, [])
 
     return (
         <Provider store={store}>

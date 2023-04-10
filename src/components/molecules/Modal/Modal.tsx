@@ -22,6 +22,7 @@ import s from './Modal.module.css'
 import { Dialog } from '@mui/material'
 import LogoutView from '@/pageComponents/auth/LogoutView'
 import ChangePasswordView from '@/pageComponents/auth/ChangePasswordView'
+import UpdateProfileView from '@/pageComponents/auth/UpdateProfileView'
 // import EditAdministratorInfoView from '@pageComponents/auth/EditAdministratorInfoView'
 
 function renderModalContent(view: ApplicationModal | string) {
@@ -32,6 +33,8 @@ function renderModalContent(view: ApplicationModal | string) {
       return <LogoutView />
     case ApplicationModal.CHANGE_PASSWORD_VIEW:
       return <ChangePasswordView />
+    case ApplicationModal.UPDATE_PROFILE_VIEW:
+      return <UpdateProfileView />
     default:
       return null
   }
