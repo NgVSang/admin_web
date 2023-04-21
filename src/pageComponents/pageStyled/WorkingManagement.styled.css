@@ -1,0 +1,19 @@
+.working_management_wrapper{
+    display: flex;
+    flex-direction: column;
+}
+
+.working_management_header{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.working_management_title{
+    display: flex;
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: 25px !important;
+    font-weight: 600 !important;
+}

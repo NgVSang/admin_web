@@ -17,8 +17,12 @@ const changePassword = (data: ChangePassWordData) => {
     return  instance.post(ENDPOINTS.CHANGEPASSWORD, data)
 }
 
-const updateProfile = (data: UpdateProfileData) => {
-    return instance.post(ENDPOINTS.UPDATEPROFILE, data)
+const updateProfile = (data: FormData) => {
+    return instance.post(ENDPOINTS.UPDATEPROFILE, data,{
+        headers: {
+        'Content-Type': 'multipart/form-data',
+        },
+    })
 }
 
 export {

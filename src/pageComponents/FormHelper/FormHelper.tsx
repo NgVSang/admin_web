@@ -23,6 +23,7 @@ import {
 import _ from 'lodash'
 // import 'react-phone-input-2/lib/bootstrap.css'
 import { groupItem } from '@/utils/splitArr'
+import {FileUpload} from '@/components/molecules/FileUpload'
 
 const FormHelper: React.FC<FormHelperProps> = ({
   formStructure,
@@ -136,34 +137,11 @@ const FormHelper: React.FC<FormHelperProps> = ({
   ) => {
     const { target } = e
     try {
-      // if (target.validity.valid && target.files?.length === 1) {
-      //   const apolloClient = new ApolloClient({
-      //     cache: new InMemoryCache(),
-      //     link: createUploadLink({
-      //       uri: process.env.NEXT_PUBLIC_VENDURE_SHOP_API_URL,
-      //     }),
-      //   })
-      //   const {
-      //     data: { uploadCustomerFile },
-      //   } = await apolloClient.mutate({
-      //     mutation: uploadCustomerFileMutation,
-      //     variables: {
-      //       file: target.files[0],
-      //     },
-      //   })
-
-      //   if (uploadCustomerFile && uploadCustomerFile.id) {
-      //     if (uploadCustomerFile.__typename === 'Asset') {
-      //       setValue(
-      //         component.name,
-      //         isMultipleFile
-      //           ? [...formData[component.name], uploadCustomerFile]
-      //           : uploadCustomerFile
-      //       )
-      //     }
-      //   }
-      //   apolloClient.resetStore()
-      // }
+      const file = target.files?.[0] || null;
+      setValue(
+        component.name,
+        file
+      )
     } catch (e) {}
   }
 
@@ -464,6 +442,18 @@ const FormHelper: React.FC<FormHelperProps> = ({
               <div className={FormHelperStyled.titleForm}>
                 {component.label}
               </div>
+            )
+          case 'file':
+            return (
+              <FileUpload
+                component={component}
+                formData={formData}
+                onChangeFile={onFileUploadChange.bind(null, component)}
+                onDeleteFile={onRemoveFileHandler.bind(null, component.name)}
+                register={register(component.name)}
+                isError={isError}
+                errMsg={errMsg}
+              />
             )
           case 'autocomplete':
             return (

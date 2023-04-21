@@ -1,4 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @import './Account.styled.css';
 @import './Login.styled.css';
 @import '../FormHelper/FormHelper.module.css';
+@import './UserManagement.styled.css';
+@import './WorkingManagement.styled.css';
+
+
 

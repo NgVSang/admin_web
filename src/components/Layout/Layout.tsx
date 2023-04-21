@@ -6,7 +6,8 @@ import {
   UserOutlined,
   DollarCircleOutlined,
   DashboardOutlined,
-  UsergroupDeleteOutlined
+  UsergroupDeleteOutlined,
+  FieldTimeOutlined
 } from '@ant-design/icons';
 import { Avatar, Dropdown, Layout, LayoutProps, Menu, MenuProps, theme } from 'antd';
 import './Layout.css'
@@ -16,6 +17,7 @@ import { useRouter } from 'next/router'
 import {useSelector} from 'react-redux';
 import {useToggleModal} from '@/hooks/application.hooks';
 import {ApplicationModal} from '@/reducer/app.reducer';
+import Image from 'next/image';
 
 const { Header, Sider, Content } = Layout;
 const PageLayout: FC<LayoutPageProps> = ({
@@ -68,17 +70,20 @@ const PageLayout: FC<LayoutPageProps> = ({
       case '/user-management':
         select = '2'
         break
-      case '/salary-management':
+      case '/working-management':
         select = '3'
         break
-      case '/reports':
+      case '/salary-management':
         select = '4'
+        break
+      case '/reports':
+        select = '5'
       break
       case '/requests':
-        select = '5'
+        select = '6'
         break
       case '/account':
-        select = '6'
+        select = '7'
       break
       default: 
         break
@@ -115,6 +120,14 @@ const PageLayout: FC<LayoutPageProps> = ({
             },
             {
               key: '3',
+              icon: <FieldTimeOutlined />,
+              label: 'Working Management',
+              onClick: () =>{
+                router.push('/working-management')
+              }
+            },
+            {
+              key: '4',
               icon: <DollarCircleOutlined />,
               label: 'Salary Management',
               onClick: () =>{
@@ -122,7 +135,7 @@ const PageLayout: FC<LayoutPageProps> = ({
               }
             },
             {
-              key: '4',
+              key: '5',
               icon: <UploadOutlined />,
               label: 'Reports',
               onClick: () =>{
@@ -130,7 +143,7 @@ const PageLayout: FC<LayoutPageProps> = ({
               }
             },
             {
-              key: '5',
+              key: '6',
               icon: <UploadOutlined />,
               label: 'Requests',
               onClick: () =>{
@@ -138,7 +151,7 @@ const PageLayout: FC<LayoutPageProps> = ({
               }
             },
             {
-              key: '6',
+              key: '7',
               icon: <UserOutlined />,
               label: 'Account',
               onClick: () =>{
@@ -162,7 +175,17 @@ const PageLayout: FC<LayoutPageProps> = ({
                 fontSize:'15px',
                 fontWeight:500
               }}>{userInfo?.name}</p>
-              <Avatar size={40} icon={<UserOutlined />} />
+              <div className='w-[40px] h-[40px] overflow-hidden rounded-[40px]'>
+                <Image 
+                  src={`${process.env.NEXT_PUBLIC_API_URL}${userInfo?.profilePicture}`}
+                  alt="Profile Picture"
+                  width={40}
+                  height={40}
+                  style={{
+                      resize:"both"
+                  }}
+                />
+              </div>
             </div>
           </Dropdown>
         </Header>

@@ -48,7 +48,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <div className='container '>
+                <div className=''>
                     <Toaster position='top-center'
                         reverseOrder={false}
                         containerStyle={{

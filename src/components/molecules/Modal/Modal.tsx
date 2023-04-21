@@ -23,6 +23,9 @@ import { Dialog } from '@mui/material'
 import LogoutView from '@/pageComponents/auth/LogoutView'
 import ChangePasswordView from '@/pageComponents/auth/ChangePasswordView'
 import UpdateProfileView from '@/pageComponents/auth/UpdateProfileView'
+import AddNewUserView from '@/pageComponents/auth/AddNewUserView'
+import WorkingView from '@/pageComponents/auth/WorkingView'
+import UpdateRequestStatusView from '@/pageComponents/auth/UpdateRequestStatusView'
 // import EditAdministratorInfoView from '@pageComponents/auth/EditAdministratorInfoView'
 
 function renderModalContent(view: ApplicationModal | string) {
@@ -35,6 +38,12 @@ function renderModalContent(view: ApplicationModal | string) {
       return <ChangePasswordView />
     case ApplicationModal.UPDATE_PROFILE_VIEW:
       return <UpdateProfileView />
+    case ApplicationModal.ADD_USER_VIEW:
+      return <AddNewUserView />
+    case ApplicationModal.DETAIL_WORKING_VIEW:
+      return <WorkingView />
+    case ApplicationModal.UPDATE_REQUEST_STATUS_VIEW:
+      return <UpdateRequestStatusView />
     default:
       return null
   }
@@ -79,11 +88,13 @@ const Modal: FC<ModalProps> = () => {
   }, [handleKey])
 
   return (
-    <Dialog open={isOpen}
+    <Dialog 
+      open={isOpen}
       disableScrollLock={true}
-     style={{
+      style={{
       // width:'80%'
-    }}>
+      }}
+    >
       <div className={s.wrapper}>
         <div className={s.modal} role="dialog" ref={ref}>
           <div className={s.modal_header}>

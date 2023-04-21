@@ -1,0 +1,60 @@
+.wrapper{
+    position: relative;
+}
+
+.fileWrapper {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.fileIcon {
+    border: 1px solid #044368; /* Biên với độ dày 1px, màu sắc #BFDBFE */
+    border-radius: 0.25rem; /* Bo góc với bán kính 0.25rem */
+    padding: 0.5rem; /* Độ lề bên trong là 0.5rem */
+    margin-top: auto; /* Canh lề trên tự động */
+    margin-bottom: auto; /* Canh lề dưới tự động */
+    display: flex; /* Hiển thị theo kiểu flex */
+    align-items: center; /* Căn chỉnh phần tử con theo chiều dọc */
+    justify-content: center; /* Căn chỉnh phần tử con theo chiều ngang */
+    cursor: pointer; /* Con trỏ chuột là kiểu con trỏ "pointer" */
+}
+
+.fileInput {
+    display: none; /* Ẩn phần tử */
+}
+
+.fileTitle {
+    display: flex; /* Hiển thị theo kiểu flex */
+    align-items: center; /* Căn chỉnh phần tử con theo chiều dọc */
+    cursor: pointer; /* Con trỏ chuột là kiểu con trỏ "pointer" */
+}
+
+.fileTitleStyled {
+    color: #044368; /* Màu chữ tương ứng với lớp text-blue-100 */
+    cursor: pointer; /* Con trỏ chuột là kiểu con trỏ "pointer" */
+}
+
+.contentWrapper {
+    width: 100%;
+}
+
+.buttonWrapper {
+    overflow: hidden; /* Ẩn phần nội dung tràn ra ngoài phạm vi của phần tử */
+    width: 100%; /* Chiều rộng 100% của phần tử */
+    display: flex; /* Hiển thị phần tử dưới dạng container có kiểu hiển thị flex */
+    align-items: center; /* Căn chỉnh các phần tử con theo chiều dọc giữa trục chính */
+    justify-content: space-between; /* Căn chỉnh các phần tử con theo chiều ngang, căn lề giữa các phần tử con */
+}
+.button {
+    background-color: red; /* Màu nền tương ứng với lớp bg-red */
+    color: white; /* Màu chữ tương ứng với lớp text-white */
+    padding: 0.25rem 0.5rem; /* Độ lề nội dung tương ứng với lớp btn-sm */
+    border: none; /* Xóa đường viền tương ứng với lớp btn */
+    border-radius: 6px;
+    cursor: pointer; /* Con trỏ chuột là kiểu con trỏ "pointer" */
+}
+
+.preview {
+    max-width: 10%; /* Giới hạn chiều rộng tối đa là 10% của phần tử cha */
+    max-height: 10%; /* Giới hạn chiều cao tối đa là 10% của phần tử cha */
+}

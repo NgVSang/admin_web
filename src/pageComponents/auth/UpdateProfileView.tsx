@@ -9,6 +9,7 @@ import * as authApi from '@/services/api/auth.api'
 import {AppDispatch} from '@/store/store'
 import toast from 'react-hot-toast'
 import {setCredentials} from '@/reducer/auth.reducer'
+import instance from '@/services/axios'
 
 const UpdateProfileView: React.FC = () => {
   // Form State
@@ -25,19 +26,30 @@ const UpdateProfileView: React.FC = () => {
     }
   },[userInfo])
 
-  const clickUpdate = useCallback(async (formData: IFormData) => {
+  const clickUpdate = useCallback(async (form: IFormData) => {
     try {
-      const data ={
-        name: formData.name as string,
-        email: formData.email as string,
-        phoneNumber: formData.phoneNumber as string
+      const formData = new FormData();
+      if (form.image){
+        formData.append('photos', form.image);
       }
-      await authApi.updateProfile(data)
+      formData.append('name', form.name);
+      formData.append('email', form.email);
+      formData.append('phoneNumber', form.phoneNumber);
+      console.log(formData);
+      const data ={
+        name: form.name as string,
+        email: form.email as string,
+        phoneNumber: form.phoneNumber as string
+      }
+      console.log(data);
+      
+      const imageUrl = await authApi.updateProfile(formData)
       //@ts-ignore
       toast.success("Update success!")
       dispatch(setCredentials({
         ...userInfo,
-        ...data
+        ...data,
+        profilePicture: imageUrl.data.imageUrl
       }))
       closeModal()
     } catch (err) {
@@ -54,10 +66,10 @@ const UpdateProfileView: React.FC = () => {
 
   return (
     <FormHelper
-        formStructure={UpdateProfileViewStructure}
-        onSubmit={clickUpdate}
-        initValues={initValue}
-        onBtnClick={onBtnClickHandler}
+      formStructure={UpdateProfileViewStructure}
+      onSubmit={clickUpdate}
+      initValues={initValue}
+      onBtnClick={onBtnClickHandler}
     />
   )
 }
