@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react'
+import React, { FC, useMemo, useState } from 'react'
 import { FileUploadProps } from './FileUpload.types'
 // import Plus from '@public/assets/plus.svg'
 import style from './FileUpload.module.css'
@@ -14,6 +14,7 @@ const FileUpload: FC<FileUploadProps> = ({
   isError,
   errMsg,
 }) => {
+  const [preview, setPreview] = useState<string>("");
   const fileName = useMemo(() => {
     let name = 'file name error'
     if (_.isArray(formData?.[component.name])) {
@@ -30,15 +31,20 @@ const FileUpload: FC<FileUploadProps> = ({
     return name
   }, [formData?.[component.name]])
 
-  // const previewUrl = useMemo(() => {
-  //   let url = ''
-  //   if (_.isArray(formData?.[component.name])) {
-  //     url = formData?.[component.name]?.[0]?.preview
-  //   } else {
-  //     url = formData?.[component.name]?.preview
-  //   }
-  //   return url
-  // }, [formData?.[component.name]])
+  const previewUrl = useMemo(() => {
+    let url = ''
+    const reader = new FileReader();
+    reader.onload = () => {
+      url = reader.result as string
+    };
+    // reader.readAsDataURL(formData?.[component.name]?.[0])
+    // if (_.isArray(formData?.[component.name])) {
+    //   url = formData?.[component.name]?.[0]?.preview
+    // } else {
+    //   url = formData?.[component.name]?.preview
+    // }
+    return url
+  }, [formData?.[component.name]])
 
   const value = useMemo(() => {
     if (_.isArray(formData?.[component.name])) {
@@ -87,7 +93,7 @@ const FileUpload: FC<FileUploadProps> = ({
         >
           <div className={style.buttonWrapper}>
             <div className="flex items-center gap-2">
-              {/* <img className={style.preview} src={previewUrl} /> */}
+              <img className={style.preview} src={previewUrl} />
               <div>{fileName}</div>
             </div>
             <button

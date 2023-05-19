@@ -455,6 +455,18 @@ const FormHelper: React.FC<FormHelperProps> = ({
                 errMsg={errMsg}
               />
             )
+          case 'multi-file':
+            return (
+              <FileUpload
+                component={component}
+                formData={formData}
+                onChangeFile={onFileUploadChange.bind(null, component)}
+                onDeleteFile={onRemoveFileHandler.bind(null, component.name)}
+                register={register(component.name)}
+                isError={isError}
+                errMsg={errMsg}
+              />
+            )
           case 'autocomplete':
             return (
               <Autocomplete

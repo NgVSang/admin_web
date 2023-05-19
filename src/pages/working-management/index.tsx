@@ -64,7 +64,7 @@ function Page({}:Props) {
   });
   
   const getData = async () => {
-    await getListUserWorking('2023-04')
+    await getListUserWorking(dayjs(new Date()).format("YYYY-MM"))
     .then((res: any)=>{
       setData(res.data.result)
       setTableParams({

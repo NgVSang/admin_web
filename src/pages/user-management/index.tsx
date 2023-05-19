@@ -1,5 +1,9 @@
 import Layout from "@/components/Layout";
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  EditOutlined,
+  FolderAddOutlined,
+} from '@ant-design/icons';
 import { SearchOutlined } from '@ant-design/icons';
 import type { InputRef } from 'antd';
 import { Button, Input, Space, Table, TablePaginationConfig } from 'antd';
@@ -11,6 +15,7 @@ import {getListUser} from "@/services/api/user.api";
 import toast from "react-hot-toast";
 import {useToggleModal} from "@/hooks/application.hooks";
 import {ApplicationModal} from "@/reducer/app.reducer";
+import Link from "next/link";
 
 interface Props {
 
@@ -42,6 +47,7 @@ const getRandomuserParams = (params: TableParams) => ({
 
 function Page({}:Props) {
   const openAddNewUser = useToggleModal(ApplicationModal.ADD_USER_VIEW)
+  const openAddUserImages = useToggleModal(ApplicationModal.ADD_USER_IMAGES_TRAINING)
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const [data, setData] = useState<DataType[]>()
@@ -190,7 +196,7 @@ function Page({}:Props) {
       dataIndex: 'name',
       key: 'name',
       ...getColumnSearchProps('name'),
-      sorter: (a, b) => a.name.length - b.name.length,
+      sorter: (a, b) => a.name.localeCompare(b.name),
       sortDirections: ['descend', 'ascend'],
     },
     {
@@ -198,22 +204,28 @@ function Page({}:Props) {
       dataIndex: 'email',
       key: 'email',
       ...getColumnSearchProps('email'),
+      sorter: (a, b) => a.email.localeCompare(b.email),
+      sortDirections: ['descend', 'ascend'],
     },
     {
       title: 'Phone Number',
       dataIndex: 'phoneNumber',
       key: 'phoneNumber',
-      
       ...getColumnSearchProps('phoneNumber'),
+      render:(value: any)=>(
+        <Link 
+          href={'Tel:'+value}
+        >{value}</Link>
+      )
     },
-    {
-      title: 'Base Salary',
-      dataIndex: 'baseSalary',
-      key: 'baseSalary',
-      ...getColumnSearchProps('baseSalary'),
-      sorter: (a, b) => a.baseSalary - b.baseSalary,
-      sortDirections: ['descend', 'ascend'],
-    },
+    // {
+    //   title: 'Base Salary',
+    //   dataIndex: 'baseSalary',
+    //   key: 'baseSalary',
+    //   ...getColumnSearchProps('baseSalary'),
+    //   sorter: (a, b) => a.baseSalary - b.baseSalary,
+    //   sortDirections: ['descend', 'ascend'],
+    // },
     {
       title: 'Gender',
       dataIndex: 'gender',
@@ -222,14 +234,24 @@ function Page({}:Props) {
       sorter: (a, b) => a.gender.length - b.gender.length,
       sortDirections: ['descend', 'ascend'],
     },
-    // {
-    //   title: 'Action',
-    //   dataIndex: 'gender',
-    //   key: 'gender',
-    //   ...getColumnSearchProps('gender'),
-    //   sorter: (a, b) => a.gender.length - b.gender.length,
-    //   sortDirections: ['descend', 'ascend'],
-    // },
+    {
+      title: 'Action',
+      dataIndex: '',
+      key: '',
+      render: ()=>(
+        <div className="flex flex-row gap-3">
+          <EditOutlined 
+            className="cursor-pointer"
+            title="Edit user information"
+          />
+          <FolderAddOutlined 
+            className="cursor-pointer"
+            title="Add image trainning for user"
+            onClick={openAddUserImages}
+          />
+        </div>
+      )
+    },
   ];
 
   return (

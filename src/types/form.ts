@@ -18,6 +18,7 @@ export interface FormComponent {
   | 'checkbox'
   | 'link'
   | 'file'
+  | 'multi-file'
   | 'title'
   | 'element'
   | 'country'

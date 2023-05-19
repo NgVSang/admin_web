@@ -26,6 +26,8 @@ import UpdateProfileView from '@/pageComponents/auth/UpdateProfileView'
 import AddNewUserView from '@/pageComponents/auth/AddNewUserView'
 import WorkingView from '@/pageComponents/auth/WorkingView'
 import UpdateRequestStatusView from '@/pageComponents/auth/UpdateRequestStatusView'
+import AddImagesTrainingView from '@/pageComponents/auth/AddImagesTrainingView'
+import UpdateSalaryView from '@/pageComponents/auth/UpdateSalaryView'
 // import EditAdministratorInfoView from '@pageComponents/auth/EditAdministratorInfoView'
 
 function renderModalContent(view: ApplicationModal | string) {
@@ -44,6 +46,10 @@ function renderModalContent(view: ApplicationModal | string) {
       return <WorkingView />
     case ApplicationModal.UPDATE_REQUEST_STATUS_VIEW:
       return <UpdateRequestStatusView />
+    case ApplicationModal.ADD_USER_IMAGES_TRAINING:
+      return <AddImagesTrainingView />
+    case ApplicationModal.UPDATE_SALARY_VIEW:
+      return <UpdateSalaryView />
     default:
       return null
   }
