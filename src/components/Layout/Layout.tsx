@@ -76,9 +76,9 @@ const PageLayout: FC<LayoutPageProps> = ({
       case '/salary-management':
         select = '4'
         break
-      case '/reports':
-        select = '5'
-      break
+      // case '/reports':
+      //   select = '5'
+      // break
       case '/requests':
         select = '6'
         break
@@ -134,14 +134,14 @@ const PageLayout: FC<LayoutPageProps> = ({
                 router.push('/salary-management')
               }
             },
-            {
-              key: '5',
-              icon: <UploadOutlined />,
-              label: 'Reports',
-              onClick: () =>{
-                router.push('/reports')
-              }
-            },
+            // {
+            //   key: '5',
+            //   icon: <UploadOutlined />,
+            //   label: 'Reports',
+            //   onClick: () =>{
+            //     router.push('/reports')
+            //   }
+            // },
             {
               key: '6',
               icon: <UploadOutlined />,

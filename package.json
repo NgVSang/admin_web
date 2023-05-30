@@ -42,6 +42,7 @@
     "react-highlight-words": "^0.20.0",
     "react-hot-toast": "^2.4.0",
     "react-merge-refs": "^1.1.0",
+    "react-progressbar": "^15.4.1",
     "react-redux": "^8.0.5",
     "react-toastify": "^9.1.2",
     "redux": "^4.2.1",

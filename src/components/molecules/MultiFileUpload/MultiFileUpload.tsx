@@ -14,12 +14,12 @@ const MultiFileUpload: FC<MultiFileUpload> = ({
         for (let i = 0; i < files.length; i++) {
             array.push(files[i]);
             // Xem trước ảnh
-            const reader = new FileReader();
-            reader.onload = () => {
-            const result = reader.result as string;
-              setPreview(result);
-            };
-            reader.readAsDataURL(files[i]);
+            // const reader = new FileReader();
+            // reader.onload = () => {
+            // const result = reader.result as string;
+            //   setPreview(result);
+            // };
+            // reader.readAsDataURL(files[i]);
         }
         onFilesAdded(array);
         }
@@ -68,7 +68,7 @@ const MultiFileUpload: FC<MultiFileUpload> = ({
           multiple
           onChange={handleFilesAdded}
         />
-        {preview && <img src={preview} alt="Preview" />}
+        {/* {preview && <img src={preview} alt="Preview" />} */}
         {/* <span className="file-input__text">Drag and drop files here</span> */}
       </div>
     );

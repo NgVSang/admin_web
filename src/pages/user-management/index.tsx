@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   EditOutlined,
   FolderAddOutlined,
+  ScanOutlined
 } from '@ant-design/icons';
 import { SearchOutlined } from '@ant-design/icons';
 import type { InputRef } from 'antd';
@@ -48,6 +49,7 @@ const getRandomuserParams = (params: TableParams) => ({
 function Page({}:Props) {
   const openAddNewUser = useToggleModal(ApplicationModal.ADD_USER_VIEW)
   const openAddUserImages = useToggleModal(ApplicationModal.ADD_USER_IMAGES_TRAINING)
+  const openTrainingFaceView = useToggleModal(ApplicationModal.TRAINING_FACE)
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const [data, setData] = useState<DataType[]>()
@@ -59,6 +61,16 @@ function Page({}:Props) {
       total:100
     },
   });
+
+  const openAddImageTraining = (id:string) =>{
+    localStorage.setItem("userId",id)
+    openAddUserImages()
+  }
+
+  const openTrainingFace = (id:string) =>{
+    localStorage.setItem("userId",id)
+    openTrainingFaceView()
+  }
 
   const getData = async () => {
     await getListUser({limit:10,skip:0})
@@ -238,7 +250,7 @@ function Page({}:Props) {
       title: 'Action',
       dataIndex: '',
       key: '',
-      render: ()=>(
+      render: (value: any, record: any, index: number)=>(
         <div className="flex flex-row gap-3">
           <EditOutlined 
             className="cursor-pointer"
@@ -247,7 +259,16 @@ function Page({}:Props) {
           <FolderAddOutlined 
             className="cursor-pointer"
             title="Add image trainning for user"
-            onClick={openAddUserImages}
+            onClick={()=>{
+              openAddImageTraining(record._id)
+            }}
+          />
+          <ScanOutlined 
+            className="cursor-pointer"
+            title="Training face "
+            onClick={()=>{
+              openTrainingFace(record._id)
+            }}
           />
         </div>
       )
