@@ -5,6 +5,7 @@ import instance from "../axios";
 const ENDPOINTS = {
     LISTREQUEST: '/admin/users-request',
     UPDATEREQUEST: '/admin/update-request',
+    ADDREQUEST: '/admin/create-type-request',
 }
 
 const getListRequest = ({
@@ -27,7 +28,14 @@ const updateRequestStatus = (requestId: string, status:number) => {
     })
 }
 
+const addRequestType = (name: string) => {
+    return instance.post(ENDPOINTS.ADDREQUEST,{
+        name
+    })
+}
+
 export {
     getListRequest,
-    updateRequestStatus
+    updateRequestStatus,
+    addRequestType
 }

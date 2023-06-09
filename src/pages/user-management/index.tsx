@@ -49,6 +49,7 @@ const getRandomuserParams = (params: TableParams) => ({
 function Page({}:Props) {
   const openAddNewUser = useToggleModal(ApplicationModal.ADD_USER_VIEW)
   const openAddUserImages = useToggleModal(ApplicationModal.ADD_USER_IMAGES_TRAINING)
+  const openUpdateUserView = useToggleModal(ApplicationModal.UPDATE_USER_VIEW)
   const openTrainingFaceView = useToggleModal(ApplicationModal.TRAINING_FACE)
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -70,6 +71,10 @@ function Page({}:Props) {
   const openTrainingFace = (id:string) =>{
     localStorage.setItem("userId",id)
     openTrainingFaceView()
+  }
+  const openUpdateUser = (user: any) =>{
+    localStorage.setItem("user",JSON.stringify(user))
+    openUpdateUserView()
   }
 
   const getData = async () => {
@@ -255,6 +260,9 @@ function Page({}:Props) {
           <EditOutlined 
             className="cursor-pointer"
             title="Edit user information"
+            onClick={()=>{
+              openUpdateUser(record)
+            }}
           />
           <FolderAddOutlined 
             className="cursor-pointer"

@@ -5,6 +5,7 @@ import instance from "../axios";
 const ENDPOINTS = {
     LISTUSER: '/admin/users',
     CREATEUSER: '/admin/create-user',
+    UPDATEUSER: '/admin/update-user/'
 }
 
 const getListUser = ({
@@ -23,7 +24,12 @@ const createUser = (data: any) => {
     return instance.post(ENDPOINTS.CREATEUSER,data)
 }
 
+const updateUser = (data: any, userId: string) => {
+    return instance.post(ENDPOINTS.UPDATEUSER+userId,data)
+}
+
 export {
     getListUser,
-    createUser
+    createUser,
+    updateUser
 }
