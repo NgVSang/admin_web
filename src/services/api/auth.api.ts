@@ -1,13 +1,15 @@
-import {ChangePassWordData, LoginData, UpdateProfileData} from "@/types/auth";
-import {AxiosProgressEvent} from "axios";
+import { ChangePassWordData, LoginData } from "@/types/auth";
 import instance from "../axios";
 
 const ENDPOINTS = {
+    // LOGIN: '/auth/login',
+    // CHANGEPASSWORD: '/user/change-password',
+    // UPDATEPROFILE: '/user/update-profile',
+    // ADDIMAGETRAINING: '/admin/add-image-user/',
+    // TRAININGUSER: '/admin/training-user/',
     LOGIN: '/auth/login',
-    CHANGEPASSWORD: '/user/change-password',
-    UPDATEPROFILE: '/user/update-profile',
-    ADDIMAGETRAINING: '/admin/add-image-user/',
-    TRAININGUSER: '/admin/training-user/',
+    PROFILE: '/user/me',
+    REGISTER: '/auth/register',
 }
 
 const login = (data: LoginData) => {
@@ -17,27 +19,29 @@ const login = (data: LoginData) => {
 const changePassword = (data: ChangePassWordData) => {
     console.log(data);
     
-    return  instance.post(ENDPOINTS.CHANGEPASSWORD, data)
+    // return  instance.post(ENDPOINTS.CHANGEPASSWORD, data)
 }
-
+const getProfile = () => {
+    return instance.get(ENDPOINTS.PROFILE);
+  };
 const updateProfile = (data: FormData) => {
-    return instance.post(ENDPOINTS.UPDATEPROFILE, data,{
-        headers: {
-        'Content-Type': 'multipart/form-data',
-        },
-    })
+    // return instance.post(ENDPOINTS.UPDATEPROFILE, data,{
+    //     headers: {
+    //     'Content-Type': 'multipart/form-data',
+    //     },
+    // })
 }
 
 const addImageTraining = (id:string,data: FormData) => {
-    return instance.post(ENDPOINTS.ADDIMAGETRAINING + id, data,{
-        headers: {
-        'Content-Type': 'multipart/form-data',
-        },
-    })
+    // return instance.post(ENDPOINTS.ADDIMAGETRAINING + id, data,{
+    //     headers: {
+    //     'Content-Type': 'multipart/form-data',
+    //     },
+    // })
 }
 
 const trainingUser = (id:string) => {
-    return instance.post(ENDPOINTS.TRAININGUSER + id)
+    // return instance.post(ENDPOINTS.TRAININGUSER + id)
 }
 
 export {
@@ -45,5 +49,7 @@ export {
     changePassword,
     updateProfile,
     addImageTraining,
-    trainingUser
-}
+    trainingUser,
+    getProfile
+};
+

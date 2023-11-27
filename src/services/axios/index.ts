@@ -1,6 +1,7 @@
-import axios, {AxiosResponse} from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL +'api' || ""
+// const baseURL = process.env.NEXT_PUBLIC_API_URL +'api' || ""
+const baseURL = `https://docker-pratice-production.up.railway.app/api`;
 
 const instance = axios.create({
   baseURL: baseURL,

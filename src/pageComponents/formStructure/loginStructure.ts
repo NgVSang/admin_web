@@ -1,5 +1,5 @@
-import * as yup from 'yup'
 import { FormStructure } from '@/types/form'
+import * as yup from 'yup'
 // import { passwordRegExp } from '@constants/value'
 
 export const loginStructure: FormStructure = {
@@ -11,7 +11,7 @@ export const loginStructure: FormStructure = {
       label: 'Enter your email',
       placeholder: 'Enter your email',
       isFullWidth: true,
-      validation: yup.string().email().trim().required('Email is required'),
+      validation: yup.string().trim().required('Email is required'),
     },
     {
       type: 'password',
@@ -22,7 +22,7 @@ export const loginStructure: FormStructure = {
       validation: yup
         .string()
         .trim()
-        .min(7, 'Passwords must be longer than 7 chars and include numbers.')
+        // .min(7, 'Passwords must be longer than 7 chars and include numbers.')
         .required('Please enter a valid password!')
         // .matches(
         //   passwordRegExp,

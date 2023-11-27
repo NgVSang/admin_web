@@ -1,13 +1,11 @@
 import Layout from "@/components/Layout";
-import React from "react";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 // import { Image } from 'antd';
-import '@/pageComponents/pageStyled/Account.styled.css'
-import {formatPrice} from "@/utils/Format";
-import {Button} from "antd";
-import {useToggleModal} from "@/hooks/application.hooks";
-import {ApplicationModal} from "@/reducer/app.reducer";
-import Image from "next/image";
+import { useToggleModal } from "@/hooks/application.hooks";
+import '@/pageComponents/pageStyled/Account.styled.css';
+import { ApplicationModal } from "@/reducer/app.reducer";
+import { formatPrice } from "@/utils/Format";
+import { Button } from "antd";
 
 interface Props {
 
@@ -76,7 +74,7 @@ const Page = ({}:Props) =>{
                     </div>
                 </div>
                 <div className="account_picture">
-                    <Image 
+                    {/* <Image 
                         src={`${process.env.NEXT_PUBLIC_API_URL}${userInfo?.profilePicture}`}
                         alt="Profile Picture"
                         width={300}
@@ -84,7 +82,7 @@ const Page = ({}:Props) =>{
                         style={{
                             resize:"both"
                         }}
-                    />
+                    /> */}
                     {/* <Image
                         width={200}
                         // src="http://localhost:3000/_next/image?url=http%3A%2F%2F127.0.0.1%3A9001%2FuserImages%2F99124412-7652-48b8-a905-7b966ef7899e-1681544702941.jpeg&w=384&q=75"

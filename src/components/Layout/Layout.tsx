@@ -1,23 +1,17 @@
-import React, { FC, useMemo, useState } from 'react';
+import { useToggleModal } from '@/hooks/application.hooks';
+import { ApplicationModal } from '@/reducer/app.reducer';
 import {
-  MenuFoldOutlined,
+  DashboardOutlined, DollarCircleOutlined, FieldTimeOutlined, MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  DollarCircleOutlined,
-  DashboardOutlined,
-  UsergroupDeleteOutlined,
-  FieldTimeOutlined
+  UploadOutlined, UsergroupDeleteOutlined, UserOutlined
 } from '@ant-design/icons';
-import { Avatar, Dropdown, Layout, LayoutProps, Menu, MenuProps, theme } from 'antd';
-import './Layout.css'
+import { Dropdown, Layout, Menu, MenuProps, theme } from 'antd';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, { FC, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import './Layout.css';
 import { LayoutPageProps } from './Layout.types';
-import { useRouter } from 'next/router'
-import {useSelector} from 'react-redux';
-import {useToggleModal} from '@/hooks/application.hooks';
-import {ApplicationModal} from '@/reducer/app.reducer';
-import Image from 'next/image';
 
 const { Header, Sider, Content } = Layout;
 const PageLayout: FC<LayoutPageProps> = ({
@@ -176,7 +170,7 @@ const PageLayout: FC<LayoutPageProps> = ({
                 fontWeight:500
               }}>{userInfo?.name}</p>
               <div className='w-[40px] h-[40px] overflow-hidden rounded-[40px]'>
-                <Image 
+                {/* <Image 
                   src={`${process.env.NEXT_PUBLIC_API_URL}${userInfo?.profilePicture}`}
                   alt="Profile Picture"
                   width={40}
@@ -184,7 +178,7 @@ const PageLayout: FC<LayoutPageProps> = ({
                   style={{
                       resize:"both"
                   }}
-                />
+                /> */}
               </div>
             </div>
           </Dropdown>
