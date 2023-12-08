@@ -1,35 +1,29 @@
 import Layout from "@/components/Layout";
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   EditOutlined,
   FolderAddOutlined,
-  ScanOutlined
-} from '@ant-design/icons';
-import { SearchOutlined } from '@ant-design/icons';
-import type { InputRef } from 'antd';
-import { Button, Input, Space, Table, TablePaginationConfig } from 'antd';
-import type { ColumnsType, ColumnType } from 'antd/es/table';
-import type { FilterConfirmProps, FilterValue, SorterResult } from 'antd/es/table/interface';
-import Highlighter from 'react-highlight-words';
-import style from '@/assets/css/user-management.module.css'
-import {getListUser} from "@/services/api/user.api";
+  ScanOutlined,
+} from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
+import type { InputRef } from "antd";
+import { Button, Input, Space, Table, TablePaginationConfig } from "antd";
+import type { ColumnsType, ColumnType } from "antd/es/table";
+import type {
+  FilterConfirmProps,
+  FilterValue,
+  SorterResult,
+} from "antd/es/table/interface";
+import Highlighter from "react-highlight-words";
+import style from "@/assets/css/user-management.module.css";
+import { getListUser } from "@/services/api/user.api";
 import toast from "react-hot-toast";
-import {useToggleModal} from "@/hooks/application.hooks";
-import {ApplicationModal} from "@/reducer/app.reducer";
+import { useToggleModal } from "@/hooks/application.hooks";
+import { ApplicationModal } from "@/reducer/app.reducer";
 import Link from "next/link";
+import { IAccount, IRole, IUser } from "@/types";
 
-interface Props {
-
-}
-
-interface DataType {
-  _id: string;
-  name: string;
-  email: string
-  phoneNumber: string;
-  gender: string;
-  baseSalary: number
-}
+interface Props {}
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -38,7 +32,7 @@ interface TableParams {
   filters?: Record<string, FilterValue>;
 }
 
-type DataIndex = keyof DataType;
+type DataIndex = keyof IUser;
 
 const getRandomuserParams = (params: TableParams) => ({
   results: params.pagination?.pageSize,
@@ -46,63 +40,65 @@ const getRandomuserParams = (params: TableParams) => ({
   ...params,
 });
 
-function Page({}:Props) {
-  const openAddNewUser = useToggleModal(ApplicationModal.ADD_USER_VIEW)
-  const openAddUserImages = useToggleModal(ApplicationModal.ADD_USER_IMAGES_TRAINING)
-  const openUpdateUserView = useToggleModal(ApplicationModal.UPDATE_USER_VIEW)
-  const openTrainingFaceView = useToggleModal(ApplicationModal.TRAINING_FACE)
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
-  const [data, setData] = useState<DataType[]>()
+function Page({}: Props) {
+  const openAddNewUser = useToggleModal(ApplicationModal.ADD_USER_VIEW);
+  const openAddUserImages = useToggleModal(
+    ApplicationModal.ADD_USER_IMAGES_TRAINING
+  );
+  const openUpdateUserView = useToggleModal(ApplicationModal.UPDATE_USER_VIEW);
+  const openTrainingFaceView = useToggleModal(ApplicationModal.TRAINING_FACE);
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const [data, setData] = useState<IUser[]>();
   const searchInput = useRef<InputRef>(null);
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
-      pageSize: 10,
-      total:100
+      pageSize: 10000,
+      total: 10000,
     },
   });
 
-  const openAddImageTraining = (id:string) =>{
-    localStorage.setItem("userId",id)
-    openAddUserImages()
-  }
+  const openAddImageTraining = (id: string) => {
+    localStorage.setItem("userId", id);
+    openAddUserImages();
+  };
 
-  const openTrainingFace = (id:string) =>{
-    localStorage.setItem("userId",id)
-    openTrainingFaceView()
-  }
-  const openUpdateUser = (user: any) =>{
-    localStorage.setItem("user",JSON.stringify(user))
-    openUpdateUserView()
-  }
+  const openTrainingFace = (id: string) => {
+    localStorage.setItem("userId", id);
+    openTrainingFaceView();
+  };
+  const openUpdateUser = (user: any) => {
+    localStorage.setItem("user", JSON.stringify(user));
+    openUpdateUserView();
+  };
 
   const getData = async () => {
-    await getListUser({limit:10,skip:0})
-    .then((res: any)=>{
-      setData(res.data.result)
-      setTableParams({
-        ...tableParams,
-        pagination: {
-          ...tableParams.pagination,
-          total: res.data.totalItems,
-          // total: 100,
-        },
+    await getListUser()
+      .then((res: any) => {
+        setData(res.data);
+        // setTableParams({
+        //   ...tableParams,
+        //   pagination: {
+        //     ...tableParams.pagination,
+        //     total: res.data.totalItems,
+        //     // total: 100,
+        //   },
+        // });
       })
-    })
-    .catch((error: any)=>{
-      toast.error(error.message)
-    })
-  } 
+      .catch((error: any) => {
+        toast.error(error.message);
+      });
+  };
 
-  useEffect(()=>{
-    getData()
-  },[])
+  useEffect(() => {
+    getData();
+  }, []);
 
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue>,
-    sorter: SorterResult<DataType>,
+    sorter: SorterResult<IUser>
   ) => {
     setTableParams({
       pagination,
@@ -117,35 +113,47 @@ function Page({}:Props) {
   };
 
   const handleSearch = (
-      selectedKeys: string[],
-      confirm: (param?: FilterConfirmProps) => void,
-      dataIndex: DataIndex,
+    selectedKeys: string[],
+    confirm: (param?: FilterConfirmProps) => void,
+    dataIndex: DataIndex
   ) => {
-      confirm();
-      setSearchText(selectedKeys[0]);
-      setSearchedColumn(dataIndex);
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
   };
 
   const handleReset = (clearFilters: () => void) => {
-      clearFilters();
-      setSearchText('');
+    clearFilters();
+    setSearchText("");
   };
 
-  const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<DataType> => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+  const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<IUser> => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+      close,
+    }) => (
       <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
         <Input
           ref={searchInput}
           placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
-          style={{ marginBottom: 8, display: 'block' }}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() =>
+            handleSearch(selectedKeys as string[], confirm, dataIndex)
+          }
+          style={{ marginBottom: 8, display: "block" }}
         />
         <Space>
           <Button
             type="primary"
-            onClick={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+            onClick={() =>
+              handleSearch(selectedKeys as string[], confirm, dataIndex)
+            }
             icon={<SearchOutlined />}
             size="small"
             style={{ width: 90 }}
@@ -183,13 +191,13 @@ function Page({}:Props) {
       </div>
     ),
     filterIcon: (filtered: boolean) => (
-      <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
+      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
     ),
     onFilter: (value, record) =>
       record[dataIndex]
-        .toString()
+        ?.toString()
         .toLowerCase()
-        .includes((value as string).toLowerCase()),
+        .includes((value as string).toLowerCase()) || false,
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.current?.select(), 100);
@@ -198,105 +206,117 @@ function Page({}:Props) {
     render: (text) =>
       searchedColumn === dataIndex ? (
         <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
           searchWords={[searchText]}
           autoEscape
-          textToHighlight={text ? text.toString() : ''}
+          textToHighlight={text ? text.toString() : ""}
         />
       ) : (
         text
       ),
   });
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<IUser> = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      ...getColumnSearchProps('name'),
-      sorter: (a, b) => a.name.localeCompare(b.name),
-      sortDirections: ['descend', 'ascend'],
+      title: "Name",
+      dataIndex: "account",
+      key: "name",
+      ...getColumnSearchProps("account"),
+      sorter: (a, b) =>
+        a.account?.userName.localeCompare(b.account?.userName || "") || 0,
+      render: (value: IAccount) => {
+        return <p>{value.userName}</p>;
+      },
+      width: "15%",
+      sortDirections: ["descend", "ascend"],
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
-      ...getColumnSearchProps('email'),
-      sorter: (a, b) => a.email.localeCompare(b.email),
-      sortDirections: ['descend', 'ascend'],
+      title: "Email",
+      dataIndex: "account",
+      key: "email",
+      ...getColumnSearchProps("account"),
+      sorter: (a, b) =>
+        a.account?.email.localeCompare(b.account?.email || "") || 0,
+      render: (value: IAccount) => {
+        return <p>{value.email}</p>;
+      },
+      width: "25%",
+      sortDirections: ["descend", "ascend"],
     },
     {
-      title: 'Phone Number',
-      dataIndex: 'phoneNumber',
-      key: 'phoneNumber',
-      ...getColumnSearchProps('phoneNumber'),
-      render:(value: any)=>(
-        <Link 
-          href={'Tel:'+value}
-        >{value}</Link>
-      )
-    },
-    // {
-    //   title: 'Base Salary',
-    //   dataIndex: 'baseSalary',
-    //   key: 'baseSalary',
-    //   ...getColumnSearchProps('baseSalary'),
-    //   sorter: (a, b) => a.baseSalary - b.baseSalary,
-    //   sortDirections: ['descend', 'ascend'],
-    // },
-    {
-      title: 'Gender',
-      dataIndex: 'gender',
-      key: 'gender',
-      ...getColumnSearchProps('gender'),
-      sorter: (a, b) => a.gender.length - b.gender.length,
-      sortDirections: ['descend', 'ascend'],
+      title: "Phone Number",
+      dataIndex: "phone",
+      key: "phoneNumber",
+      ...getColumnSearchProps("phone"),
+      width: "20%",
+      render: (value: any) => <Link href={"Tel:" + value}>{value}</Link>,
     },
     {
-      title: 'Action',
-      dataIndex: '',
-      key: '',
-      render: (value: any, record: any, index: number)=>(
+      title: "Roles",
+      dataIndex: "Roles",
+      key: "roles",
+      width: "15%",
+      ...getColumnSearchProps("Roles"),
+      sortDirections: ["descend", "ascend"],
+      render: (value: any) => (
+        <p>
+          {value
+            .map((role: IRole) => {
+              return role.roleName;
+            })
+            .join(", ")}
+        </p>
+      ),
+    },
+    {
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
+      ...getColumnSearchProps("gender"),
+      sortDirections: ["descend", "ascend"],
+      render: (value: any) => <p>{value ? "Male" : "Female"}</p>,
+    },
+    {
+      title: "Action",
+      dataIndex: "",
+      key: "",
+      render: (value: any, record: any, index: number) => (
         <div className="flex flex-row gap-3">
-          <EditOutlined 
+          <EditOutlined
             className="cursor-pointer"
             title="Edit user information"
-            onClick={()=>{
-              openUpdateUser(record)
+            onClick={() => {
+              openUpdateUser(record);
             }}
           />
-          <FolderAddOutlined 
+          <FolderAddOutlined
             className="cursor-pointer"
             title="Add image trainning for user"
-            onClick={()=>{
-              openAddImageTraining(record._id)
+            onClick={() => {
+              openAddImageTraining(record._id);
             }}
           />
-          <ScanOutlined 
+          <ScanOutlined
             className="cursor-pointer"
             title="Training face "
-            onClick={()=>{
-              openTrainingFace(record._id)
+            onClick={() => {
+              openTrainingFace(record._id);
             }}
           />
         </div>
-      )
+      ),
     },
   ];
 
   return (
-    <div className='user_management_wrapper'>
+    <div className="user_management_wrapper">
       <div className="user_management_header">
         <p className="user_management_title">User Management</p>
-        <Button 
-          type="default"
-          size="large"
-          onClick={openAddNewUser}
-        >
+        <Button type="default" size="large" onClick={openAddNewUser}>
           Create user
         </Button>
       </div>
-      <Table 
-        columns={columns} 
+      <Table
+        columns={columns}
         dataSource={data}
         rowKey={(record) => record._id}
         className={style.user_management_table}
@@ -305,8 +325,8 @@ function Page({}:Props) {
         onChange={handleTableChange}
       />
     </div>
-  )
+  );
 }
 export default Page;
-Page.Layout = Layout
-Page.requireAuth = true
+Page.Layout = Layout;
+Page.requireAuth = true;

@@ -2,7 +2,7 @@ import FormHelper from "@/pageComponents/FormHelper";
 import { IFormData } from "@/pageComponents/FormHelper/FormHelper.types";
 import { loginStructure } from "@/pageComponents/formStructure/loginStructure";
 import "@/pageComponents/pageStyled/Login.styled.css";
-import { setCredentials, setToken } from "@/reducer/auth.reducer";
+import { setCredential, setUser } from "@/reducer";
 import * as authApi from "@/services/api/auth.api";
 import { setHeaderConfigAxios } from "@/services/axios";
 import { AppDispatch } from "@/store/store";
@@ -22,27 +22,23 @@ function Page({}: Props) {
         username: formData.email as string,
         password: formData.password as string,
       };
-      const response: any = await authApi.login(data);
-      console.log(response);
-
+      const response = await authApi.login(data);
       if (
-        response.user.Roles?.find((role: any) => role.roleName === "superUser")
+        response.data.user.Roles?.find(
+          (role: any) => role.roleName === "superUser"
+        )
       ) {
-        toast.success(`Xin chào ${response.user.account.userName}`);
-
-        dispatch(setToken(response.token));
-        setHeaderConfigAxios(response.token);
-        localStorage.setItem("token", response.token);
-        const user = await authApi.getProfile();
-        console.log(user);
-        dispatch(setCredentials(user));
-
+        toast.success(`Xin chào ${response.data.user.account.userName}`);
+        dispatch(setCredential({ token: response.data.token }));
+        setHeaderConfigAxios(response.data.token);
+        localStorage.setItem("token", response.data.token);
+        // const user = await authApi.getProfile();
+        dispatch(setUser(response.data.user));
         router.push("/dashboard");
       } else {
         toast.error("Bạn không có quyền truy cập!");
       }
     } catch (e: any) {
-      // console.log(e.message);
       toast.error(e.message);
     }
   };
