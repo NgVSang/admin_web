@@ -32,7 +32,26 @@ interface TableParams {
   filters?: Record<string, FilterValue>;
 }
 
-type DataIndex = keyof IUser;
+interface DataType {
+  _id: number;
+  name: string;
+  email: string;
+  roles: string;
+  gender: boolean;
+  deleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  Address: string;
+  dayOfBirth: string;
+  firstName: string;
+  isActive: "ACTIVE";
+  lastName: string;
+  phone: string | number;
+  profilePicture: string;
+}
+
+type DataIndex = keyof DataType;
 
 const getRandomuserParams = (params: TableParams) => ({
   results: params.pagination?.pageSize,
@@ -49,7 +68,7 @@ function Page({}: Props) {
   const openTrainingFaceView = useToggleModal(ApplicationModal.TRAINING_FACE);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
-  const [data, setData] = useState<IUser[]>();
+  const [data, setData] = useState<DataType[]>();
   const searchInput = useRef<InputRef>(null);
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -76,15 +95,17 @@ function Page({}: Props) {
   const getData = async () => {
     await getListUser()
       .then((res: any) => {
-        setData(res.data);
-        // setTableParams({
-        //   ...tableParams,
-        //   pagination: {
-        //     ...tableParams.pagination,
-        //     total: res.data.totalItems,
-        //     // total: 100,
-        //   },
-        // });
+        const data = res.data.map((user: IUser) => {
+          return {
+            ...user,
+            roles: user.Roles.map((role: IRole) => {
+              return role.roleName;
+            }).join(", "),
+            name: `${user.firstName} ${user.lastName}`,
+            email: user.account?.email || "",
+          };
+        });
+        setData(data);
       })
       .catch((error: any) => {
         toast.error(error.message);
@@ -98,7 +119,7 @@ function Page({}: Props) {
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue>,
-    sorter: SorterResult<IUser>
+    sorter: SorterResult<DataType>
   ) => {
     setTableParams({
       pagination,
@@ -127,7 +148,9 @@ function Page({}: Props) {
     setSearchText("");
   };
 
-  const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<IUser> => ({
+  const getColumnSearchProps = (
+    dataIndex: DataIndex
+  ): ColumnType<DataType> => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -215,30 +238,22 @@ function Page({}: Props) {
         text
       ),
   });
-  const columns: ColumnsType<IUser> = [
+  const columns: ColumnsType<DataType> = [
     {
       title: "Name",
-      dataIndex: "account",
+      dataIndex: "name",
       key: "name",
-      ...getColumnSearchProps("account"),
-      sorter: (a, b) =>
-        a.account?.userName.localeCompare(b.account?.userName || "") || 0,
-      render: (value: IAccount) => {
-        return <p>{value.userName}</p>;
-      },
+      ...getColumnSearchProps("name"),
+      sorter: (a, b) => a.name.localeCompare(b.name),
       width: "15%",
       sortDirections: ["descend", "ascend"],
     },
     {
       title: "Email",
-      dataIndex: "account",
+      dataIndex: "email",
       key: "email",
-      ...getColumnSearchProps("account"),
-      sorter: (a, b) =>
-        a.account?.email.localeCompare(b.account?.email || "") || 0,
-      render: (value: IAccount) => {
-        return <p>{value.email}</p>;
-      },
+      ...getColumnSearchProps("email"),
+      sorter: (a, b) => a.email.localeCompare(b.email),
       width: "25%",
       sortDirections: ["descend", "ascend"],
     },
@@ -252,20 +267,11 @@ function Page({}: Props) {
     },
     {
       title: "Roles",
-      dataIndex: "Roles",
+      dataIndex: "roles",
       key: "roles",
       width: "15%",
-      ...getColumnSearchProps("Roles"),
+      ...getColumnSearchProps("roles"),
       sortDirections: ["descend", "ascend"],
-      render: (value: any) => (
-        <p>
-          {value
-            .map((role: IRole) => {
-              return role.roleName;
-            })
-            .join(", ")}
-        </p>
-      ),
     },
     {
       title: "Gender",
