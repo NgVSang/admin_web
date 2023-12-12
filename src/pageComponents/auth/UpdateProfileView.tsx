@@ -9,21 +9,22 @@ import * as authApi from "@/services/api/auth.api";
 import { AppDispatch } from "@/store/store";
 import toast from "react-hot-toast";
 import instance from "@/services/axios";
+import { authSelector } from "@/reducer";
 
 const UpdateProfileView: React.FC = () => {
   // Form State
   const closeModal = useCloseModal();
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const { userInfo } = useSelector((state: any) => state.auth);
+  const { user } = useSelector(authSelector);
 
   const initValue = useMemo(() => {
     return {
-      name: userInfo?.name,
-      email: userInfo?.email,
-      phoneNumber: userInfo?.phoneNumber,
+      name: user?.account?.userName,
+      email: user?.account?.email,
+      phoneNumber: user?.phone,
     };
-  }, [userInfo]);
+  }, [user]);
 
   const clickUpdate = useCallback(async (form: IFormData) => {
     try {

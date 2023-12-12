@@ -1,7 +1,7 @@
 import {
   useCloseModal,
   useModalCurrentOpen,
-  useModalIsOpen
+  useModalIsOpen,
 } from "@/hooks/application.hooks";
 import { LoginView } from "@/pageComponents/auth";
 import { ApplicationModal } from "@/reducer/app.reducer";
@@ -102,12 +102,10 @@ const Modal: FC<ModalProps> = () => {
     <Dialog
       open={isOpen}
       disableScrollLock={true}
-      style={
-        {
-          // width:'80%'
-          zIndex:20
-        }
-      }
+      style={{
+        // width:'80%'
+        zIndex: 20,
+      }}
     >
       <div className={s.wrapper}>
         <div className={s.modal} role="dialog" ref={ref}>

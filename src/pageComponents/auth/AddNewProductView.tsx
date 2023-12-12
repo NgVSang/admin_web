@@ -16,23 +16,24 @@ const AddNewProductView: React.FC = () => {
 
   const handleCreateUser = useCallback(async (formData: IFormData) => {
     try {
-      const data = {
-        name: formData.name,
-        password: formData.password,
-        email: formData.email,
-        gender: formData.gender,
-        phoneNumber: formData.phoneNumber,
-        baseSalary:
-          formData.baseSalary && formData.baseSalary != ""
-            ? parseInt(formData.baseSalary)
-            : 3500000,
-      };
-      await createUser(data);
-      toast.success("Success!");
-      closeModal();
-      setTimeout(() => {
-        router.reload();
-      }, 1000);
+      console.log(formData.color[0]);
+      // const data = {
+      //   name: formData.name,
+      //   password: formData.password,
+      //   email: formData.email,
+      //   gender: formData.gender,
+      //   phoneNumber: formData.phoneNumber,
+      //   baseSalary:
+      //     formData.baseSalary && formData.baseSalary != ""
+      //       ? parseInt(formData.baseSalary)
+      //       : 3500000,
+      // };
+      // await createUser(data);
+      // toast.success("Success!");
+      // closeModal();
+      // setTimeout(() => {
+      //   router.reload();
+      // }, 1000);
     } catch (err: any) {
       toast.error(err.message);
     }

@@ -26,6 +26,12 @@ export const addProductStructure: FormStructure = {
       label: "Color",
       placeholder: "Color",
       isFullWidth: true,
+      options: [
+        { value: "gold" },
+        { value: "black" },
+        { value: "green" },
+        { value: "blue" },
+      ],
     },
     // {
     //   type: "dropdown-multi",

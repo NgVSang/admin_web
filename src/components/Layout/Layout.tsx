@@ -8,7 +8,7 @@ import {
   MenuUnfoldOutlined,
   UploadOutlined,
   UsergroupDeleteOutlined,
-  UserOutlined
+  UserOutlined,
 } from "@ant-design/icons";
 import { Dropdown, Layout, Menu, MenuProps, theme } from "antd";
 import Link from "next/link";
@@ -17,11 +17,12 @@ import React, { FC, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import "./Layout.css";
 import { LayoutPageProps } from "./Layout.types";
+import { authSelector } from "@/reducer";
 
 const { Header, Sider, Content } = Layout;
 const PageLayout: FC<LayoutPageProps> = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
-  const { userInfo } = useSelector((state: any) => state.auth);
+  const { user } = useSelector(authSelector);
   const openChangePassword = useToggleModal(
     ApplicationModal.CHANGE_PASSWORD_VIEW
   );
@@ -180,7 +181,7 @@ const PageLayout: FC<LayoutPageProps> = ({ children }) => {
                   fontWeight: 500,
                 }}
               >
-                {userInfo?.name}
+                {user?.account?.userName}
               </p>
               <div className="w-[40px] h-[40px] overflow-hidden rounded-[40px]">
                 {/* <Image 

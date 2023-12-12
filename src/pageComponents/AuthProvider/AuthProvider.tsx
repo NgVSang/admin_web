@@ -1,22 +1,23 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import { authSelector } from "@/reducer";
+import React from "react";
+import { useSelector } from "react-redux";
 
-const AuthContext = React.createContext(null)
-const { Provider } = AuthContext
+const AuthContext = React.createContext(null);
+const { Provider } = AuthContext;
 
 interface Props {
-  children?: JSX.Element
+  children?: JSX.Element;
 }
 
 const AuthProvider = ({ children }: Props) => {
-  const { userInfo } = useSelector((state: any) => state.auth)
+  const { user } = useSelector(authSelector);
 
   // checks if the user is authenticated or not
   const isUserAuthenticated = () => {
-    if (!userInfo) {
-      return false
+    if (!user) {
+      return false;
     }
-  }
+  };
 
   return (
     <Provider
@@ -27,7 +28,7 @@ const AuthProvider = ({ children }: Props) => {
     >
       {children}
     </Provider>
-  )
-}
+  );
+};
 
-export { AuthContext, AuthProvider }
+export { AuthContext, AuthProvider };

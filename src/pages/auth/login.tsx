@@ -33,6 +33,8 @@ function Page({}: Props) {
         setHeaderConfigAxios(response.data.token);
         localStorage.setItem("token", response.data.token);
         // const user = await authApi.getProfile();
+        console.log(response.data.user);
+
         dispatch(setUser(response.data.user));
         router.push("/dashboard");
       } else {

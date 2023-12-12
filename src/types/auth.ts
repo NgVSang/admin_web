@@ -21,9 +21,19 @@ export interface IAccount {
   email: string;
 }
 
+export interface IPermission {
+  _id: string;
+  title: string;
+}
+
 export interface IRole {
   _id: string;
   roleName: string;
+  IDPermission?: IPermission[];
+  roleDescription?: string;
+  deleted?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface IUser {

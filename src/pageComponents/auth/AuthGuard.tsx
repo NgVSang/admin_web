@@ -1,27 +1,26 @@
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-import Home from '@/app/page'
-import { useSelector } from 'react-redux'
+import Home from "@/app/page";
+import { useSelector } from "react-redux";
+import { authSelector } from "@/reducer";
 // import { useToggleModal } from 'hooks/application.hooks'
 // import { ApplicationModal } from 'reducers/app.reducer'
 
 export function AuthGuard({ children }: { children: JSX.Element }) {
-  const router = useRouter()
+  const router = useRouter();
 
-  const { userInfo } = useSelector((state: any) => state.auth)
-  // const openLoginView = useToggleModal(ApplicationModal.LOGIN_VIEW)
+  const { user } = useSelector(authSelector);
 
   useEffect(() => {
-    if (!userInfo) {
-      router.push('/auth/login')
-      // openLoginView()
+    if (!user) {
+      router.push("/auth/login");
     }
-  }, [userInfo])
+  }, [user]);
 
   // if auth initialized with a valid user show protected page
-  if (userInfo) {
-    return <>{children}</>
+  if (user) {
+    return <>{children}</>;
   }
 
   /* otherwise don't return anything, will do a redirect from useEffect */
@@ -29,5 +28,5 @@ export function AuthGuard({ children }: { children: JSX.Element }) {
     <>
       <Home />
     </>
-  )
+  );
 }

@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
-  useState
+  useState,
 } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -16,7 +16,7 @@ import {
   Autocomplete,
   Checkbox,
   FormControlLabel,
-  TextField
+  TextField,
 } from "@mui/material";
 import FormHelperStyled from "./FormHelper.module.css";
 // import ValidateErrorIcon from '@public/assets/validate.svg'
@@ -25,6 +25,7 @@ import _ from "lodash";
 import { CustomSelect } from "@/components/molecules/CustomSelect";
 import { FileUpload } from "@/components/molecules/FileUpload";
 import { groupItem } from "@/utils/splitArr";
+import { Select, Tag } from "antd";
 
 const FormHelper: React.FC<FormHelperProps> = ({
   formStructure,
@@ -315,7 +316,47 @@ const FormHelper: React.FC<FormHelperProps> = ({
 
         switch (component.type) {
           case "dropdown-multi":
-            return <CustomSelect />;
+            return (
+              <>
+                <label>{component.label}</label>
+                <Select
+                  mode="multiple"
+                  tagRender={(props) => {
+                    const { label, value, closable, onClose } = props;
+                    const onPreventMouseDown = (
+                      event: React.MouseEvent<HTMLSpanElement>
+                    ) => {
+                      event.preventDefault();
+                      event.stopPropagation();
+                    };
+                    return (
+                      <Tag
+                        color={value}
+                        onMouseDown={onPreventMouseDown}
+                        closable={closable}
+                        onClose={onClose}
+                        style={{
+                          marginRight: 3,
+                          display: "flex",
+                          alignItems: "center",
+                          minHeight: 32,
+                          fontSize: 14,
+                        }}
+                      >
+                        {label}
+                      </Tag>
+                    );
+                  }}
+                  labelInValue
+                  value={formData?.[component.name]}
+                  style={{ width: "100%" }}
+                  onChange={(value) => {
+                    setValue(component.name, value);
+                  }}
+                  options={component.options || []}
+                />
+              </>
+            );
           case "number":
             return (
               <TextField

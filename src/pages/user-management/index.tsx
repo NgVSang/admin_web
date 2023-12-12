@@ -6,7 +6,7 @@ import { getListUser } from "@/services/api/user.api";
 import { IRole, IUser } from "@/types";
 import {
   EditOutlined,
-  FolderAddOutlined,
+  UsergroupAddOutlined,
   ScanOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
@@ -294,9 +294,9 @@ function Page({}: Props) {
               openUpdateUser(record);
             }}
           />
-          <FolderAddOutlined
+          <UsergroupAddOutlined
             className="cursor-pointer"
-            title="Add image trainning for user"
+            title="Edit user role"
             onClick={() => {
               openAddImageTraining(record._id);
             }}
