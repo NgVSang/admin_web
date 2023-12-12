@@ -2,26 +2,28 @@ import style from "@/assets/css/user-management.module.css";
 import Layout from "@/components/Layout";
 import { useToggleModal } from "@/hooks/application.hooks";
 import { ApplicationModal } from "@/reducer/app.reducer";
-import { getListUser } from "@/services/api/user.api";
-import { IRole, IUser } from "@/types";
+import { getListCategory, getListProduct } from "@/services/api/product.api";
+import { SearchOutlined } from "@ant-design/icons";
 import {
-  EditOutlined,
-  FolderAddOutlined,
-  ScanOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
-import type { InputRef } from "antd";
-import { Button, Input, Space, Table, TablePaginationConfig } from "antd";
+  Button,
+  Input,
+  InputRef,
+  MenuProps,
+  Space,
+  Table,
+  TablePaginationConfig,
+} from "antd";
 import type { ColumnsType, ColumnType } from "antd/es/table";
 import type {
   FilterConfirmProps,
   FilterValue,
   SorterResult,
 } from "antd/es/table/interface";
-import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import dayjs from "dayjs";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import toast from "react-hot-toast";
+// import {getListRequest} from "@/services/api/request.apt";
 
 interface Props {}
 
@@ -33,78 +35,93 @@ interface TableParams {
 }
 
 interface DataType {
-  _id: number;
-  name: string;
-  email: string;
-  roles: string;
-  gender: boolean;
+  _id: string;
+  type: string;
+  IDSupplier: {
+    _id: string;
+    companyName: string;
+    description: string;
+    contactEmail: string;
+    contactPhone: string;
+    address: string;
+    logoImage: string;
+  };
+  IDCategory: ({ _id: string; CategoryName: string } | string)[];
+  nameProduct: string;
+  pictureLinks: Array<string>;
+  description: string;
+  color: Array<string>;
+  size: Array<string>;
+  price: number;
+  quantity: number;
   deleted: boolean;
   createdAt: string;
   updatedAt: string;
   __v: number;
-  Address: string;
-  dayOfBirth: string;
-  firstName: string;
-  isActive: "ACTIVE";
-  lastName: string;
-  phone: string | number;
-  profilePicture: string;
+  rating: number;
 }
 
 type DataIndex = keyof DataType;
-
-const getRandomuserParams = (params: TableParams) => ({
-  results: params.pagination?.pageSize,
-  page: params.pagination?.current,
-  ...params,
-});
-
+interface TableParams {
+  pagination?: TablePaginationConfig;
+  sortField?: string;
+  sortOrder?: string;
+  filters?: Record<string, FilterValue>;
+}
 function Page({}: Props) {
-  const openAddNewUser = useToggleModal(ApplicationModal.ADD_USER_VIEW);
-  const openAddUserImages = useToggleModal(
-    ApplicationModal.ADD_USER_IMAGES_TRAINING
-  );
-  const openUpdateUserView = useToggleModal(ApplicationModal.UPDATE_USER_VIEW);
-  // const openTrainingFaceView = useToggleModal(ApplicationModal.TRAINING_FACE);
+  const openAddNewProduct = useToggleModal(ApplicationModal.ADD_PRODUCT_VIEW);
+
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
-  const [data, setData] = useState<DataType[]>();
   const searchInput = useRef<InputRef>(null);
+  const [data, setData] = useState<DataType[]>();
+  const [month, setMonth] = useState<number>(new Date().getMonth() + 1);
+  const [year, setYear] = useState<number>(new Date().getFullYear());
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
-      pageSize: 10000,
-      total: 10000,
+      pageSize: 10,
+      total: 100,
     },
   });
 
-  const openAddImageTraining = (id: string) => {
+  const handleUpate = async (id: string) => {
     localStorage.setItem("userId", id);
-    openAddUserImages();
+    localStorage.setItem(
+      "date",
+      dayjs(new Date(year, month - 1)).format("YYYY-MM")
+    );
+    // openUpdateSalary();
   };
 
-  // const openTrainingFace = (id: string) => {
-  //   localStorage.setItem("userId", id);
-  //   openTrainingFaceView();
-  // };
-  const openUpdateUser = (user: any) => {
-    localStorage.setItem("user", JSON.stringify(user));
-    openUpdateUserView();
-  };
+  // const getData = async (month: number, year: number) => {
+  //   await getListUserWorking(dayjs(new Date(year,month - 1)).format("YYYY-MM"))
+  //   .then((res: any)=>{
+  //     setData(res.data.result)
+  //     setTableParams({
+  //       ...tableParams,
+  //       pagination: {
+  //         ...tableParams.pagination,
+  //         total: res.data.totalItems,
+  //         // total: 100,
+  //       },
+  //     })
+  //   })
+  //   .catch((error: any)=>{
+  //     toast.error(error.message)
+  //   })
+  // }
 
   const getData = async () => {
-    await getListUser()
+    await Promise.all([getListProduct(), getListCategory()])
       .then((res: any) => {
-        const data = res.data.map((user: IUser) => {
-          return {
-            ...user,
-            roles: user.Roles.map((role: IRole) => {
-              return role.roleName;
-            }).join(", "),
-            name: `${user.firstName} ${user.lastName}`,
-            email: user.account?.email || "",
-          };
-        });
+        const data = res[0].data;
+        // .map((item: any) => item.product)
+        // .map((product: IProduct) => {
+        //   return {
+        //     product,
+        //   };
+        // });
         setData(data);
       })
       .catch((error: any) => {
@@ -115,6 +132,7 @@ function Page({}: Props) {
   useEffect(() => {
     getData();
   }, []);
+  console.log(data);
 
   const handleTableChange = (
     pagination: TablePaginationConfig,
@@ -218,9 +236,9 @@ function Page({}: Props) {
     ),
     onFilter: (value, record) =>
       record[dataIndex]
-        ?.toString()
+        .toString()
         .toLowerCase()
-        .includes((value as string).toLowerCase()) || false,
+        .includes((value as string).toLowerCase()),
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.current?.select(), 100);
@@ -241,92 +259,118 @@ function Page({}: Props) {
   const columns: ColumnsType<DataType> = [
     {
       title: "Name",
-      dataIndex: "name",
-      key: "name",
-      ...getColumnSearchProps("name"),
-      sorter: (a, b) => a.name.localeCompare(b.name),
-      width: "15%",
-      sortDirections: ["descend", "ascend"],
+      dataIndex: "nameProduct",
+      key: "nameProduct",
+      width: "30%",
+      ...getColumnSearchProps("nameProduct"),
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-      ...getColumnSearchProps("email"),
-      sorter: (a, b) => a.email.localeCompare(b.email),
-      width: "25%",
-      sortDirections: ["descend", "ascend"],
-    },
-    {
-      title: "Phone Number",
-      dataIndex: "phone",
-      key: "phoneNumber",
-      ...getColumnSearchProps("phone"),
+      title: "Quantity",
+      dataIndex: "quantity",
+      key: "quantity",
+      ...getColumnSearchProps("quantity"),
+      sorter: (a, b) => a.quantity - b.quantity,
       width: "20%",
-      render: (value: any) => <Link href={"Tel:" + value}>{value}</Link>,
-    },
-    {
-      title: "Roles",
-      dataIndex: "roles",
-      key: "roles",
-      width: "15%",
-      ...getColumnSearchProps("roles"),
       sortDirections: ["descend", "ascend"],
     },
     {
-      title: "Gender",
-      dataIndex: "gender",
-      key: "gender",
-      ...getColumnSearchProps("gender"),
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+      ...getColumnSearchProps("price"),
+      sorter: (a, b) => a.price - b.price,
+      width: "20%",
       sortDirections: ["descend", "ascend"],
-      render: (value: any) => <p>{value ? "Male" : "Female"}</p>,
     },
     {
-      title: "Action",
-      dataIndex: "",
-      key: "",
-      render: (value: any, record: any, index: number) => (
-        <div className="flex flex-row gap-3">
-          <EditOutlined
-            className="cursor-pointer"
-            title="Edit user information"
-            onClick={() => {
-              openUpdateUser(record);
-            }}
-          />
-          <FolderAddOutlined
-            className="cursor-pointer"
-            title="Add image trainning for user"
-            onClick={() => {
-              openAddImageTraining(record._id);
-            }}
-          />
-          <ScanOutlined
-            className="cursor-pointer"
-            title="Training face "
-            onClick={() => {}}
-          />
-        </div>
-      ),
+      title: "Rating",
+      dataIndex: "rating",
+      key: "rating",
+      ...getColumnSearchProps("rating"),
+      sorter: (a, b) => a.rating - b.rating,
+      width: "20%",
+      sortDirections: ["descend", "ascend"],
+    },
+    {
+      title: "Type",
+      dataIndex: "type",
+      key: "type",
+      ...getColumnSearchProps("type"),
+      width: "20%",
+      sortDirections: ["descend", "ascend"],
     },
   ];
 
+  const monthOption: MenuProps["items"] = useMemo(() => {
+    const monthOption: MenuProps["items"] = [];
+    for (let i = 1; i <= 12; i++) {
+      const month = {
+        key: i.toString(),
+        label: (
+          <div
+            onClick={() => {
+              setMonth(i);
+            }}
+          >
+            <span>Month {i}</span>
+          </div>
+        ),
+      };
+      monthOption.push(month);
+    }
+    return monthOption;
+  }, []);
+
+  const yearOption: MenuProps["items"] = useMemo(() => {
+    const yearOption: MenuProps["items"] = [];
+    for (let i = new Date().getFullYear(); i >= 2020; i--) {
+      const year = {
+        key: i.toString(),
+        label: (
+          <div
+            onClick={() => {
+              setYear(i);
+            }}
+          >
+            <span>{i}</span>
+          </div>
+        ),
+      };
+      yearOption.push(year);
+    }
+    return yearOption;
+  }, []);
+
   return (
-    <div className="user_management_wrapper">
-      <div className="user_management_header">
-        <p className="user_management_title">User Management</p>
-        <Button type="default" size="large" onClick={openAddNewUser}>
-          Create user
-        </Button>
+    <div className={style.user_management_wrapper}>
+      {/* <p className={style.user_management_title}>Salary Management</p> */}
+      <div className="flex justify-between	">
+        <div className="flex gap-10 items-center">
+          <p
+            style={{
+              display: "flex",
+              marginBottom: "20px",
+              fontFamily: "sans-serif",
+              fontSize: "25px",
+              fontWeight: 600,
+            }}
+          >
+            Product Management
+          </p>
+          <span className="mb-[20px] text-[15px]">
+            {month}/{year}
+          </span>
+        </div>
+        <div className="flex gap-10">
+          <Button type="default" size="large" onClick={openAddNewProduct}>
+            Create Product
+          </Button>
+        </div>
       </div>
       <Table
         columns={columns}
         dataSource={data}
-        rowKey={(record) => record._id}
         className={style.user_management_table}
-        pagination={tableParams.pagination}
-        //@ts-ignore
-        onChange={handleTableChange}
       />
     </div>
   );

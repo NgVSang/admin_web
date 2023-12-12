@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 export enum ApplicationModal {
   MENU,
@@ -41,6 +41,7 @@ export enum ApplicationModal {
   ADD_USER_VIEW,
   ADD_USER_IMAGES_TRAINING,
   OTP_VIEW,
+  ADD_PRODUCT_VIEW,
 }
 
 export enum ApplicationSideBar {
@@ -52,11 +53,11 @@ export enum ApplicationSideBar {
 }
 
 export interface ApplicationState {
-  readonly openModal: ApplicationModal | null
-  data: any
-  openSideBar: ApplicationSideBar | null
-  filter: any
-  config: any
+  readonly openModal: ApplicationModal | null;
+  data: any;
+  openSideBar: ApplicationSideBar | null;
+  filter: any;
+  config: any;
 }
 
 const initialState: ApplicationState = {
@@ -68,32 +69,32 @@ const initialState: ApplicationState = {
     fee: 0,
     margin: 0,
   },
-}
+};
 
 const applicationSlice = createSlice({
-  name: 'application',
+  name: "application",
   initialState,
   reducers: {
     setOpenModal(state, action) {
-      state.openModal = action.payload
+      state.openModal = action.payload;
     },
     setToggleSidebar(state, action) {
-      state.openSideBar = action.payload
+      state.openSideBar = action.payload;
     },
     setData(state, action) {
-      state.data = action.payload
+      state.data = action.payload;
     },
     setFilter(state, action) {
-      state.filter[action.payload.key] = action.payload.value
+      state.filter[action.payload.key] = action.payload.value;
     },
     setConfig(state, action) {
-      state.config[action.payload.key] = Number(action.payload.value)
+      state.config[action.payload.key] = Number(action.payload.value);
     },
     clearFilter(state) {
-      state.filter = {}
+      state.filter = {};
     },
   },
-})
+});
 
 export const {
   setOpenModal,
@@ -102,6 +103,6 @@ export const {
   setFilter,
   clearFilter,
   setConfig,
-} = applicationSlice.actions
+} = applicationSlice.actions;
 
-export default applicationSlice.reducer
+export default applicationSlice.reducer;

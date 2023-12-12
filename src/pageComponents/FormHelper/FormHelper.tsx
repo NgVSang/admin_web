@@ -1,29 +1,30 @@
+import { FormComponent } from "@/types/form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import React, {
   ChangeEvent,
   useCallback,
   useEffect,
   useMemo,
-  useState,
-} from 'react'
-import { FormHelperProps, IFormData, IParam } from './FormHelper.types'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
-import { FormComponent } from '@/types/form'
+  useState
+} from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { FormHelperProps, IFormData, IParam } from "./FormHelper.types";
 // import { FormHelperStyled } from './FormHelper.styled'
-import FormHelperStyled from './FormHelper.module.css'
-import { Button } from '@/components/atoms/Button'
+import { Button } from "@/components/atoms/Button";
 import {
   Autocomplete,
   Checkbox,
   FormControlLabel,
-  TextField,
-} from '@mui/material'
+  TextField
+} from "@mui/material";
+import FormHelperStyled from "./FormHelper.module.css";
 // import ValidateErrorIcon from '@public/assets/validate.svg'
-import _ from 'lodash'
+import _ from "lodash";
 // import 'react-phone-input-2/lib/bootstrap.css'
-import { groupItem } from '@/utils/splitArr'
-import {FileUpload} from '@/components/molecules/FileUpload'
+import { CustomSelect } from "@/components/molecules/CustomSelect";
+import { FileUpload } from "@/components/molecules/FileUpload";
+import { groupItem } from "@/utils/splitArr";
 
 const FormHelper: React.FC<FormHelperProps> = ({
   formStructure,
@@ -35,64 +36,64 @@ const FormHelper: React.FC<FormHelperProps> = ({
   validationFalseMsg,
   isMultipleFile,
   initValues,
-  formDirection = 'vertical',
+  formDirection = "vertical",
   onAddFile,
   onRemoveFile,
   errorText,
 }) => {
-  const jsonData = initValues
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [formData, setFormData] = useState<IFormData>({})
+  const jsonData = initValues;
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [formData, setFormData] = useState<IFormData>({});
 
   useEffect(() => {
     const res =
-      typeof jsonData === 'object'
+      typeof jsonData === "object"
         ? formStructure.components.reduce((data, component) => {
-            let componentData = null
+            let componentData = null;
             if (Array.isArray(_.get(jsonData, component.name))) {
               componentData = _.get(jsonData, component.name).map(
                 (item: any) => ({
                   value: item.id,
                   label: item.name,
                 })
-              )
-            } else if (component.type === 'file') {
-              componentData = _.get(jsonData, component.name)
-            } else if (typeof _.get(jsonData, component.name) === 'object') {
-              componentData = (_.get(jsonData, component.name) as any)?.id
+              );
+            } else if (component.type === "file") {
+              componentData = _.get(jsonData, component.name);
+            } else if (typeof _.get(jsonData, component.name) === "object") {
+              componentData = (_.get(jsonData, component.name) as any)?.id;
             } else {
-              componentData = _.get(jsonData, component.name)
+              componentData = _.get(jsonData, component.name);
             }
 
             let res = {
               ...data,
               [component.name]: componentData,
-            }
+            };
 
             if (!!component.subName) {
               res = {
                 ...res,
                 [component.subName]: _.get(jsonData, component.subName),
-              }
+              };
             }
 
-            return res
+            return res;
           }, {})
-        : {}
+        : {};
 
-    setFormData({ ...formData, ...res })
-  }, [jsonData])
+    setFormData({ ...formData, ...res });
+  }, [jsonData]);
 
   const checkboxItems = formStructure.components.filter(
-    (component) => component.type === 'switch'
-  )
+    (component) => component.type === "switch"
+  );
 
   useEffect(() => {
     checkboxItems.forEach((item) => {
-      const value = jsonData?.[item.name] ?? false
-      setFormData((formData) => ({ ...formData, [item.name]: value }))
-    })
-  }, [])
+      const value = jsonData?.[item.name] ?? false;
+      setFormData((formData) => ({ ...formData, [item.name]: value }));
+    });
+  }, []);
 
   const validationSchema = useMemo(
     () =>
@@ -104,9 +105,9 @@ const FormHelper: React.FC<FormHelperProps> = ({
         {}
       ),
     []
-  )
+  );
 
-  const yupValidationSchema = useMemo(() => yup.object(validationSchema), [])
+  const yupValidationSchema = useMemo(() => yup.object(validationSchema), []);
 
   const {
     watch,
@@ -119,153 +120,150 @@ const FormHelper: React.FC<FormHelperProps> = ({
     reset,
     control,
   } = useForm({
-    mode: 'onBlur',
+    mode: "onBlur",
     defaultValues: formData,
     shouldUnregister: true,
     resolver: yupResolver(yupValidationSchema),
-  })
+  });
 
   useEffect(() => {
     if (formData) {
-      reset(formData)
+      reset(formData);
     }
-  }, [formData])
+  }, [formData]);
 
   const onFileUploadChange = async (
     component: FormComponent,
     e: ChangeEvent<HTMLInputElement>
   ) => {
-    const { target } = e
+    const { target } = e;
     try {
       const file = target.files?.[0] || null;
-      setValue(
-        component.name,
-        file
-      )
+      setValue(component.name, file);
     } catch (e) {}
-  }
+  };
 
   const updateFormData = useCallback((param: IParam) => {
     setFormData((formData: IFormData) => ({
       ...formData,
       [param.key]: param.value,
-    }))
-  }, [])
+    }));
+  }, []);
 
   const onSubmitHandler = useCallback(async () => {
-    const data = {}
+    const data = {};
 
     for (const key in formData) {
-      if (key.includes('-')) {
-        const [parent, child] = key.split('-')
+      if (key.includes("-")) {
+        const [parent, child] = key.split("-");
         // @ts-ignore
         data[parent] = {
           // @ts-ignore
           ...data[parent],
           [child]: formData[key],
-        }
+        };
       } else {
         // @ts-ignore
-        data[key] = formData[key]
+        data[key] = formData[key];
       }
     }
 
     if (onSubmit) {
       try {
-        setIsLoading(true)
-        await onSubmit(data)
-        setIsLoading(false)
+        setIsLoading(true);
+        await onSubmit(data);
+        setIsLoading(false);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     }
-  }, [formData, onSubmit])
+  }, [formData, onSubmit]);
 
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
-      let _value = value?.[name as string]
+      let _value = value?.[name as string];
 
-      if (name?.includes('.')) {
-        const [parent, child] = name.split('.')
+      if (name?.includes(".")) {
+        const [parent, child] = name.split(".");
         // @ts-ignore
-        _value = value?.[parent]?.[child]
+        _value = value?.[parent]?.[child];
       }
 
       const param = {
         key: name,
         value: _value,
-      }
-      updateFormData(param as IParam)
-    })
-    return () => subscription.unsubscribe()
-  }, [watch, formData])
+      };
+      updateFormData(param as IParam);
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, formData]);
 
   const renderForm = useCallback(
     (components: FormComponent[]) => {
-      const arr = []
+      const arr = [];
       for (let i = 0; i < components.length; ++i) {
-        let j = i + 1
+        let j = i + 1;
         while (
           j < components.length &&
           components[i].isFullWidth === components[j].isFullWidth
         ) {
-          j++
+          j++;
         }
-        arr.push(components.slice(i, j))
-        i = j - 1
+        arr.push(components.slice(i, j));
+        i = j - 1;
       }
 
       return arr.map((item: FormComponent[], index: number) => {
-        const isFullWidth = item[0].isFullWidth
+        const isFullWidth = item[0].isFullWidth;
 
         if (isFullWidth) {
           return (
             <div className={FormHelperStyled.fullWidthComponent} key={index}>
               {renderFormComponent(item)}
             </div>
-          )
+          );
         }
 
         return (
           <div className={FormHelperStyled.halfWidthComponent} key={index}>
             {renderFormComponent(item)}
           </div>
-        )
-      })
+        );
+      });
     },
     [errors, formData, control, formStructure.components]
-  )
+  );
 
   const onCheckboxCheckedHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setValue(e.target.name, e.target.checked)
+      setValue(e.target.name, e.target.checked);
     },
     []
-  )
+  );
 
   const onRemoveFileHandler = useCallback(
     (fileName: string) => {
-      const file = (formData?.[fileName] as FileList)[0]
+      const file = (formData?.[fileName] as FileList)[0];
       if (onRemoveFile) {
-        onRemoveFile(file)
+        onRemoveFile(file);
       }
-      setValue(fileName, null)
+      setValue(fileName, null);
     },
     [formData]
-  )
+  );
 
   const renderTitle = useCallback((component: FormComponent) => {
     const titleStyle = {
-      fontSize: '1.5rem',
+      fontSize: "1.5rem",
       fontWeight: 700,
-    }
+    };
 
-    const subTitle = component?.subTitle
+    const subTitle = component?.subTitle;
 
     return (
       <div
         className={`w-full flex flex-row ${
-          !!subTitle ? 'justify-between' : 'justify-center'
+          !!subTitle ? "justify-between" : "justify-center"
         }`}
       >
         <div
@@ -278,7 +276,7 @@ const FormHelper: React.FC<FormHelperProps> = ({
           <button
             type="button"
             className="text-blue100 h-auto text-sm self-auto text-left font-normal leading-[150%] underline p-0"
-            style={{ textDecorationLine: 'underline' }}
+            style={{ textDecorationLine: "underline" }}
             onClick={subTitle?.onClick}
           >
             {subTitle.label}
@@ -287,36 +285,38 @@ const FormHelper: React.FC<FormHelperProps> = ({
           <></>
         )}
       </div>
-    )
-  }, [])
+    );
+  }, []);
 
   const renderFormComponent = useCallback(
-    (components: FormComponent[], direction?: 'horizontal' | 'vertical') => {
+    (components: FormComponent[], direction?: "horizontal" | "vertical") => {
       return components.map((component: FormComponent) => {
-        let isError = false
-        let errMsg = ''
-        if (component.name.includes('-')) {
-          const [parent, child] = component.name.split('-')
+        let isError = false;
+        let errMsg = "";
+        if (component.name.includes("-")) {
+          const [parent, child] = component.name.split("-");
           // @ts-ignore
-          isError = !!errors?.[parent]?.[child]
+          isError = !!errors?.[parent]?.[child];
           if (isError) {
             // @ts-ignore
-            errMsg = errors?.[parent]?.[child].message
+            errMsg = errors?.[parent]?.[child].message;
           }
         } else {
-          isError = !!errors?.[component.name]
+          isError = !!errors?.[component.name];
           if (isError) {
-            errMsg = errors?.[component.name]?.message?.toString() || ''
+            errMsg = errors?.[component.name]?.message?.toString() || "";
           }
         }
 
-        let ratio
-        if (direction === 'horizontal') {
-          ratio = component?.ratio ?? 1
+        let ratio;
+        if (direction === "horizontal") {
+          ratio = component?.ratio ?? 1;
         }
 
         switch (component.type) {
-          case 'number':
+          case "dropdown-multi":
+            return <CustomSelect />;
+          case "number":
             return (
               <TextField
                 label={component.label}
@@ -338,8 +338,8 @@ const FormHelper: React.FC<FormHelperProps> = ({
                 disabled={component.disabled}
                 {...register(component.name)}
               />
-            )
-          case 'datePicker':
+            );
+          case "datePicker":
             return (
               <TextField
                 label={component.label}
@@ -353,8 +353,8 @@ const FormHelper: React.FC<FormHelperProps> = ({
                 disabled={component.disabled}
                 {...register(component.name)}
               />
-            )
-          case 'submit':
+            );
+          case "submit":
             return (
               <Button
                 variant="slim"
@@ -364,34 +364,32 @@ const FormHelper: React.FC<FormHelperProps> = ({
               >
                 {component.label}
               </Button>
-            )
-          case 'button':
+            );
+          case "button":
             return (
               <Button
                 variant="slim"
                 primary={component.primary}
                 type="button"
                 onClick={() => {
-                  onBtnClick?.[component.name](formData as any)
+                  onBtnClick?.[component.name](formData as any);
                 }}
                 name={component.name}
                 disabled={component.disabled}
                 style={{
-                  background:'transparent',
+                  background: "transparent",
                   border:
-                    component.outline !== false
-                      ? '1px solid #111827'
-                      : '',
-                  color: '#111827',
-                  paddingLeft: direction === 'horizontal' ? 0 : '',
-                  paddingRight: direction === 'horizontal' ? 0 : '',
+                    component.outline !== false ? "1px solid #111827" : "",
+                  color: "#111827",
+                  paddingLeft: direction === "horizontal" ? 0 : "",
+                  paddingRight: direction === "horizontal" ? 0 : "",
                   flex: ratio,
                 }}
               >
                 {component.label}
               </Button>
-            )
-          case 'textarea':
+            );
+          case "textarea":
             return (
               <TextField
                 multiline
@@ -419,8 +417,8 @@ const FormHelper: React.FC<FormHelperProps> = ({
                 disabled={component.disabled}
                 {...register(component.name)}
               />
-            )
-          case 'checkbox':
+            );
+          case "checkbox":
             return (
               <FormControlLabel
                 control={
@@ -434,16 +432,16 @@ const FormHelper: React.FC<FormHelperProps> = ({
                 value={!!formData?.[component.name]}
                 {...register(component.name)}
               />
-            )
-          case 'space':
-            return <div className="flex-1"></div>
-          case 'title':
+            );
+          case "space":
+            return <div className="flex-1"></div>;
+          case "title":
             return (
               <div className={FormHelperStyled.titleForm}>
                 {component.label}
               </div>
-            )
-          case 'file':
+            );
+          case "file":
             return (
               <FileUpload
                 component={component}
@@ -454,8 +452,8 @@ const FormHelper: React.FC<FormHelperProps> = ({
                 isError={isError}
                 errMsg={errMsg}
               />
-            )
-          case 'multi-file':
+            );
+          case "multi-file":
             return (
               <FileUpload
                 component={component}
@@ -466,8 +464,8 @@ const FormHelper: React.FC<FormHelperProps> = ({
                 isError={isError}
                 errMsg={errMsg}
               />
-            )
-          case 'autocomplete':
+            );
+          case "autocomplete":
             return (
               <Autocomplete
                 disablePortal
@@ -476,7 +474,9 @@ const FormHelper: React.FC<FormHelperProps> = ({
                 }}
                 filterOptions={(options, { inputValue }) =>
                   options.filter((option) =>
-                    (option.label as string).toLowerCase().includes(inputValue.toLowerCase())
+                    (option.label as string)
+                      .toLowerCase()
+                      .includes(inputValue.toLowerCase())
                   )
                 }
                 options={component.options!}
@@ -486,7 +486,7 @@ const FormHelper: React.FC<FormHelperProps> = ({
                     // @ts-ignore
                     <div
                       key={option.value}
-                      style={{ display: 'flex' }}
+                      style={{ display: "flex" }}
                       {...props}
                     >
                       {!!component?.renderIcon ? (
@@ -496,20 +496,20 @@ const FormHelper: React.FC<FormHelperProps> = ({
                       )}
                       <span>{option.label}</span>
                     </div>
-                  )
+                  );
                 }}
                 value={component.options!.find(
                   (option) => option.value === formData?.[component.name]
                 )}
                 autoHighlight={true}
                 onChange={(e, option) => {
-                  component.onChange(e)
-                  setValue(component.name, option?.value)
+                  component.onChange(e);
+                  setValue(component.name, option?.value);
                 }}
                 renderInput={(params) => {
                   const option = component.options!.find(
                     (option) => option.value === formData?.[component.name]
-                  )
+                  );
                   return (
                     <TextField
                       {...params}
@@ -532,35 +532,35 @@ const FormHelper: React.FC<FormHelperProps> = ({
                       inputProps={{
                         ...params.inputProps,
                         value: option?.label,
-                        onChange: (e: React.ChangeEvent<HTMLInputElement>)=>{
-                          const {onChange} = params.inputProps
-                          component.onChange(e)
+                        onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                          const { onChange } = params.inputProps;
+                          component.onChange(e);
                           if (onChange) {
-                            onChange(e!)
+                            onChange(e!);
                           }
-                        }
+                        },
                       }}
                     />
-                  )
+                  );
                 }}
               />
-            )
-          case 'description':
+            );
+          case "description":
             return (
               <div
                 className="text-dark60 h-auto text-xs self-auto text-left font-normal leading-[150%] no-underline"
                 dangerouslySetInnerHTML={{ __html: component.label! }}
               ></div>
-            )
-          case 'element':
-            return <>{component.customComponent}</>
-          case 'formTitle':
-            return renderTitle(component)
+            );
+          case "element":
+            return <>{component.customComponent}</>;
+          case "formTitle":
+            return renderTitle(component);
           default:
-            let _value = formData?.[component.name]
+            let _value = formData?.[component.name];
 
-            if (typeof _value === 'undefined' || _value === 'undefined') {
-              _value = ''
+            if (typeof _value === "undefined" || _value === "undefined") {
+              _value = "";
             }
 
             return (
@@ -575,52 +575,61 @@ const FormHelper: React.FC<FormHelperProps> = ({
                 error={isError}
                 helperText={isError ? errMsg : component?.description}
                 InputProps={{
-                  endAdornment: isError ? 
-                  // <ValidateErrorIcon /> 
-                  <div>!</div>
-                  : <></>,
+                  endAdornment: isError ? (
+                    // <ValidateErrorIcon />
+                    <div>!</div>
+                  ) : (
+                    <></>
+                  ),
                 }}
                 sx={{
-                  '& .MuiInputBase-input.Mui-disabled': {
-                    WebkitTextFillColor: '#000000',
+                  "& .MuiInputBase-input.Mui-disabled": {
+                    WebkitTextFillColor: "#000000",
                   },
                   flex: ratio,
                 }}
-                className={component.isFullWidth ? FormHelperStyled.w_full : FormHelperStyled.flex}
+                className={
+                  component.isFullWidth
+                    ? FormHelperStyled.w_full
+                    : FormHelperStyled.flex
+                }
                 value={_value}
                 disabled={component.disabled}
                 {...register(component.name, {
                   onChange: (e) => {
-                    setValue(component.name, e.target.value)
+                    setValue(component.name, e.target.value);
 
-                    onChangeHandler && onChangeHandler[component.name](e)
+                    onChangeHandler && onChangeHandler[component.name](e);
                   },
                 })}
               />
-            )
+            );
         }
-      })
+      });
     },
     [errors, isLoading, formData, control, formStructure.components]
-  )
+  );
 
   const renderGroupForm = useCallback(() => {
-    if (formDirection === 'horizontal') {
+    if (formDirection === "horizontal") {
       return (
-        <div className="flex gap-3 mx-[-16px]" style={{
-          display:'flex',
-          gap: '8px',
-          margin : "-16px 0px"
-        }}>
-          {renderFormComponent(formStructure.components, 'horizontal')}
+        <div
+          className="flex gap-3 mx-[-16px]"
+          style={{
+            display: "flex",
+            gap: "8px",
+            margin: "-16px 0px",
+          }}
+        >
+          {renderFormComponent(formStructure.components, "horizontal")}
         </div>
-      )
+      );
     }
 
-    const formGroup = groupItem(formStructure.components)
+    const formGroup = groupItem(formStructure.components);
 
     return formGroup.map((group: FormComponent[], index: number) => {
-      if (_.every(group, (obj) => _.has(obj, 'group'))) {
+      if (_.every(group, (obj) => _.has(obj, "group"))) {
         return (
           <div
             key={index}
@@ -628,12 +637,12 @@ const FormHelper: React.FC<FormHelperProps> = ({
           >
             {renderForm(group)}
           </div>
-        )
+        );
       } else {
-        return renderForm(group)
+        return renderForm(group);
       }
-    })
-  }, [errors, isLoading, formData, control, formStructure.components])
+    });
+  }, [errors, isLoading, formData, control, formStructure.components]);
 
   return (
     <form
@@ -655,7 +664,7 @@ const FormHelper: React.FC<FormHelperProps> = ({
       )}
       <div className={FormHelperStyled.container}>{renderGroupForm()}</div>
     </form>
-  )
-}
+  );
+};
 
-export default FormHelper
+export default FormHelper;

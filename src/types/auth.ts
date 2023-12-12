@@ -27,7 +27,7 @@ export interface IRole {
 }
 
 export interface IUser {
-  _id: number;
+  _id: string;
   account?: IAccount;
   Roles: IRole[];
   gender: boolean;
