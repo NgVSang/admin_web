@@ -101,7 +101,21 @@ a {
   color: inherit;
   text-decoration: none;
 }
-
+.ant-select-selector{
+  min-height: 56px;
+}
+.ant-select-selection-placeholder {
+  display: flex;
+  font-size: 14px;
+  align-items: center;
+}
+.ant-select-selection-item {
+  margin-right: 3px;
+  display: flex;
+  align-items: center;
+  min-height: 32px;
+  font-size: 14px;
+}
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

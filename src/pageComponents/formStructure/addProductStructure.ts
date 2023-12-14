@@ -1,7 +1,7 @@
 import { FormStructure } from "@/types/form";
 import * as yup from "yup";
-
 export const addProductStructure: FormStructure = {
+  
   title: "Create Product",
   components: [
     {
@@ -13,12 +13,23 @@ export const addProductStructure: FormStructure = {
       validation: yup.string().required().trim(),
     },
     {
-      type: "text",
-      name: "price",
-      label: "Price",
-      placeholder: "Price",
+      type: "dropdown-category",
+      name: "IDCategory",
+      label: "IDCategory",
+      placeholder: "IDCategory",
       isFullWidth: true,
-      validation: yup.number().required().default(100),
+      validation: yup.string().required().trim(),
+    },
+    {
+      type: "dropdown",
+      name: "type",
+      label: "Type",
+      placeholder: "Type",
+      isFullWidth: true,
+      options: [
+        { value: "Analog" },
+        { value: "Digital" },
+      ],
     },
     {
       type: "dropdown-multi",
@@ -33,13 +44,45 @@ export const addProductStructure: FormStructure = {
         { value: "blue" },
       ],
     },
-    // {
-    //   type: "dropdown-multi",
-    //   name: "type",
-    //   label: "Color",
-    //   placeholder: "Color",
-    //   isFullWidth: true,
-    // },
+    {
+      type: "dropdown-multi",
+      name: "size",
+      label: "size",
+      placeholder: "Size",
+      isFullWidth: true,
+      options: [
+        { value: "19cm" },
+        { value: "20cm" },
+        { value: "20.5cm" },
+        { value: "21cm" },
+        { value: "21.5cm" },
+      ],
+    },
+    {
+      type: "text",
+      name: "quantity",
+      label: "Quantity",
+      placeholder: "Quantity",
+      isFullWidth: true,
+      validation: yup.number().required().default(100),
+    },
+
+    {
+      type: "text",
+      name: "price",
+      label: "Price",
+      placeholder: "Price",
+      isFullWidth: true,
+      validation: yup.number().required().default(100),
+    },
+    {
+      type: "textarea",
+      name: "description",
+      label: "Description",
+      placeholder: "Description",
+      isFullWidth: true,
+      validation: yup.string().required().trim(),
+    },
     {
       type: "multi-file",
       name: "image",

@@ -1,8 +1,10 @@
 import style from "@/assets/css/user-management.module.css";
 import Layout from "@/components/Layout";
 import { useToggleModal } from "@/hooks/application.hooks";
+import { getProductListSuccess } from "@/reducer";
 import { ApplicationModal } from "@/reducer/app.reducer";
 import { getListCategory, getListProduct } from "@/services/api/product.api";
+import { RootState } from "@/store";
 import { SearchOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -11,18 +13,19 @@ import {
   MenuProps,
   Space,
   Table,
-  TablePaginationConfig,
+  TablePaginationConfig
 } from "antd";
 import type { ColumnsType, ColumnType } from "antd/es/table";
 import type {
   FilterConfirmProps,
   FilterValue,
-  SorterResult,
+  SorterResult
 } from "antd/es/table/interface";
 import dayjs from "dayjs";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 // import {getListRequest} from "@/services/api/request.apt";
 
 interface Props {}
@@ -70,11 +73,12 @@ interface TableParams {
 }
 function Page({}: Props) {
   const openAddNewProduct = useToggleModal(ApplicationModal.ADD_PRODUCT_VIEW);
-
+  const dispatch = useDispatch();
+  const {productList:data} = useSelector((state:RootState)=>state.product)
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
-  const [data, setData] = useState<DataType[]>();
+  // const [data, setData] = useState<DataType[]>();
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1);
   const [year, setYear] = useState<number>(new Date().getFullYear());
   const [tableParams, setTableParams] = useState<TableParams>({
@@ -115,14 +119,19 @@ function Page({}: Props) {
   const getData = async () => {
     await Promise.all([getListProduct(), getListCategory()])
       .then((res: any) => {
-        const data = res[0].data;
+        dispatch(
+          getProductListSuccess({
+            products: res[0]?.data,
+            categories: res[1]?.data,
+          })
+        );
         // .map((item: any) => item.product)
         // .map((product: IProduct) => {
         //   return {
         //     product,
         //   };
         // });
-        setData(data);
+        // setData(data);
       })
       .catch((error: any) => {
         toast.error(error.message);
@@ -132,8 +141,6 @@ function Page({}: Props) {
   useEffect(() => {
     getData();
   }, []);
-  console.log(data);
-
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue>,
@@ -147,7 +154,7 @@ function Page({}: Props) {
 
     // `dataSource` is useless since `pageSize` changed
     if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-      setData([]);
+      // setData([]);
     }
   };
 

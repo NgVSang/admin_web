@@ -1,5 +1,4 @@
 import { useCloseModal } from "@/hooks/application.hooks";
-import { createUser } from "@/services/api/user.api";
 import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
 import toast from "react-hot-toast";
@@ -16,7 +15,7 @@ const AddNewProductView: React.FC = () => {
 
   const handleCreateUser = useCallback(async (formData: IFormData) => {
     try {
-      console.log(formData.color[0]);
+      console.log(formData);
       // const data = {
       //   name: formData.name,
       //   password: formData.password,
@@ -45,7 +44,7 @@ const AddNewProductView: React.FC = () => {
     }),
     []
   );
-
+    
   return (
     <FormHelper
       formStructure={addProductStructure}

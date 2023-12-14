@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
-  useState,
+  useState
 } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -16,14 +16,15 @@ import {
   Autocomplete,
   Checkbox,
   FormControlLabel,
-  TextField,
+  TextField
 } from "@mui/material";
 import FormHelperStyled from "./FormHelper.module.css";
 // import ValidateErrorIcon from '@public/assets/validate.svg'
 import _ from "lodash";
 // import 'react-phone-input-2/lib/bootstrap.css'
-import { CustomSelect } from "@/components/molecules/CustomSelect";
 import { FileUpload } from "@/components/molecules/FileUpload";
+import store from "@/store/store";
+import { ICategory } from "@/types/product";
 import { groupItem } from "@/utils/splitArr";
 import { Select, Tag } from "antd";
 
@@ -315,10 +316,38 @@ const FormHelper: React.FC<FormHelperProps> = ({
         }
 
         switch (component.type) {
+          case "dropdown-category":
+            return (
+              <Select
+                value={formData?.[component.name]}
+                style={{ width: '100%' }}
+                placeholder="Category"
+                onChange={(value) => {
+                  setValue(component.name, value);
+                }}
+                options={[...store.getState().product.categoryList?.map((item:ICategory)=>({
+                  value: item._id,
+                  label: item.CategoryName
+                }))]}
+                />
+            )
+          case "dropdown":
+            return (
+              <Select
+                value={formData?.[component.name]}
+                style={{ width: '100%' }}
+                placeholder="Type"
+                onChange={(value) => {
+                  setValue(component.name, value);
+                }}
+                options={component.options || []}
+                />
+            )
           case "dropdown-multi":
             return (
-              <>
+              <div>
                 <label>{component.label}</label>
+                { component.name=== "color"?
                 <Select
                   mode="multiple"
                   tagRender={(props) => {
@@ -354,8 +383,19 @@ const FormHelper: React.FC<FormHelperProps> = ({
                     setValue(component.name, value);
                   }}
                   options={component.options || []}
-                />
-              </>
+                /> : 
+                <Select
+                  mode="tags"
+                  value={formData?.[component.name]}
+                  style={{ width: '100%' }}
+                  placeholder="Tags Mode"
+                  onChange={(value) => {
+                    setValue(component.name, value);
+                  }}
+                  options={component.options || []}
+              />
+                }
+              </div>
             );
           case "number":
             return (
