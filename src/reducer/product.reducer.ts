@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   productList: [],
   categoryList: [],
+  supplierList: [],
   productDetailsCurrent: null,
   isLoading: false,
 };
@@ -15,6 +16,7 @@ const productsSlice = createSlice({
     getProductListSuccess: (state, action) => {
       state.productList = action.payload.products;
       state.categoryList = action.payload.categories;
+      state.supplierList = action.payload.suppliers;
       state.isLoading = false;
     },
     getProductDetailsSuccess: (state, action) => {

@@ -27,6 +27,7 @@ import store from "@/store/store";
 import { ICategory } from "@/types/product";
 import { groupItem } from "@/utils/splitArr";
 import { Select, Tag } from "antd";
+import AddImagesView from "../auth/AddImagesView";
 
 const FormHelper: React.FC<FormHelperProps> = ({
   formStructure,
@@ -52,7 +53,9 @@ const FormHelper: React.FC<FormHelperProps> = ({
       typeof jsonData === "object"
         ? formStructure.components.reduce((data, component) => {
             let componentData = null;
-            if (Array.isArray(_.get(jsonData, component.name))) {
+            if(component.name === "pictureLinks") {
+              componentData =  _.get(jsonData, component.name);
+            } else if (Array.isArray(_.get(jsonData, component.name))) {
               componentData = _.get(jsonData, component.name).map(
                 (item: any) => ({
                   value: item.id,
@@ -96,7 +99,7 @@ const FormHelper: React.FC<FormHelperProps> = ({
       setFormData((formData) => ({ ...formData, [item.name]: value }));
     });
   }, []);
-
+  
   const validationSchema = useMemo(
     () =>
       formStructure.components.reduce(
@@ -127,7 +130,7 @@ const FormHelper: React.FC<FormHelperProps> = ({
     shouldUnregister: true,
     resolver: yupResolver(yupValidationSchema),
   });
-
+  
   useEffect(() => {
     if (formData) {
       reset(formData);
@@ -145,6 +148,15 @@ const FormHelper: React.FC<FormHelperProps> = ({
     } catch (e) {}
   };
 
+  const onMultiFileUploadChange = async (
+    component: FormComponent,
+    files: (File |{name:string,url:string} | string)[]
+  ) => {
+    try {
+      setValue(component.name, files);
+    } catch (e) {}
+  };
+
   const updateFormData = useCallback((param: IParam) => {
     setFormData((formData: IFormData) => ({
       ...formData,
@@ -154,7 +166,6 @@ const FormHelper: React.FC<FormHelperProps> = ({
 
   const onSubmitHandler = useCallback(async () => {
     const data = {};
-
     for (const key in formData) {
       if (key.includes("-")) {
         const [parent, child] = key.split("-");
@@ -253,7 +264,7 @@ const FormHelper: React.FC<FormHelperProps> = ({
     },
     [formData]
   );
-
+  
   const renderTitle = useCallback((component: FormComponent) => {
     const titleStyle = {
       fontSize: "1.5rem",
@@ -331,6 +342,21 @@ const FormHelper: React.FC<FormHelperProps> = ({
                 }))]}
                 />
             )
+            case "dropdown-supplier":
+              return (
+                <Select
+                  value={formData?.[component.name]}
+                  style={{ width: '100%' }}
+                  placeholder="Category"
+                  onChange={(value) => {
+                    setValue(component.name, value);
+                  }}
+                  options={[...store.getState().product.categoryList?.map((item:ICategory)=>({
+                    value: item._id,
+                    label: item.CategoryName
+                  }))]}
+                  />
+              )
           case "dropdown":
             return (
               <Select
@@ -380,6 +406,7 @@ const FormHelper: React.FC<FormHelperProps> = ({
                   value={formData?.[component.name]}
                   style={{ width: "100%" }}
                   onChange={(value) => {
+                    value = value.map((item:any)=>item.value)
                     setValue(component.name, value);
                   }}
                   options={component.options || []}
@@ -442,6 +469,7 @@ const FormHelper: React.FC<FormHelperProps> = ({
                 type="submit"
                 className="w-100"
                 disabled={isLoading}
+                onClick={onSubmitHandler}
               >
                 {component.label}
               </Button>
@@ -536,15 +564,11 @@ const FormHelper: React.FC<FormHelperProps> = ({
             );
           case "multi-file":
             return (
-              <FileUpload
+              <AddImagesView
                 component={component}
                 formData={formData}
-                onChangeFile={onFileUploadChange.bind(null, component)}
-                onDeleteFile={onRemoveFileHandler.bind(null, component.name)}
-                register={register(component.name)}
-                isError={isError}
-                errMsg={errMsg}
-              />
+                onChangeMultiFile={onMultiFileUploadChange}
+              /> 
             );
           case "autocomplete":
             return (

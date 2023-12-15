@@ -1,3 +1,4 @@
+import { ROLE_NAMES } from "@/constants/value";
 import FormHelper from "@/pageComponents/FormHelper";
 import { IFormData } from "@/pageComponents/FormHelper/FormHelper.types";
 import { loginStructure } from "@/pageComponents/formStructure/loginStructure";
@@ -25,7 +26,7 @@ function Page({}: Props) {
       const response = await authApi.login(data);
       if (
         response.data.user.Roles?.find(
-          (role: any) => role.roleName === "superUser"
+          (role: any) => role.roleName === ROLE_NAMES.SUPERUSER || role.roleName === ROLE_NAMES.SELLER
         )
       ) {
         toast.success(`Xin chào ${response.data.user.account.userName}`);
@@ -33,8 +34,6 @@ function Page({}: Props) {
         setHeaderConfigAxios(response.data.token);
         localStorage.setItem("token", response.data.token);
         // const user = await authApi.getProfile();
-        console.log(response.data.user);
-
         dispatch(setUser(response.data.user));
         router.push("/dashboard");
       } else {

@@ -1,7 +1,7 @@
 import {
   useCloseModal,
   useModalCurrentOpen,
-  useModalIsOpen,
+  useModalIsOpen
 } from "@/hooks/application.hooks";
 import { LoginView } from "@/pageComponents/auth";
 import { ApplicationModal } from "@/reducer/app.reducer";
@@ -19,6 +19,7 @@ import AddTypeRequestView from "@/pageComponents/auth/AddTypeRequestView";
 import ChangePasswordView from "@/pageComponents/auth/ChangePasswordView";
 import LogoutView from "@/pageComponents/auth/LogoutView";
 import TrainingFaceView from "@/pageComponents/auth/TrainingFaceView";
+import UpdateProductView from "@/pageComponents/auth/UpdateProductView";
 import UpdateProfileView from "@/pageComponents/auth/UpdateProfileView";
 import UpdateRequestStatusView from "@/pageComponents/auth/UpdateRequestStatusView";
 import UpdateSalaryView from "@/pageComponents/auth/UpdateSalaryView";
@@ -55,6 +56,8 @@ function renderModalContent(view: ApplicationModal | string) {
       return <UpdateUserView />;
     case ApplicationModal.ADD_PRODUCT_VIEW:
       return <AddNewProductView />;
+      case ApplicationModal.UPDATE_PRODUCT_VIEW:
+        return <UpdateProductView />;
     default:
       return null;
   }

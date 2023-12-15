@@ -1,6 +1,7 @@
+import { ROLE_NAMES } from "@/constants/value";
 import { RootState } from "@/store";
 import { ICredential, IUser } from "@/types";
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 let userToken = null;
 if (typeof window !== "undefined") {
@@ -15,6 +16,7 @@ export type AuthState = {
   user?: IUser;
   credential?: ICredential;
   fcmToken?: string;
+  roleName?: any;
 };
 
 const initialState: AuthState = {
@@ -32,6 +34,9 @@ const authSlice = createSlice({
     setUser: (state, action: PayloadAction<IUser>) => {
       state.loggedin = true;
       state.user = action.payload;
+      state.roleName = action.payload?.Roles?.find(
+        (role: any) => role.roleName === ROLE_NAMES.SUPERUSER || role.roleName === ROLE_NAMES.SELLER
+      )?.roleName ?? ROLE_NAMES.USER
     },
     logout: (state, action: PayloadAction) => {
       state.loggedin = false;

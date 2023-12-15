@@ -1,8 +1,8 @@
 import { FormStructure } from "@/types/form";
 import * as yup from "yup";
-export const addProductStructure: FormStructure = {
+export const updateProductStructure: FormStructure = {
   
-  title: "Create Product",
+  title: "Update Product",
   components: [
     {
       type: "text",
@@ -113,7 +113,7 @@ export const addProductStructure: FormStructure = {
     {
       type: "submit",
       name: "create",
-      label: "Create",
+      label: "Update",
       placeholder: "",
       isFullWidth: false,
     },

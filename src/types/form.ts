@@ -23,6 +23,7 @@ export interface FormComponent {
     | "element"
     | "country"
     | "dropdown-category"
+    | "dropdown-supplier"
     | "dropdown-multi"
     | "currency"
     | "text-editor"

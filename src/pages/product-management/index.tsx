@@ -1,11 +1,16 @@
 import style from "@/assets/css/user-management.module.css";
 import Layout from "@/components/Layout";
+import { ROLE_NAMES } from "@/constants/value";
 import { useToggleModal } from "@/hooks/application.hooks";
-import { getProductListSuccess } from "@/reducer";
+import { authSelector, getProductListSuccess } from "@/reducer";
 import { ApplicationModal } from "@/reducer/app.reducer";
-import { getListCategory, getListProduct } from "@/services/api/product.api";
+import { getListCategory, getListProduct, getListProductByIdSupplier } from "@/services/api/product.api";
 import { RootState } from "@/store";
-import { SearchOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  ScanOutlined,
+  SearchOutlined
+} from "@ant-design/icons";
 import {
   Button,
   Input,
@@ -73,6 +78,7 @@ interface TableParams {
 }
 function Page({}: Props) {
   const openAddNewProduct = useToggleModal(ApplicationModal.ADD_PRODUCT_VIEW);
+  const openUpdateProductView = useToggleModal(ApplicationModal.UPDATE_PRODUCT_VIEW);
   const dispatch = useDispatch();
   const {productList:data} = useSelector((state:RootState)=>state.product)
   const [searchText, setSearchText] = useState("");
@@ -88,6 +94,7 @@ function Page({}: Props) {
       total: 100,
     },
   });
+  const { roleName } = useSelector(authSelector);
 
   const handleUpate = async (id: string) => {
     localStorage.setItem("userId", id);
@@ -117,7 +124,7 @@ function Page({}: Props) {
   // }
 
   const getData = async () => {
-    await Promise.all([getListProduct(), getListCategory()])
+    await Promise.all([roleName ===ROLE_NAMES.SELLER? getListProductByIdSupplier() :getListProduct(), getListCategory()])
       .then((res: any) => {
         dispatch(
           getProductListSuccess({
@@ -263,6 +270,10 @@ function Page({}: Props) {
         text
       ),
   });
+  const onUpdateProduct = (product: any) => {
+    localStorage.setItem("product", JSON.stringify(product));
+    openUpdateProductView();
+  };
   const columns: ColumnsType<DataType> = [
     {
       title: "Name",
@@ -305,6 +316,27 @@ function Page({}: Props) {
       ...getColumnSearchProps("type"),
       width: "20%",
       sortDirections: ["descend", "ascend"],
+    },
+    {
+      title: "Action",
+      dataIndex: "",
+      key: "",
+      render: (value: any, record: any, index: number) => (
+        <div className="flex flex-row gap-3">
+          <EditOutlined
+            className="cursor-pointer"
+            title="Edit user information"
+            onClick={() => {
+              onUpdateProduct(record);
+            }}
+          />
+          <ScanOutlined
+            className="cursor-pointer"
+            title="Training face "
+            onClick={() => {}}
+          />
+        </div>
+      ),
     },
   ];
 

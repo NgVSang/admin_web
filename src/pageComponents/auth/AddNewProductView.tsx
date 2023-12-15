@@ -1,4 +1,6 @@
 import { useCloseModal } from "@/hooks/application.hooks";
+import { createProductAPI } from "@/services/api/product.api";
+import { imageTocloudinary } from "@/utils/imageToCloudinary";
 import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
 import toast from "react-hot-toast";
@@ -15,24 +17,33 @@ const AddNewProductView: React.FC = () => {
 
   const handleCreateUser = useCallback(async (formData: IFormData) => {
     try {
-      console.log(formData);
-      // const data = {
-      //   name: formData.name,
-      //   password: formData.password,
-      //   email: formData.email,
-      //   gender: formData.gender,
-      //   phoneNumber: formData.phoneNumber,
-      //   baseSalary:
-      //     formData.baseSalary && formData.baseSalary != ""
-      //       ? parseInt(formData.baseSalary)
-      //       : 3500000,
-      // };
-      // await createUser(data);
-      // toast.success("Success!");
-      // closeModal();
-      // setTimeout(() => {
-      //   router.reload();
-      // }, 1000);
+      // const convertImagesProductToBase64 = await Promise.all(formData?.pictureLinks.map((file:File)=>
+      // {
+        //   return toBase64(file);
+        // }))
+        // console.log(convertImagesProductToBase64);
+        const uploadImageToCloudinary = await Promise.all(formData?.pictureLinks.map((file:File)=>
+        {
+          return imageTocloudinary(file);
+        }))
+        formData.pictureLinks = [...uploadImageToCloudinary];
+        const data = {
+          IDCategory: formData.IDCategory,
+          type: formData.type,
+          nameProduct: formData.nameProduct,
+          pictureLinks: formData.pictureLinks,
+          description: formData.description,
+          color: formData.color,
+          size :formData.size,
+          price : Number(formData.price),
+          quantity: Number(formData.quantity)
+        };
+      await createProductAPI(data);
+      toast.success("Success!");
+      closeModal();
+      setTimeout(() => {
+        router.reload();
+      }, 1000);
     } catch (err: any) {
       toast.error(err.message);
     }
