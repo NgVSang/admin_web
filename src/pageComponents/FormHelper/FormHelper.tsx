@@ -25,6 +25,7 @@ import _ from "lodash";
 import { FileUpload } from "@/components/molecules/FileUpload";
 import store from "@/store/store";
 import { ICategory } from "@/types/product";
+import { makeUnique } from "@/utils/makeUniqueObjectArr";
 import { groupItem } from "@/utils/splitArr";
 import { Select, Tag } from "antd";
 import AddImagesView from "../auth/AddImagesView";
@@ -53,8 +54,8 @@ const FormHelper: React.FC<FormHelperProps> = ({
       typeof jsonData === "object"
         ? formStructure.components.reduce((data, component) => {
             let componentData = null;
-            if(component.name === "pictureLinks") {
-              componentData =  _.get(jsonData, component.name);
+            if (component.name === "pictureLinks") {
+              componentData = _.get(jsonData, component.name);
             } else if (Array.isArray(_.get(jsonData, component.name))) {
               componentData = _.get(jsonData, component.name).map(
                 (item: any) => ({
@@ -99,7 +100,7 @@ const FormHelper: React.FC<FormHelperProps> = ({
       setFormData((formData) => ({ ...formData, [item.name]: value }));
     });
   }, []);
-  
+
   const validationSchema = useMemo(
     () =>
       formStructure.components.reduce(
@@ -130,7 +131,7 @@ const FormHelper: React.FC<FormHelperProps> = ({
     shouldUnregister: true,
     resolver: yupResolver(yupValidationSchema),
   });
-  
+
   useEffect(() => {
     if (formData) {
       reset(formData);
@@ -150,7 +151,7 @@ const FormHelper: React.FC<FormHelperProps> = ({
 
   const onMultiFileUploadChange = async (
     component: FormComponent,
-    files: (File |{name:string,url:string} | string)[]
+    files: (File | { name: string; url: string } | string)[]
   ) => {
     try {
       setValue(component.name, files);
@@ -331,97 +332,109 @@ const FormHelper: React.FC<FormHelperProps> = ({
             return (
               <Select
                 value={formData?.[component.name]}
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
                 placeholder="Category"
                 onChange={(value) => {
                   setValue(component.name, value);
                 }}
-                options={[...store.getState().product.categoryList?.map((item:ICategory)=>({
-                  value: item._id,
-                  label: item.CategoryName
-                }))]}
-                />
-            )
-            case "dropdown-supplier":
-              return (
-                <Select
-                  value={formData?.[component.name]}
-                  style={{ width: '100%' }}
-                  placeholder="Category"
-                  onChange={(value) => {
-                    setValue(component.name, value);
-                  }}
-                  options={[...store.getState().product.categoryList?.map((item:ICategory)=>({
-                    value: item._id,
-                    label: item.CategoryName
-                  }))]}
-                  />
-              )
+                options={[
+                  ...store
+                    .getState()
+                    .product.categoryList?.map((item: ICategory) => ({
+                      value: item._id,
+                      label: item.CategoryName,
+                    })),
+                ]}
+              />
+            );
           case "dropdown":
             return (
               <Select
                 value={formData?.[component.name]}
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
                 placeholder="Type"
                 onChange={(value) => {
                   setValue(component.name, value);
                 }}
                 options={component.options || []}
-                />
-            )
+              />
+            );
           case "dropdown-multi":
             return (
               <div>
                 <label>{component.label}</label>
-                { component.name=== "color"?
-                <Select
-                  mode="multiple"
-                  tagRender={(props) => {
-                    const { label, value, closable, onClose } = props;
-                    const onPreventMouseDown = (
-                      event: React.MouseEvent<HTMLSpanElement>
-                    ) => {
-                      event.preventDefault();
-                      event.stopPropagation();
-                    };
-                    return (
-                      <Tag
-                        color={value}
-                        onMouseDown={onPreventMouseDown}
-                        closable={closable}
-                        onClose={onClose}
-                        style={{
-                          marginRight: 3,
-                          display: "flex",
-                          alignItems: "center",
-                          minHeight: 32,
-                          fontSize: 14,
-                        }}
-                      >
-                        {label}
-                      </Tag>
-                    );
-                  }}
-                  labelInValue
-                  value={formData?.[component.name]}
-                  style={{ width: "100%" }}
-                  onChange={(value) => {
-                    value = value.map((item:any)=>item.value)
-                    setValue(component.name, value);
-                  }}
-                  options={component.options || []}
-                /> : 
-                <Select
-                  mode="tags"
-                  value={formData?.[component.name]}
-                  style={{ width: '100%' }}
-                  placeholder="Tags Mode"
-                  onChange={(value) => {
-                    setValue(component.name, value);
-                  }}
-                  options={component.options || []}
-              />
-                }
+                {component.name === "color" ? (
+                  <Select
+                    mode="multiple"
+                    tagRender={(props) => {
+                      const { label, value, closable, onClose } = props;
+                      const onPreventMouseDown = (
+                        event: React.MouseEvent<HTMLSpanElement>
+                      ) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                      };
+                      return (
+                        <Tag
+                          color={value}
+                          onMouseDown={onPreventMouseDown}
+                          closable={closable}
+                          onClose={onClose}
+                          style={{
+                            marginRight: 3,
+                            display: "flex",
+                            alignItems: "center",
+                            minHeight: 32,
+                            fontSize: 14,
+                          }}
+                        >
+                          {label}
+                        </Tag>
+                      );
+                    }}
+                    labelInValue
+                    placeholder={component.label}
+                    value={formData?.[component.name]}
+                    style={{ width: "100%" }}
+                    onChange={(value) => {
+                      setValue(component.name, value);
+                    }}
+                    options={
+                      makeUnique(
+                        [
+                          ...(component.options ?? []),
+                          ...(formData?.[component.name] ?? []),
+                        ],
+                        ["value", "label"]
+                      ) || []
+                    }
+                  />
+                ) : (
+                  <Select
+                    mode="tags"
+                    value={formData?.[component.name]}
+                    style={{ width: "100%" }}
+                    placeholder={component.label}
+                    onChange={(value) => {
+                      setValue(
+                        component.name,
+                        value?.map((item: string) => ({
+                          label: item,
+                          value: item,
+                        }))
+                      );
+                    }}
+                    options={
+                      makeUnique(
+                        [
+                          ...(component.options ?? []),
+                          ...(formData?.[component.name] ?? []),
+                        ],
+                        ["value", "label"]
+                      ) || []
+                    }
+                  />
+                )}
               </div>
             );
           case "number":
@@ -568,7 +581,7 @@ const FormHelper: React.FC<FormHelperProps> = ({
                 component={component}
                 formData={formData}
                 onChangeMultiFile={onMultiFileUploadChange}
-              /> 
+              />
             );
           case "autocomplete":
             return (

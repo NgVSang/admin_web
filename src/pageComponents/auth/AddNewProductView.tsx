@@ -16,28 +16,31 @@ const AddNewProductView: React.FC = () => {
   const dispatch = useDispatch();
 
   const handleCreateUser = useCallback(async (formData: IFormData) => {
+    console.log(formData);
     try {
-      // const convertImagesProductToBase64 = await Promise.all(formData?.pictureLinks.map((file:File)=>
-      // {
-        //   return toBase64(file);
-        // }))
-        // console.log(convertImagesProductToBase64);
-        const uploadImageToCloudinary = await Promise.all(formData?.pictureLinks.map((file:File)=>
-        {
+      const uploadImageToCloudinary = await Promise.all(
+        formData?.pictureLinks?.map((file: File) => {
           return imageTocloudinary(file);
-        }))
-        formData.pictureLinks = [...uploadImageToCloudinary];
-        const data = {
-          IDCategory: formData.IDCategory,
-          type: formData.type,
-          nameProduct: formData.nameProduct,
-          pictureLinks: formData.pictureLinks,
-          description: formData.description,
-          color: formData.color,
-          size :formData.size,
-          price : Number(formData.price),
-          quantity: Number(formData.quantity)
-        };
+        })
+      );
+      formData.pictureLinks = [...uploadImageToCloudinary];
+      const data = {
+        IDCategory: formData.IDCategory,
+        type: formData.type,
+        nameProduct: formData.nameProduct,
+        pictureLinks: formData.pictureLinks ?? [],
+        description: formData.description,
+        color:
+          formData.color?.map((item: any) =>
+            typeof item === "string" ? item : item.value
+          ) ?? [],
+        size:
+          formData.size?.map((item: any) =>
+            typeof item === "string" ? item : item.value
+          ) ?? [],
+        price: Number(formData.price),
+        quantity: Number(formData.quantity),
+      };
       await createProductAPI(data);
       toast.success("Success!");
       closeModal();
@@ -55,7 +58,7 @@ const AddNewProductView: React.FC = () => {
     }),
     []
   );
-    
+
   return (
     <FormHelper
       formStructure={addProductStructure}

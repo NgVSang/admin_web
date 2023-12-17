@@ -13,7 +13,6 @@ const UpdateProductView: React.FC = () => {
   const closeModal = useCloseModal();
   const router = useRouter();
   const productInf = JSON.parse(localStorage.getItem("product") || "");
-  console.log(productInf);
   
   const initValue = useMemo(() => {
     return {
@@ -28,13 +27,12 @@ const UpdateProductView: React.FC = () => {
       quantity: Number(productInf.quantity),
     };
   }, [productInf]);
-  console.log(productInf._id);
   
   const handleSubmit = useCallback(
     async (formData: IFormData) => {
       try {
         const uploadImageToCloudinary = await Promise.all(
-          formData?.pictureLinks.map((file: File) => {
+          formData?.pictureLinks?.map((file: File) => {
             if (typeof file === "string") {
               return file;
             }
@@ -42,24 +40,24 @@ const UpdateProductView: React.FC = () => {
           })
         );
         formData.pictureLinks = [...uploadImageToCloudinary];
+        
         const data = {
           IDCategory: formData.IDCategory,
           type: formData.type,
           nameProduct: formData.nameProduct,
-          pictureLinks: formData.pictureLinks,
+          pictureLinks: formData.pictureLinks ?? [],
           description: formData.description,
-          color: formData.color.map((item: any) => item.value),
-          size: formData.size.map((item: any) => item.value),
+          color: formData.color?.map((item: any) => typeof item === "string"? item: item.value) ?? [],
+          size: formData.size?.map((item: any) =>  typeof item === "string"? item: item.value) ?? [],
           price: Number(formData.price),
           quantity: Number(formData.quantity),
         };
         await updateProductAPI(productInf._id,data);
-        // await updateUser(formData, userInfor._id);
         toast.success("Update success");
         closeModal();
-        // setTimeout(() => {
-        //   router.reload();
-        // }, 1000);
+        setTimeout(() => {
+          router.reload();
+        }, 1000);
       } catch (err: any) {
         toast.error(err.message);
         closeModal();

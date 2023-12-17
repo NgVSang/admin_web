@@ -4,11 +4,16 @@ import { ROLE_NAMES } from "@/constants/value";
 import { useToggleModal } from "@/hooks/application.hooks";
 import { authSelector, getProductListSuccess } from "@/reducer";
 import { ApplicationModal } from "@/reducer/app.reducer";
-import { getListCategory, getListProduct, getListProductByIdSupplier } from "@/services/api/product.api";
+import {
+  deleteProductAPI,
+  getListCategory,
+  getListProduct,
+  getListProductByIdSupplier
+} from "@/services/api/product.api";
 import { RootState } from "@/store";
 import {
+  DeleteOutlined,
   EditOutlined,
-  ScanOutlined,
   SearchOutlined
 } from "@ant-design/icons";
 import {
@@ -27,6 +32,7 @@ import type {
   SorterResult
 } from "antd/es/table/interface";
 import dayjs from "dayjs";
+import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
 import toast from "react-hot-toast";
@@ -78,9 +84,15 @@ interface TableParams {
 }
 function Page({}: Props) {
   const openAddNewProduct = useToggleModal(ApplicationModal.ADD_PRODUCT_VIEW);
-  const openUpdateProductView = useToggleModal(ApplicationModal.UPDATE_PRODUCT_VIEW);
+  const openUpdateProductView = useToggleModal(
+    ApplicationModal.UPDATE_PRODUCT_VIEW
+  );
+  const router = useRouter();
+
   const dispatch = useDispatch();
-  const {productList:data} = useSelector((state:RootState)=>state.product)
+  const { productList: data } = useSelector(
+    (state: RootState) => state.product
+  );
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
@@ -124,7 +136,12 @@ function Page({}: Props) {
   // }
 
   const getData = async () => {
-    await Promise.all([roleName ===ROLE_NAMES.SELLER? getListProductByIdSupplier() :getListProduct(), getListCategory()])
+    await Promise.all([
+      roleName === ROLE_NAMES.SELLER
+        ? getListProductByIdSupplier()
+        : getListProduct(),
+      getListCategory(),
+    ])
       .then((res: any) => {
         dispatch(
           getProductListSuccess({
@@ -144,7 +161,21 @@ function Page({}: Props) {
         toast.error(error.message);
       });
   };
+  const handleDeleteProduct = async (record : any) => {
+    try {
+      console.log(record);
+      alert("Are you sure about deleting this product ?");
+      await deleteProductAPI(record?._id).then(()=> {
+        toast.success("Success!");
+      })
+      setTimeout(() => {
+        router.reload();
+      }, 1000);
+    } catch (err : any) {
+      toast.error(err.message);
+    }
 
+  }
   useEffect(() => {
     getData();
   }, []);
@@ -330,11 +361,12 @@ function Page({}: Props) {
               onUpdateProduct(record);
             }}
           />
-          <ScanOutlined
+          {/* <ScanOutlined
             className="cursor-pointer"
             title="Training face "
             onClick={() => {}}
-          />
+          /> */}
+          <DeleteOutlined className="cursor-pointer" title="Training face" onClick={()=>handleDeleteProduct(record)}/>
         </div>
       ),
     },

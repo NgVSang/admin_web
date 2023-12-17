@@ -28,10 +28,12 @@ const updateProductAPI = (id: string,data: any) => {
 const createProductAPI = (data: any) => {
   return instance.post(ENDPOINTS.LISTPRODUCT, data);
 }
-
+const deleteProductAPI = (id: string) => {
+  return instance.delete(`${ENDPOINTS.LISTPRODUCT}/${id}`);
+}
 // const updateUser = (data: any, userId: string) => {
 //   return instance.put(ENDPOINTS.UPDATEUSER + userId, data);
 // };
 
-export { getListProduct, getListCategory, createProductAPI, updateProductAPI, getListSupplier, getListProductByIdSupplier };
+export { getListProduct, getListCategory, createProductAPI, updateProductAPI, getListSupplier, getListProductByIdSupplier, deleteProductAPI };
 

@@ -35,8 +35,8 @@ export const updateProductStructure: FormStructure = {
       placeholder: "Type",
       isFullWidth: true,
       options: [
-        { value: "Analog" },
-        { value: "Digital" },
+        { value: "Analog", label: "Analog" },
+        { value: "Digital", label: "Digital" },
       ],
     },
     {
@@ -46,10 +46,10 @@ export const updateProductStructure: FormStructure = {
       placeholder: "Color",
       isFullWidth: true,
       options: [
-        { value: "Gold" },
-        { value: "Black" },
-        { value: "Green" },
-        { value: "Blue" },
+        { value: "Gold", label: "Gold" },
+        { value: "Black", label: "Black" },
+        { value: "Green", label: "Green" },
+        { value: "Blue", label: "Blue" },
       ],
     },
     {
@@ -59,11 +59,11 @@ export const updateProductStructure: FormStructure = {
       placeholder: "Size",
       isFullWidth: true,
       options: [
-        { value: "19cm" },
-        { value: "20cm" },
-        { value: "20.5cm" },
-        { value: "21cm" },
-        { value: "21.5cm" },
+        { value: "19cm", label: "19cm" },
+        { value: "20cm", label: "20cm" },
+        { value: "20.5cm", label: "20.5cm" },
+        { value: "21cm", label: "21cm" },
+        { value: "21.5cm", label: "21.5cm" },
       ],
     },
     {

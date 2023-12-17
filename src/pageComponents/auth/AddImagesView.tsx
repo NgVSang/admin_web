@@ -58,7 +58,6 @@ const AddImagesView: React.FC<any> = ({
       }
       setFiles(formData?.[component.name] ?? [])
   },[formData,component ])
-  console.log(files);
   
   const renderUI = useMemo(()=>{
     return (
@@ -87,7 +86,7 @@ const AddImagesView: React.FC<any> = ({
 
   return (
     <div>
-      <span>Select images for Product</span>
+      <span>Select images for Product <strong>(Required)</strong></span>
         <MultiFileUpload onFilesAdded={handleFilesAdded} />
       <div>
         {
