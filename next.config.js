@@ -10,7 +10,7 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "https://docker-pratice-production.up.railway.app/:path*",
+        destination: "http://localhost:3000/:path*",
       },
     ];
   },

@@ -6,11 +6,11 @@ import { authSelector } from "@/reducer";
 import { ApplicationModal } from "@/reducer/app.reducer";
 import {
   getOrderListPending,
-  getOrderListSuccess,
+  getOrderListSuccess
 } from "@/reducer/order.reducer";
 import {
   acceptOrderAPI,
-  getListOrderBySupplier,
+  getListOrderBySupplier
 } from "@/services/api/order.api";
 import { RootState } from "@/store";
 import { IProduct } from "@/types/product";
@@ -18,7 +18,7 @@ import {
   CheckCircleOutlined,
   CloseCircleOutlined,
   DeleteOutlined,
-  SearchOutlined,
+  SearchOutlined
 } from "@ant-design/icons";
 import {
   Button,
@@ -27,13 +27,13 @@ import {
   MenuProps,
   Space,
   Table,
-  TablePaginationConfig,
+  TablePaginationConfig
 } from "antd";
 import type { ColumnsType, ColumnType } from "antd/es/table";
 import type {
   FilterConfirmProps,
   FilterValue,
-  SorterResult,
+  SorterResult
 } from "antd/es/table/interface";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
@@ -84,6 +84,9 @@ function Page({}: Props) {
 
   const dispatch = useDispatch();
   const { orderList: data } = useSelector((state: RootState) => state.order);
+  const { user } = useSelector(
+    (state: RootState) => state.auth
+  );
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
@@ -142,13 +145,14 @@ function Page({}: Props) {
         // setData(data);
       })
       .catch((error: any) => {
+        dispatch(getOrderListSuccess([]));
         toast.error(error.message);
       });
   };
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [user]);
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue>,
@@ -273,7 +277,7 @@ function Page({}: Props) {
   });
   const onAcceptOrder = async (order: any) => {
     await acceptOrderAPI(order?._id, {
-      statusOrder: "ACCEPTED",
+      statusOrder: STATUS_ORDER.ACCEPTED,
       feedbackSupplier: "Đơn hàng được xác nhận",
     })
       .then(() => {
@@ -289,10 +293,11 @@ function Page({}: Props) {
 
   const onCancelOrder = async (order: any) => {
     await acceptOrderAPI(order?._id, {
-      statusOrder: "ACCEPTED",
-      feedbackSupplier: "Đơn hàng được xác nhận",
+      statusOrder: STATUS_ORDER.REJECTED,
+      feedbackSupplier: "Đơn hàng đã được hủy",
     })
       .then(() => {
+        toast.success("Rejected order success");
         setTimeout(() => {
           router.reload();
         }, 1000);
@@ -333,6 +338,7 @@ function Page({}: Props) {
       ...getColumnSearchProps("orderDate"),
       width: "20%",
       sortDirections: ["descend", "ascend"],
+      render: (text) => <a>{text?.substring(0, 10)}</a>,
     },
     {
       title: "status Order",
@@ -341,6 +347,19 @@ function Page({}: Props) {
       ...getColumnSearchProps("statusOrder"),
       width: "20%",
       sortDirections: ["descend", "ascend"],
+      render: (text) => (
+        <span
+          className={`cursor-pointer ${
+            text === STATUS_ORDER.ACCEPTED
+              ? "text-green-500"
+              : text === STATUS_ORDER.REJECTED
+              ? "text-red-500"
+              : ""
+          }`}
+        >
+          {text?.substring(0, 10)}
+        </span>
+      ),
     },
     {
       title: "Action",
@@ -356,18 +375,22 @@ function Page({}: Props) {
             }`}
             title="Edit user information"
             onClick={() => {
-              onAcceptOrder(record);
+              record.statusOrder === STATUS_ORDER.ACCEPTED
+                ? {}
+                : onAcceptOrder(record);
             }}
           />
           <CloseCircleOutlined
             className={`cursor-pointer ${
-              record.statusOrder === STATUS_ORDER.CANCEL
+              record.statusOrder === STATUS_ORDER.REJECTED
                 ? "bg-red-500 rounded-md"
                 : ""
             }`}
             title="Edit user information"
             onClick={() => {
-              onCancelOrder(record);
+              record.statusOrder === STATUS_ORDER.REJECTED
+                ? {}
+                : onCancelOrder(record);
             }}
           />
           <DeleteOutlined

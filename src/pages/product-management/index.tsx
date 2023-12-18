@@ -93,6 +93,9 @@ function Page({}: Props) {
   const { productList: data } = useSelector(
     (state: RootState) => state.product
   );
+  const { user } = useSelector(
+    (state: RootState) => state.auth
+  );
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
@@ -178,7 +181,7 @@ function Page({}: Props) {
   }
   useEffect(() => {
     getData();
-  }, []);
+  }, [user]);
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue>,
