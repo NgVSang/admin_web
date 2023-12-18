@@ -16,7 +16,7 @@ const UpdateProductView: React.FC = () => {
   
   const initValue = useMemo(() => {
     return {
-      IDCategory: productInf.IDCategory[0]?._id,
+      IDCategory: productInf?.IDCategory[0]?._id,
       type: productInf.type,
       nameProduct: productInf.nameProduct,
       pictureLinks: productInf.pictureLinks,

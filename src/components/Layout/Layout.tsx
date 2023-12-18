@@ -62,14 +62,14 @@ const PageLayout: FC<LayoutPageProps> = ({ children }) => {
           router.push("/product-management");
         },
       },
-      // {
-      //   key: '5',
-      //   icon: <UploadOutlined />,
-      //   label: 'Reports',
-      //   onClick: () =>{
-      //     router.push('/reports')
-      //   }
-      // },
+      {
+        key: '5',
+        icon: <DollarCircleOutlined />,
+        label: 'Order Management',
+        onClick: () =>{
+          router.push('/order-management')
+        }
+      },
       {
         key: "6",
         icon: <UploadOutlined />,
@@ -127,9 +127,9 @@ const PageLayout: FC<LayoutPageProps> = ({ children }) => {
       case "/product-management":
         select = "4";
         break;
-      // case '/reports':
-      //   select = '5'
-      // break
+      case '/order-management':
+        select = '5'
+      break
       case "/requests":
         select = "6";
         break;
@@ -144,7 +144,7 @@ const PageLayout: FC<LayoutPageProps> = ({ children }) => {
 
   useEffect(()=> {
     if (roleName === ROLE_NAMES.SELLER) { 
-      setItemsMenu([...itemsMenu?.filter((item )=> item?.key === "4" )])
+      setItemsMenu([...itemsMenu?.filter((item )=> item?.key === "4" || item?.key === "5" )])
     }
   },[roleName])
   return (

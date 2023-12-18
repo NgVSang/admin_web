@@ -1,5 +1,6 @@
 import appReducer from "@/reducer/app.reducer";
 import authReducer from "@/reducer/auth.reducer";
+import orderReducer from "@/reducer/order.reducer";
 import productReducer from "@/reducer/product.reducer";
 import requestReducer from "@/reducer/request.reducer";
 import workingReducer from "@/reducer/working.reducer";
@@ -10,7 +11,8 @@ const rootReducer = combineReducers({
     application: appReducer,
     working: workingReducer,
     request: requestReducer,
-    product: productReducer
+    product: productReducer,
+    order: orderReducer
 })
 
 export default rootReducer
