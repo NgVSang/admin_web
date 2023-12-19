@@ -10,6 +10,7 @@ import {
 } from "@/reducer/order.reducer";
 import {
   acceptOrderAPI,
+  deleteOrderAPI,
   getListOrderBySupplier
 } from "@/services/api/order.api";
 import { RootState } from "@/store";
@@ -43,7 +44,7 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 // import {getListRequest} from "@/services/api/request.apt";
 
-interface Props {}
+interface Props { }
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -75,7 +76,7 @@ interface TableParams {
   sortOrder?: string;
   filters?: Record<string, FilterValue>;
 }
-function Page({}: Props) {
+function Page({ }: Props) {
   const openAddNewProduct = useToggleModal(ApplicationModal.ADD_PRODUCT_VIEW);
   const openUpdateProductView = useToggleModal(
     ApplicationModal.UPDATE_PRODUCT_VIEW
@@ -292,6 +293,7 @@ function Page({}: Props) {
   };
 
   const onCancelOrder = async (order: any) => {
+    alert("Are you sure about deleting this product ?");
     await acceptOrderAPI(order?._id, {
       statusOrder: STATUS_ORDER.REJECTED,
       feedbackSupplier: "Đơn hàng đã được hủy",
@@ -306,7 +308,19 @@ function Page({}: Props) {
         console.log(err);
       });
   };
-
+  const onDeleteOrder = async (order: any) => {
+    alert("Are you sure about deleting this order ?");
+    await deleteOrderAPI(order?._id)
+      .then(() => {
+        toast.success("Deleted order success");
+        setTimeout(() => {
+          router.reload();
+        }, 100);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   const columns: ColumnsType<DataType> = [
     {
       title: "ID",
@@ -349,13 +363,12 @@ function Page({}: Props) {
       sortDirections: ["descend", "ascend"],
       render: (text) => (
         <span
-          className={`cursor-pointer ${
-            text === STATUS_ORDER.ACCEPTED
-              ? "text-green-500"
-              : text === STATUS_ORDER.REJECTED
+          className={`cursor-pointer ${text === STATUS_ORDER.ACCEPTED
+            ? "text-green-500"
+            : text === STATUS_ORDER.REJECTED
               ? "text-red-500"
               : ""
-          }`}
+            }`}
         >
           {text?.substring(0, 10)}
         </span>
@@ -368,11 +381,10 @@ function Page({}: Props) {
       render: (value: any, record: any, index: number) => (
         <div className="flex flex-row gap-3">
           <CheckCircleOutlined
-            className={`cursor-pointer ${
-              record.statusOrder === STATUS_ORDER.ACCEPTED
-                ? "bg-green-500 rounded-md"
-                : ""
-            }`}
+            className={`cursor-pointer ${record.statusOrder === STATUS_ORDER.ACCEPTED
+              ? "bg-green-500 rounded-md"
+              : ""
+              }`}
             title="Edit user information"
             onClick={() => {
               record.statusOrder === STATUS_ORDER.ACCEPTED
@@ -381,11 +393,10 @@ function Page({}: Props) {
             }}
           />
           <CloseCircleOutlined
-            className={`cursor-pointer ${
-              record.statusOrder === STATUS_ORDER.REJECTED
-                ? "bg-red-500 rounded-md"
-                : ""
-            }`}
+            className={`cursor-pointer ${record.statusOrder === STATUS_ORDER.REJECTED
+              ? "bg-red-500 rounded-md"
+              : ""
+              }`}
             title="Edit user information"
             onClick={() => {
               record.statusOrder === STATUS_ORDER.REJECTED
@@ -396,7 +407,7 @@ function Page({}: Props) {
           <DeleteOutlined
             className="cursor-pointer"
             title="Training face"
-            onClick={() => {}}
+            onClick={() => { onDeleteOrder(record) }}
           />
         </div>
       ),
