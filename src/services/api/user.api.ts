@@ -1,4 +1,3 @@
-import { PaggingType } from "@/types/api";
 import instance from "../axios";
 
 const ENDPOINTS = {
@@ -18,5 +17,9 @@ const createUser = (data: any) => {
 const updateUser = (data: any, userId: string) => {
   return instance.put(ENDPOINTS.UPDATEUSER + userId, data);
 };
+const updateRoleUser = (data: any, userId: string) => {
+  return instance.post(ENDPOINTS.UPDATEUSER + userId + "/role", data);
+};
 
-export { getListUser, createUser, updateUser };
+export { getListUser, createUser, updateUser, updateRoleUser };
+

@@ -1,7 +1,7 @@
 import * as yup from "yup";
 
 export interface FormComponent {
-  type:
+  type?:
     | "text"
     | "number"
     | "datePicker"
@@ -24,6 +24,8 @@ export interface FormComponent {
     | "country"
     | "dropdown-category"
     | "dropdown-supplier"
+    | "dropdown-multi-permission"
+    | "dropdown-multi-role"
     | "dropdown-multi"
     | "currency"
     | "text-editor"

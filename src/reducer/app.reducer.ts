@@ -42,6 +42,7 @@ export enum ApplicationModal {
   ADD_USER_IMAGES_TRAINING,
   OTP_VIEW,
   ADD_PRODUCT_VIEW,
+  UPDATE_ROLE_VIEW
 }
 
 export enum ApplicationSideBar {

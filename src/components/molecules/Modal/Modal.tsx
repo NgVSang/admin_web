@@ -22,6 +22,7 @@ import TrainingFaceView from "@/pageComponents/auth/TrainingFaceView";
 import UpdateProductView from "@/pageComponents/auth/UpdateProductView";
 import UpdateProfileView from "@/pageComponents/auth/UpdateProfileView";
 import UpdateRequestStatusView from "@/pageComponents/auth/UpdateRequestStatusView";
+import UpdateRoleView from "@/pageComponents/auth/UpdateRoleView";
 import UpdateSalaryView from "@/pageComponents/auth/UpdateSalaryView";
 import UpdateUserView from "@/pageComponents/auth/UpdateUserView";
 import WorkingView from "@/pageComponents/auth/WorkingView";
@@ -56,8 +57,10 @@ function renderModalContent(view: ApplicationModal | string) {
       return <UpdateUserView />;
     case ApplicationModal.ADD_PRODUCT_VIEW:
       return <AddNewProductView />;
-      case ApplicationModal.UPDATE_PRODUCT_VIEW:
-        return <UpdateProductView />;
+    case ApplicationModal.UPDATE_PRODUCT_VIEW:
+      return <UpdateProductView />;
+    case ApplicationModal.UPDATE_ROLE_VIEW:
+      return <UpdateRoleView />;
     default:
       return null;
   }

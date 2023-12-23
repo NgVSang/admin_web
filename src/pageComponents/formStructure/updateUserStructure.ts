@@ -1,5 +1,5 @@
-import * as yup from "yup";
 import { FormStructure } from "@/types/form";
+import * as yup from "yup";
 
 export const updateUserStructure: FormStructure = {
   title: "Update User",
@@ -19,6 +19,14 @@ export const updateUserStructure: FormStructure = {
       placeholder: "Last name",
       isFullWidth: true,
       validation: yup.string().required().trim(),
+    },
+    {
+      type: "dropdown-multi-role",
+      name: "roles",
+      label: "Roles",
+      placeholder: "Roles",
+      isFullWidth: true,
+      options: [],
     },
     {
       type: "text",

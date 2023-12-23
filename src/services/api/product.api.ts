@@ -34,6 +34,11 @@ const deleteProductAPI = (id: string) => {
 // const updateUser = (data: any, userId: string) => {
 //   return instance.put(ENDPOINTS.UPDATEUSER + userId, data);
 // };
-
-export { getListProduct, getListCategory, createProductAPI, updateProductAPI, getListSupplier, getListProductByIdSupplier, deleteProductAPI };
+const listRequestSupplierAPI = () => {
+  return instance.get(`${ENDPOINTS.SUPPLIER}/list-request`, {});
+}
+const acceptSupplierAPI = (data: any) => {
+  return instance.post(`${ENDPOINTS.SUPPLIER}/accept`, {...data});
+}
+export { acceptSupplierAPI, getListProduct, getListCategory, createProductAPI, updateProductAPI, getListSupplier, getListProductByIdSupplier, deleteProductAPI, listRequestSupplierAPI };
 

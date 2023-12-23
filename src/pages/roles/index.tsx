@@ -1,16 +1,18 @@
 import style from "@/assets/css/user-management.module.css";
 import Layout from "@/components/Layout";
-import { STATUS_REQUEST } from "@/constants/value";
 import { useToggleModal } from "@/hooks/application.hooks";
 import { authSelector } from "@/reducer";
 import { ApplicationModal } from "@/reducer/app.reducer";
 import {
   getOrderListSuccess
 } from "@/reducer/order.reducer";
-import { getRolePermissionPending } from "@/reducer/role.reducer";
-import { acceptSupplierAPI, listRequestSupplierAPI } from "@/services/api/product.api";
-import { IUser } from "@/types";
-import { CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, SearchOutlined } from "@ant-design/icons";
+import { getPermissionListSuccess, getRoleListSuccess, getRolePermissionPending } from "@/reducer/role.reducer";
+import { getListPermissionAPI, getListRoleAPI } from "@/services/api/role.api";
+import { RootState } from "@/store";
+import arrayToSTring from "@/utils/arrayToString";
+import {
+  DeleteOutlined, EditOutlined, SearchOutlined
+} from "@ant-design/icons";
 import {
   Button,
   Input,
@@ -21,7 +23,8 @@ import {
 import type { ColumnsType, ColumnType } from "antd/es/table";
 import type {
   FilterConfirmProps,
-  FilterValue
+  FilterValue,
+  SorterResult
 } from "antd/es/table/interface";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
@@ -41,12 +44,8 @@ interface TableParams {
 }
 
 interface DataType {
-  companyName:string;
-  contactEmail:string;
-  contactPhone: string;
-  address: string;
-  status: string;
-  userID: IUser;
+  roleName: string;
+  IDPermission: any[];
 }
 
 type DataIndex = keyof DataType;
@@ -63,7 +62,7 @@ function Page({ }: Props) {
   const router = useRouter();
 
   const dispatch = useDispatch();
-  const  [data, setData] = useState([]);
+  const { roleList : data, permissionList } = useSelector((state: RootState) => state.role);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
@@ -109,10 +108,19 @@ function Page({ }: Props) {
   const getData = async () => {
     getRolePermissionPending("");
     await Promise.all([
-      listRequestSupplierAPI()
+      getListRoleAPI(),
+      getListPermissionAPI()
     ])
       .then((res: any) => {
-        setData(res[0]?.data);
+        dispatch(getRoleListSuccess(res[0]?.data));
+        dispatch(getPermissionListSuccess(res[1]?.data));
+        // .map((item: any) => item.product)
+        // .map((product: IProduct) => {
+        //   return {
+        //     product,
+        //   };
+        // });
+        // setData(data);
       })
       .catch((error: any) => {
         dispatch(getOrderListSuccess([]));
@@ -123,8 +131,23 @@ function Page({ }: Props) {
   useEffect(() => {
     getData();
   }, [router?.pathname]);
-  console.log(data);
-  
+  const handleTableChange = (
+    pagination: TablePaginationConfig,
+    filters: Record<string, FilterValue>,
+    sorter: SorterResult<DataType>
+  ) => {
+    setTableParams({
+      pagination,
+      filters,
+      ...sorter,
+    });
+
+    // `dataSource` is useless since `pageSize` changed
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      // setData([]);
+    }
+  };
+
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -234,95 +257,26 @@ function Page({ }: Props) {
     localStorage.setItem("role", JSON.stringify(role));
     openUpdateRoleView();
   };
-  const onAcceptRequest = (record:any) => {
-    try {
-      
-      acceptSupplierAPI({
-        ids: [record?._id]
-      }).then((res)=> {
-        console.log(res);
-        
-        toast.success("Accept to Supplier success");
-        setTimeout(() => {
-          router.reload();
-        }, 1000);
-      })
-    } catch (err:any) {
-      toast.error(err.message);
-    }
-  }
   const columns: ColumnsType<DataType> = [
     {
-      title: "Company Name",
-      dataIndex: "companyName",
-      key: "companyName",
+      title: "Role Name",
+      dataIndex: "roleName",
+      key: "roleName",
       width: "30%",
-      sorter: (a, b) => a.companyName.localeCompare(b.companyName),
-      ...getColumnSearchProps("companyName"),
+      sorter: (a, b) => a.roleName.localeCompare(b.roleName),
+      ...getColumnSearchProps("roleName"),
     },
     {
-        title: "Requester",
-        dataIndex: "userID",
-        key: "userID",
-        ...getColumnSearchProps("userID"),
-        width: "20%",
-        sortDirections: ["descend", "ascend"],
-      render: ((value: any, record: DataType) => {
-        console.log(record);
-        const { firstName, lastName} = record?.userID
-        return <span>
-          {firstName + ' ' + lastName}
-        </span>
-      })
-    },
-    {
-      title: "Contact Email",
-      dataIndex: "contactEmail",
-      key: "contactEmail",
-      width: "30%",
-      sorter: (a, b) => a.contactEmail.localeCompare(b.contactEmail),
-      ...getColumnSearchProps("contactEmail"),
-    },
-    {
-      title: "Phone",
-      dataIndex: "contactPhone",
-      key: "contactPhone",
-      width: "30%",
-      sorter: (a, b) => a.contactPhone.localeCompare(b.contactPhone),
-      ...getColumnSearchProps("contactPhone"),
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-      width: "30%",
-      sorter: (a, b) => a.address.localeCompare(b.address),
-      ...getColumnSearchProps("address"),
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      ...getColumnSearchProps("status"),
-      width: "20%",
-      sorter: (a, b) => a.status.localeCompare(b.status),
+      title: "description",
+      dataIndex: "IDPermission",
+      key: "IDPermission",
+      width: "60%",
+      ...getColumnSearchProps("IDPermission"),
+
       sortDirections: ["descend", "ascend"],
-      render: (text) => {
-        console.log(text);
-        
-        return  (
-          <span
-            className={`cursor-pointer ${text === STATUS_REQUEST.ACCEPTED
-              ? "text-green-500"
-              : text === STATUS_REQUEST.REJECTED
-                ? "text-red-500"
-                : ""
-              }`}
-          >
-            {text}
-          </span>
-        )
-      },
+      render: (permission)=> {
+        return arrayToSTring(permission?.map((item:any)=>item?.title))
+      }
     },
     {
       title: "Action",
@@ -330,33 +284,17 @@ function Page({ }: Props) {
       key: "",
       render: (value: any, record: any, index: number) => (
         <div className="flex flex-row gap-3">
-          <CheckCircleOutlined
-            className={`cursor-pointer ${record.status === STATUS_REQUEST.ACCEPTED
-              ? "bg-green-500 rounded-md"
-              : ""
-              }`}
+          <EditOutlined
+            className="cursor-pointer"
             title="Edit user information"
             onClick={() => {
-
-              onAcceptRequest(record);
-            }}
-          />
-          <CloseCircleOutlined
-            className={`cursor-pointer ${record.status === STATUS_REQUEST.REJECTED
-              ? "bg-red-500 rounded-md"
-              : ""
-              }`}
-            title="Edit user information"
-            onClick={() => {
-              // // record.statusOrder === STATUS_REQUEST.REJECTED
-              // //   ? {}
-              // onCancelOrder(record);
+              onUpdateRole(record);
             }}
           />
           <DeleteOutlined
             className="cursor-pointer"
             title="Training face"
-            // onClick={() => { onDeleteOrder(record) }}
+            onClick={() => { }}
           />
         </div>
       ),
@@ -376,7 +314,7 @@ function Page({ }: Props) {
               fontWeight: 600,
             }}
           >
-            Request to Supplier
+            Roles Management
           </p>
           <span className="mb-[20px] text-[15px]">
             {month}/{year}

@@ -84,7 +84,7 @@ function Page({ }: Props) {
   const router = useRouter();
 
   const dispatch = useDispatch();
-  const { orderList: data } = useSelector((state: RootState) => state.order);
+  const { orderList: data, isLoading } = useSelector((state: RootState) => state.order);
   const { user } = useSelector(
     (state: RootState) => state.auth
   );
@@ -153,7 +153,7 @@ function Page({ }: Props) {
 
   useEffect(() => {
     getData();
-  }, [user]);
+  }, [user, router?.pathname]);
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue>,
@@ -293,16 +293,16 @@ function Page({ }: Props) {
   };
 
   const onCancelOrder = async (order: any) => {
-    alert("Are you sure about deleting this product ?");
+    alert("Are you sure about canceling order ?");
     await acceptOrderAPI(order?._id, {
       statusOrder: STATUS_ORDER.REJECTED,
       feedbackSupplier: "Đơn hàng đã được hủy",
     })
       .then(() => {
         toast.success("Rejected order success");
-        setTimeout(() => {
-          router.reload();
-        }, 1000);
+        // setTimeout(() => {
+        router.reload();
+        // }, 1000);
       })
       .catch((err) => {
         console.log(err);
@@ -313,9 +313,9 @@ function Page({ }: Props) {
     await deleteOrderAPI(order?._id)
       .then(() => {
         toast.success("Deleted order success");
-        setTimeout(() => {
-          router.reload();
-        }, 100);
+        // setTimeout(() => {
+        router.reload();
+        // }, 100);
       })
       .catch((err) => {
         console.log(err);
@@ -361,9 +361,9 @@ function Page({ }: Props) {
       ...getColumnSearchProps("statusOrder"),
       width: "20%",
       sortDirections: ["descend", "ascend"],
-      render: (text) => (
+      render: (text: string) => (
         <span
-          className={`cursor-pointer ${text === STATUS_ORDER.ACCEPTED
+          className={`cursor-pointer ${[STATUS_ORDER.ACCEPTED, STATUS_ORDER.PAYMENT_SUCCESS].includes(text)
             ? "text-green-500"
             : text === STATUS_ORDER.REJECTED
               ? "text-red-500"
@@ -380,30 +380,30 @@ function Page({ }: Props) {
       key: "",
       render: (value: any, record: any, index: number) => (
         <div className="flex flex-row gap-3">
-          <CheckCircleOutlined
-            className={`cursor-pointer ${record.statusOrder === STATUS_ORDER.ACCEPTED
-              ? "bg-green-500 rounded-md"
-              : ""
-              }`}
-            title="Edit user information"
-            onClick={() => {
-              record.statusOrder === STATUS_ORDER.ACCEPTED
-                ? {}
-                : onAcceptOrder(record);
-            }}
-          />
-          <CloseCircleOutlined
-            className={`cursor-pointer ${record.statusOrder === STATUS_ORDER.REJECTED
-              ? "bg-red-500 rounded-md"
-              : ""
-              }`}
-            title="Edit user information"
-            onClick={() => {
-              record.statusOrder === STATUS_ORDER.REJECTED
-                ? {}
-                : onCancelOrder(record);
-            }}
-          />
+          {record.statusOrder !== STATUS_ORDER.PAYMENT_SUCCESS &&
+            <>
+              <CheckCircleOutlined
+                className={`cursor-pointer ${[STATUS_ORDER.ACCEPTED, STATUS_ORDER.PAYMENT_SUCCESS].includes(record.statusOrder)
+                  ? "bg-green-500 rounded-md"
+                  : ""
+                  }`}
+                title="Edit user information"
+                onClick={() => {
+                  onAcceptOrder(record)
+                }}
+              />
+              <CloseCircleOutlined
+                className={`cursor-pointer ${record.statusOrder === STATUS_ORDER.REJECTED
+                  ? "bg-red-500 rounded-md"
+                  : ""
+                  }`}
+                title="Edit user information"
+                onClick={() => {
+                  onCancelOrder(record);
+                }}
+              />
+            </>
+          }
           <DeleteOutlined
             className="cursor-pointer"
             title="Training face"
@@ -481,6 +481,7 @@ function Page({ }: Props) {
         </div> */}
       </div>
       <Table
+        loading={isLoading}
         columns={columns}
         dataSource={data}
         className={style.user_management_table}

@@ -4,9 +4,7 @@ import { authSelector } from "@/reducer";
 import { ApplicationModal } from "@/reducer/app.reducer";
 import {
   DashboardOutlined,
-  DollarCircleOutlined,
-  FieldTimeOutlined,
-  MenuFoldOutlined,
+  DollarCircleOutlined, MenuFoldOutlined,
   MenuUnfoldOutlined,
   UploadOutlined,
   UsergroupDeleteOutlined,
@@ -46,14 +44,14 @@ const PageLayout: FC<LayoutPageProps> = ({ children }) => {
           router.push("/user-management");
         },
       },
-      {
-        key: "3",
-        icon: <FieldTimeOutlined />,
-        label: "Working Management",
-        onClick: () => {
-          router.push("/working-management");
-        },
-      },
+      // {
+      //   key: "3",
+      //   icon: <FieldTimeOutlined />,
+      //   label: "Working Management",
+      //   onClick: () => {
+      //     router.push("/working-management");
+      //   },
+      // },
       {
         key: "4",
         icon: <DollarCircleOutlined />,
@@ -81,9 +79,9 @@ const PageLayout: FC<LayoutPageProps> = ({ children }) => {
       {
         key: "7",
         icon: <UserOutlined />,
-        label: "Account",
+        label: "Roles",
         onClick: () => {
-          router.push("/account");
+          router.push("/roles");
         },
       },
     ])
@@ -121,9 +119,9 @@ const PageLayout: FC<LayoutPageProps> = ({ children }) => {
       case "/user-management":
         select = "2";
         break;
-      case "/working-management":
-        select = "3";
-        break;
+      // case "/working-management":
+      //   select = "3";
+      //   break;
       case "/product-management":
         select = "4";
         break;
@@ -133,7 +131,7 @@ const PageLayout: FC<LayoutPageProps> = ({ children }) => {
       case "/requests":
         select = "6";
         break;
-      case "/account":
+      case "/roles":
         select = "7";
         break;
       default:

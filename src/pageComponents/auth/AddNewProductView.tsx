@@ -44,9 +44,9 @@ const AddNewProductView: React.FC = () => {
       await createProductAPI(data);
       toast.success("Success!");
       closeModal();
-      setTimeout(() => {
-        router.reload();
-      }, 1000);
+      // setTimeout(() => {
+      router.reload();
+      // }, 1000);
     } catch (err: any) {
       toast.error(err.message);
     }

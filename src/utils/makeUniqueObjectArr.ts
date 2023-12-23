@@ -16,7 +16,5 @@ export function makeUnique(array: any[], uniqueBy: any, keepFirst = true) {
     name?: string | number;
     default?: boolean;
   }[];
-  console.log(newArr);
-
   return newArr;
 }

@@ -2,7 +2,7 @@ import style from "@/assets/css/user-management.module.css";
 import Layout from "@/components/Layout";
 import { ROLE_NAMES } from "@/constants/value";
 import { useToggleModal } from "@/hooks/application.hooks";
-import { authSelector, getProductListSuccess } from "@/reducer";
+import { authSelector, getProductListSuccess, getProductPending } from "@/reducer";
 import { ApplicationModal } from "@/reducer/app.reducer";
 import {
   deleteProductAPI,
@@ -90,7 +90,7 @@ function Page({}: Props) {
   const router = useRouter();
 
   const dispatch = useDispatch();
-  const { productList: data } = useSelector(
+  const { productList: data, isLoading } = useSelector(
     (state: RootState) => state.product
   );
   const { user } = useSelector(
@@ -139,6 +139,7 @@ function Page({}: Props) {
   // }
 
   const getData = async () => {
+    getProductPending("");
     await Promise.all([
       roleName === ROLE_NAMES.SELLER
         ? getListProductByIdSupplier()
@@ -181,7 +182,7 @@ function Page({}: Props) {
   }
   useEffect(() => {
     getData();
-  }, [user]);
+  }, [user, router?.pathname]);
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue>,
@@ -314,6 +315,7 @@ function Page({}: Props) {
       dataIndex: "nameProduct",
       key: "nameProduct",
       width: "30%",
+      sorter: (a, b) => a.nameProduct.localeCompare(b.nameProduct),
       ...getColumnSearchProps("nameProduct"),
     },
     {
@@ -348,6 +350,7 @@ function Page({}: Props) {
       dataIndex: "type",
       key: "type",
       ...getColumnSearchProps("type"),
+      sorter: (a, b) => a.type.localeCompare(b.type),
       width: "20%",
       sortDirections: ["descend", "ascend"],
     },
@@ -442,6 +445,7 @@ function Page({}: Props) {
         </div>
       </div>
       <Table
+        loading={isLoading}
         columns={columns}
         dataSource={data}
         className={style.user_management_table}

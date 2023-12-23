@@ -55,9 +55,9 @@ const UpdateProductView: React.FC = () => {
         await updateProductAPI(productInf._id,data);
         toast.success("Update success");
         closeModal();
-        setTimeout(() => {
+        // setTimeout(() => {
           router.reload();
-        }, 1000);
+        // }, 1000);
       } catch (err: any) {
         toast.error(err.message);
         closeModal();

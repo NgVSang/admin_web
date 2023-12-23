@@ -328,6 +328,136 @@ const FormHelper: React.FC<FormHelperProps> = ({
         }
 
         switch (component.type) {
+          case "dropdown-multi-role": 
+            return (
+              <Select
+              mode="tags"
+              value={formData?.[component.name]}
+              tagRender={(props)=> {
+                const { label, value, closable, onClose } = props;
+                const onPreventMouseDown = (
+                  event: React.MouseEvent<HTMLSpanElement>
+                ) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                };
+                return (
+                  <Tag
+                    onMouseDown={onPreventMouseDown}
+                    closable={closable}
+                    onClose={onClose}
+                    style={{
+                      marginRight: 3,
+                      display: "flex",
+                      alignItems: "center",
+                      minHeight: 32,
+                      fontSize: 14,
+                    }}
+                  >
+                    {label}
+                  </Tag>
+                  )
+              }}
+              style={{ width: "100%" }}
+              placeholder={component.label}
+              onChange={(value) => {
+                setValue(
+                  component.name,
+                  value?.map((valueItem: string) => {
+                    const newItem = store
+                    .getState()
+                    .role.roleList?.map((item: any) => {
+                      return ({
+                        value: item?._id,
+                        label: item?.roleName,
+                      })
+                    }).find((item:any)=> item.value === valueItem )
+                    return ({
+                      label: newItem?.label,
+                      value: newItem?.value,
+                    })
+                  })
+                );
+              }}
+            options={
+              [
+                ...store
+                  .getState()
+                  .role.roleList?.map((item: any) => {
+                    return ({
+                      value: item?._id,
+                      label: item?.roleName,
+                    })
+                  }),
+              ] || []
+            }
+          />
+            )
+          case "dropdown-multi-permission": 
+            return (
+              <Select
+              mode="tags"
+              value={formData?.[component.name]}
+              tagRender={(props)=> {
+                const { label, value, closable, onClose } = props;
+                const onPreventMouseDown = (
+                  event: React.MouseEvent<HTMLSpanElement>
+                ) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                };
+                return (
+                  <Tag
+                    onMouseDown={onPreventMouseDown}
+                    closable={closable}
+                    onClose={onClose}
+                    style={{
+                      marginRight: 3,
+                      display: "flex",
+                      alignItems: "center",
+                      minHeight: 32,
+                      fontSize: 14,
+                    }}
+                  >
+                    {label}
+                  </Tag>
+                  )
+              }}
+              style={{ width: "100%" }}
+              placeholder={component.label}
+              onChange={(value) => {
+                setValue(
+                  component.name,
+                  value?.map((valueItem: string) => {
+                    const newItem = store
+                    .getState()
+                    .role.permissionList?.map((item: any) => {
+                      return ({
+                        value: item?._id,
+                        label: item?.description,
+                      })
+                    }).find((item:any)=> item.value === valueItem )
+                    return ({
+                      label: newItem?.label,
+                      value: newItem?.value,
+                    })
+                  })
+                );
+              }}
+            options={
+              [
+                ...store
+                  .getState()
+                  .role.permissionList?.map((item: any) => {
+                    return ({
+                      value: item?._id,
+                      label: item?.description,
+                    })
+                  }),
+              ] || []
+            }
+          />
+            )
           case "dropdown-category":
             return (
               <Select
