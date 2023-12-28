@@ -363,7 +363,7 @@ function Page({ }: Props) {
       sortDirections: ["descend", "ascend"],
       render: (text: string) => (
         <span
-          className={`cursor-pointer ${[STATUS_ORDER.ACCEPTED, STATUS_ORDER.PAYMENT_SUCCESS].includes(text)
+          className={`cursor-pointer  ${text === STATUS_ORDER.ACCEPTED || text === STATUS_ORDER.PAYMENT_SUCCESS
             ? "text-green-500"
             : text === STATUS_ORDER.REJECTED
               ? "text-red-500"

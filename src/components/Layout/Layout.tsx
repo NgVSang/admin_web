@@ -4,7 +4,7 @@ import { authSelector } from "@/reducer";
 import { ApplicationModal } from "@/reducer/app.reducer";
 import {
   DashboardOutlined,
-  DollarCircleOutlined, MenuFoldOutlined,
+  DollarCircleOutlined, FieldTimeOutlined, MenuFoldOutlined,
   MenuUnfoldOutlined,
   UploadOutlined,
   UsergroupDeleteOutlined,
@@ -21,70 +21,70 @@ import { LayoutPageProps } from "./Layout.types";
 const { Header, Sider, Content } = Layout;
 const PageLayout: FC<LayoutPageProps> = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
-  const { roleName,user } = useSelector(authSelector);
-  const [itemsMenu,setItemsMenu] = useState<{
+  const { roleName, user } = useSelector(authSelector);
+  const [itemsMenu, setItemsMenu] = useState<{
     key: string;
     icon: JSX.Element;
     label: string;
     onClick: () => void;
-    }[]>( [
-      {
-        key: "1",
-        icon: <DashboardOutlined />,
-        label: "Dashboard",
-        onClick: () => {
-          router.push("/dashboard");
-        },
+  }[]>([
+    {
+      key: "1",
+      icon: <DashboardOutlined />,
+      label: "Dashboard",
+      onClick: () => {
+        router.push("/dashboard");
       },
-      {
-        key: "2",
-        icon: <UsergroupDeleteOutlined />,
-        label: "User Management",
-        onClick: () => {
-          router.push("/user-management");
-        },
+    },
+    {
+      key: "2",
+      icon: <UsergroupDeleteOutlined />,
+      label: "User Management",
+      onClick: () => {
+        router.push("/user-management");
       },
-      // {
-      //   key: "3",
-      //   icon: <FieldTimeOutlined />,
-      //   label: "Working Management",
-      //   onClick: () => {
-      //     router.push("/working-management");
-      //   },
-      // },
-      {
-        key: "4",
-        icon: <DollarCircleOutlined />,
-        label: "Product Management",
-        onClick: () => {
-          router.push("/product-management");
-        },
+    },
+    {
+      key: "3",
+      icon: <FieldTimeOutlined />,
+      label: "Statistical",
+      onClick: () => {
+        router.push("/statistical");
       },
-      {
-        key: '5',
-        icon: <DollarCircleOutlined />,
-        label: 'Order Management',
-        onClick: () =>{
-          router.push('/order-management')
-        }
+    },
+    {
+      key: "4",
+      icon: <DollarCircleOutlined />,
+      label: "Product Management",
+      onClick: () => {
+        router.push("/product-management");
       },
-      {
-        key: "6",
-        icon: <UploadOutlined />,
-        label: "Requests",
-        onClick: () => {
-          router.push("/requests");
-        },
+    },
+    {
+      key: '5',
+      icon: <DollarCircleOutlined />,
+      label: 'Order Management',
+      onClick: () => {
+        router.push('/order-management')
+      }
+    },
+    {
+      key: "6",
+      icon: <UploadOutlined />,
+      label: "Requests",
+      onClick: () => {
+        router.push("/requests");
       },
-      {
-        key: "7",
-        icon: <UserOutlined />,
-        label: "Roles",
-        onClick: () => {
-          router.push("/roles");
-        },
+    },
+    {
+      key: "7",
+      icon: <UserOutlined />,
+      label: "Roles",
+      onClick: () => {
+        router.push("/roles");
       },
-    ])
+    },
+  ])
   const openChangePassword = useToggleModal(
     ApplicationModal.CHANGE_PASSWORD_VIEW
   );
@@ -119,15 +119,15 @@ const PageLayout: FC<LayoutPageProps> = ({ children }) => {
       case "/user-management":
         select = "2";
         break;
-      // case "/working-management":
-      //   select = "3";
-      //   break;
+      case "/statistical":
+        select = "3";
+        break;
       case "/product-management":
         select = "4";
         break;
       case '/order-management':
         select = '5'
-      break
+        break
       case "/requests":
         select = "6";
         break;
@@ -140,11 +140,11 @@ const PageLayout: FC<LayoutPageProps> = ({ children }) => {
     return select;
   }, [router.pathname]);
 
-  useEffect(()=> {
-    if (roleName === ROLE_NAMES.SELLER) { 
-      setItemsMenu([...itemsMenu?.filter((item )=> item?.key === "4" || item?.key === "5" )])
+  useEffect(() => {
+    if (roleName === ROLE_NAMES.SELLER) {
+      setItemsMenu([...itemsMenu?.filter((item) => item?.key === "4" || item?.key === "5" || item?.key === "3")])
     }
-  },[roleName])
+  }, [roleName])
   return (
     <Layout className="wrapper">
       <Sider trigger={null} collapsible collapsed={collapsed}>
