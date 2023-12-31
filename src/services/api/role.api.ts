@@ -13,8 +13,8 @@ const getListPermissionAPI = () => {
   return instance.get(ENDPOINTS.PERMISSION, {});
 };
 
-const updatePermissionToRole = (id:string,data:any) => {
-  return instance.patch(`${ENDPOINTS.ROLE}/${id}/add`,data)
+const updatePermissionToRole = (id: string, data: any) => {
+  return instance.patch(`${ENDPOINTS.ROLE}/${id}/add`, data)
 }
 
 export { getListPermissionAPI, getListRoleAPI, updatePermissionToRole };

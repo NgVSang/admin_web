@@ -10,6 +10,7 @@ const ENDPOINTS = {
   LOGIN: "/auth/login",
   PROFILE: "/user/me",
   REGISTER: "/auth/register",
+  SUPPLIER: "/supplier/me"
 };
 
 const login = (data: LoginData) => {
@@ -23,6 +24,9 @@ const changePassword = (data: ChangePassWordData) => {
 };
 const getProfile = () => {
   return instance.get(ENDPOINTS.PROFILE);
+};
+const getSupplier = () => {
+  return instance.get(ENDPOINTS.SUPPLIER);
 };
 const updateProfile = (data: FormData) => {
   // return instance.post(ENDPOINTS.UPDATEPROFILE, data,{
@@ -45,10 +49,7 @@ const trainingUser = (id: string) => {
 };
 
 export {
-  login,
-  changePassword,
-  updateProfile,
-  addImageTraining,
-  trainingUser,
-  getProfile,
+  addImageTraining, changePassword, getProfile,
+  getSupplier, login, trainingUser, updateProfile
 };
+

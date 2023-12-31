@@ -23,6 +23,7 @@ export interface IProduct {
   updatedAt: string;
   __v: number;
   rating: number;
+  soldNumber?: number;
 }
 
 export interface ICategory {

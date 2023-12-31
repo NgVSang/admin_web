@@ -149,7 +149,7 @@ const PageLayout: FC<LayoutPageProps> = ({ children }) => {
     <Layout className="wrapper">
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo">
-          <p>Admin</p>
+          <p>{roleName === ROLE_NAMES.SELLER ? "Supplier" : "Admin"}</p>
         </div>
         <Menu
           theme="dark"

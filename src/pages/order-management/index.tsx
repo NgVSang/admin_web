@@ -30,7 +30,7 @@ import {
   Table,
   TablePaginationConfig
 } from "antd";
-import type { ColumnsType, ColumnType } from "antd/es/table";
+import type { ColumnType, ColumnsType } from "antd/es/table";
 import type {
   FilterConfirmProps,
   FilterValue,
