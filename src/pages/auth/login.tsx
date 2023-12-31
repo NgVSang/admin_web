@@ -11,9 +11,9 @@ import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
-interface Props {}
+interface Props { }
 
-function Page({}: Props) {
+function Page({ }: Props) {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -35,7 +35,7 @@ function Page({}: Props) {
         localStorage.setItem("token", response.data.token);
         // const user = await authApi.getProfile();
         dispatch(setUser(response.data.user));
-        router.push("/dashboard");
+        router.push("/product-management");
       } else {
         toast.error("Bạn không có quyền truy cập!");
       }
