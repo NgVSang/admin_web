@@ -28,6 +28,9 @@ const getProfile = () => {
 const getSupplier = () => {
   return instance.get(ENDPOINTS.SUPPLIER);
 };
+const getSupplierById = (id: any) => {
+  return instance.get(`${ENDPOINTS.SUPPLIER}/${id}`);
+};
 const updateProfile = (data: FormData) => {
   // return instance.post(ENDPOINTS.UPDATEPROFILE, data,{
   //     headers: {
@@ -50,6 +53,7 @@ const trainingUser = (id: string) => {
 
 export {
   addImageTraining, changePassword, getProfile,
-  getSupplier, login, trainingUser, updateProfile
+  getSupplier, login, trainingUser, updateProfile,
+  getSupplierById
 };
 

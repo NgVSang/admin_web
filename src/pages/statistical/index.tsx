@@ -37,6 +37,9 @@ const Page = ({ }: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [dataLine, setDataLine] = useState<any>(null);
     const [dataBar, setDataBar] = useState<any>(null);
+    const [supplier, setSupplier] = useState<any>(null);
+    const [allSupplierS, setAllSuppliers] = useState<any>(null);
+
     const [supplierIdCurrent, setSupplierIdCurrent] = useState<any>(null);
     const [dataDoughnut, setDataDoughnut] = useState<any>(null);
     const chartRef = useRef(null);
@@ -45,14 +48,15 @@ const Page = ({ }: Props) => {
         order: 0
     })
     const [dateStatistical, setDateStatistical] = useState({
-        "startDay": "24-12-2023",
-        "endDay": "27-12-2023"
+        "startDay": "28-12-2023",
+        "endDay": "05-01-2024"
     })
     const getDataAdmin = async () => {
         try {
             const res = await getStatistical(dateStatistical);
             if (res?.data) {
                 const data = res?.data.sort((a: any, b: any) => a?.total - b?.total).slice(res?.data.length - 5, res?.data.length)
+                setAllSuppliers(res?.data)
                 setSupplierIdCurrent(res?.data[res?.data.length - 1]?._id)
                 const total = data.reduce((acc: any, curr: any) => {
                     return acc + Number(curr?.total);
@@ -106,6 +110,12 @@ const Page = ({ }: Props) => {
             let res;
 
             const supplier = await getSupplier();
+            if (roleName === ROLE_NAMES.SELLER) {
+                setSupplier(supplier?.data);
+            } else if (roleName === ROLE_NAMES.SUPERUSER && allSupplierS) {
+                setSupplier(allSupplierS?.find((item: any) => item._id === supplierIdCurrent))
+            }
+
             res = await Promise.all([getStatisticalBySupplier(supplierIdCurrent ?? supplier?.data?._id, dateStatistical),
             getStatisticalTotalBySupplier(supplierIdCurrent ?? supplier?.data?._id)]
             )
@@ -280,7 +290,7 @@ const Page = ({ }: Props) => {
                         <div className="w-1/2 flex flex-col justify-between items-center gap-4">
                             <i style={{
                                 fontSize: 28
-                            }}>Thống kê nhà cung cấp</i>
+                            }}>Thống kê các nhà cung cấp</i>
                             <Bar
                                 ref={chartRef}
                                 data={dataBar}
@@ -372,8 +382,10 @@ const Page = ({ }: Props) => {
                     {dataLine && <div className="w-1/2 flex flex-col justify-between items-center gap-4">
                         <i style={{
                             fontSize: 28
-                        }}>Thống kê theo ngày của nhà cung cấp</i>
-
+                        }}>Thống kê theo ngày của nhà cung cấp </i>
+                        <i style={{
+                            fontSize: 28
+                        }}>{supplier?.companyName}</i>
                         <Line
                             data={dataLine}
                             options={{

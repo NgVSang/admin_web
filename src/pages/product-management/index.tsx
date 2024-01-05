@@ -39,7 +39,7 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 // import {getListRequest} from "@/services/api/request.apt";
 
-interface Props {}
+interface Props { }
 
 interface TableParams {
   pagination?: TablePaginationConfig;
@@ -82,7 +82,7 @@ interface TableParams {
   sortOrder?: string;
   filters?: Record<string, FilterValue>;
 }
-function Page({}: Props) {
+function Page({ }: Props) {
   const openAddNewProduct = useToggleModal(ApplicationModal.ADD_PRODUCT_VIEW);
   const openUpdateProductView = useToggleModal(
     ApplicationModal.UPDATE_PRODUCT_VIEW
@@ -165,17 +165,17 @@ function Page({}: Props) {
         toast.error(error.message);
       });
   };
-  const handleDeleteProduct = async (record : any) => {
+  const handleDeleteProduct = async (record: any) => {
     try {
       console.log(record);
       alert("Are you sure about deleting this product ?");
-      await deleteProductAPI(record?._id).then(()=> {
+      await deleteProductAPI(record?._id).then(() => {
         toast.success("Success!");
       })
       setTimeout(() => {
         router.reload();
       }, 1000);
-    } catch (err : any) {
+    } catch (err: any) {
       toast.error(err.message);
     }
 
@@ -372,7 +372,7 @@ function Page({}: Props) {
             title="Training face "
             onClick={() => {}}
           /> */}
-          <DeleteOutlined className="cursor-pointer" title="Training face" onClick={()=>handleDeleteProduct(record)}/>
+          <DeleteOutlined className="cursor-pointer" title="Training face" onClick={() => handleDeleteProduct(record)} />
         </div>
       ),
     },
